@@ -1,0 +1,105 @@
+.heroBanner {
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255, 133, 74, 0.26), transparent 38%),
+    radial-gradient(circle at 80% 10%, rgba(7, 163, 146, 0.28), transparent 42%),
+    linear-gradient(130deg, #07233f 0%, #0b2a2f 50%, #0d3f46 100%);
+  color: #f8f4eb;
+  padding: 5rem 0 4rem;
+}
+
+.heroContent {
+  max-width: 62rem;
+}
+
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: #ffd8c2;
+}
+
+.title {
+  font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+}
+
+.subtitle {
+  max-width: 48rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  line-height: 1.5;
+  color: #efe9db;
+}
+
+.buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.section {
+  padding: 2.8rem 0;
+}
+
+.sectionAlt {
+  background: #f4f7f7;
+  padding: 2.8rem 0;
+}
+
+.stepGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.stepCard {
+  background: #ffffff;
+  border: 1px solid #d4e0de;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 8px 28px rgba(14, 46, 60, 0.08);
+}
+
+.inlineCode {
+  display: inline-block;
+  margin: 0.2rem 0 0.75rem;
+  background: #eef4f3;
+  border-radius: 8px;
+  padding: 0.45rem 0.55rem;
+}
+
+.quoteGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.quoteCard {
+  margin: 0;
+  background: #ffffff;
+  border-left: 4px solid #13808c;
+  border-radius: 10px;
+  padding: 1rem 1rem 0.9rem;
+  box-shadow: 0 7px 22px rgba(8, 48, 57, 0.09);
+}
+
+.quoteCard footer {
+  margin-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+@media (max-width: 996px) {
+  .heroBanner {
+    padding: 3rem 0 2.5rem;
+  }
+
+  .stepGrid,
+  .quoteGrid {
+    grid-template-columns: 1fr;
+  }
+}

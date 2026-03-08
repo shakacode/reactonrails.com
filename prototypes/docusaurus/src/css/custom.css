@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:wght@400;600;700&display=swap");
+
+:root {
+  --ifm-color-primary: #0f7f8b;
+  --ifm-color-primary-dark: #0d727d;
+  --ifm-color-primary-darker: #0c6b75;
+  --ifm-color-primary-darkest: #095862;
+  --ifm-color-primary-light: #138f9c;
+  --ifm-color-primary-lighter: #16a0ae;
+  --ifm-color-primary-lightest: #20b8c8;
+  --ifm-background-color: #fbfaf7;
+  --ifm-font-family-base: "Source Sans 3", "Avenir Next", "Segoe UI", sans-serif;
+  --ifm-heading-font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
+  --ifm-code-font-size: 94%;
+  --docusaurus-highlighted-code-line-bg: rgba(8, 40, 55, 0.08);
+  --ifm-navbar-background-color: #ffffff;
+  --ifm-footer-background-color: #0d2333;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #3accd8;
+  --ifm-color-primary-dark: #24bac6;
+  --ifm-color-primary-darker: #1caab5;
+  --ifm-color-primary-darkest: #178892;
+  --ifm-background-color: #0b1822;
+  --docusaurus-highlighted-code-line-bg: rgba(136, 225, 255, 0.16);
+}
+
+.navbar {
+  border-bottom: 1px solid rgba(8, 44, 55, 0.08);
+}

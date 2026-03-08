@@ -1,0 +1,3 @@
+/react-on-rails/docs/* /docs/:splat 301
+/react-on-rails/docs /docs 301
+/docs/pro /docs/pro/react-on-rails-pro 302
