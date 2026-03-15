@@ -22,7 +22,7 @@ jobs:
         run: npm run sync:docs
         env:
           REACT_ON_RAILS_REPO_URL: https://github.com/shakacode/react_on_rails.git
-          REACT_ON_RAILS_REF: main
+          REACT_ON_RAILS_REF: master
 
       - name: Prepare docs
         run: npm run prepare:docs
@@ -50,7 +50,7 @@ jobs:
         run: npm run sync:docs
         env:
           REACT_ON_RAILS_REPO_URL: https://github.com/shakacode/react_on_rails.git
-          REACT_ON_RAILS_REF: main
+          REACT_ON_RAILS_REF: master
 
       - name: Prepare docs
         run: npm run prepare:docs

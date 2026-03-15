@@ -18,16 +18,16 @@ const subsetDocsTarget = path.join(upstreamRoot, "docs-subset");
 
 const subsetPaths = [
   "README.md",
-  "introduction.md",
-  "getting-started/quick-start.md",
-  "getting-started/tutorial.md",
-  "getting-started/installation-into-an-existing-rails-app.md",
-  "core-concepts/how-react-on-rails-works.md",
-  "core-concepts/react-server-rendering.md",
-  "api-reference/view-helpers-api.md",
-  "building-features/react-and-redux.md",
-  "deployment/README.md",
-  "upgrading/upgrading-react-on-rails.md",
+  "oss/introduction.md",
+  "oss/getting-started/quick-start.md",
+  "oss/getting-started/tutorial.md",
+  "oss/getting-started/installation-into-an-existing-rails-app.md",
+  "oss/core-concepts/how-react-on-rails-works.md",
+  "oss/core-concepts/react-server-rendering.md",
+  "oss/api-reference/view-helpers-api.md",
+  "oss/building-features/react-and-redux.md",
+  "oss/deployment/README.md",
+  "oss/upgrading/upgrading-react-on-rails.md",
   "pro/react-on-rails-pro.md",
   "pro/home-pro.md",
   "pro/node-renderer/basics.md",
@@ -115,7 +115,7 @@ async function main() {
   if (!(await exists(localDocs))) {
     const repoUrl =
       process.env.REACT_ON_RAILS_REPO_URL ?? "https://github.com/shakacode/react_on_rails.git";
-    const ref = process.env.REACT_ON_RAILS_REF ?? "main";
+    const ref = process.env.REACT_ON_RAILS_REF ?? "master";
     console.log(`Local source repo missing. Cloning ${repoUrl} (${ref})...`);
     ephemeralClone = cloneRepo(repoUrl, ref);
     sourceRepo = ephemeralClone;

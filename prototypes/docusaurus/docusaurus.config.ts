@@ -38,8 +38,16 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
           exclude: [...GlobExcludeDefault, '**/planning/**'],
-          editUrl:
-            'https://github.com/shakacode/react_on_rails/tree/main/docs/',
+          editUrl: ({docPath}) => {
+            const root = 'https://github.com/shakacode/react_on_rails/tree/master/docs/';
+            if (docPath === 'README.md') {
+              return `${root}README.md`;
+            }
+            if (docPath.startsWith('pro/')) {
+              return `${root}${docPath}`;
+            }
+            return `${root}oss/${docPath}`;
+          },
         },
         blog: false,
         theme: {
