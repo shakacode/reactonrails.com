@@ -41,11 +41,11 @@ export default function ProPage(): ReactNode {
             <h1>React on Rails Pro</h1>
             <p>
               Pro extends React on Rails for teams that need higher SSR throughput and guided
-              production support.
+              production support. You can evaluate Pro without a license.
             </p>
             <div className={styles.actions}>
               <Link className="button button--primary button--lg" to="/docs/pro/react-on-rails-pro">
-                Read Pro Docs
+                Try Pro Free (No License)
               </Link>
               <Link
                 className="button button--secondary button--lg"
@@ -53,6 +53,20 @@ export default function ProPage(): ReactNode {
                 Contact ShakaCode
               </Link>
             </div>
+          </div>
+        </section>
+
+        <section className="container">
+          <div className={styles.policyCard}>
+            <h2>Friendly Evaluation Policy</h2>
+            <p>
+              You can try React on Rails Pro without a license while evaluating.
+            </p>
+            <p>
+              If your organization is budget-constrained, email{' '}
+              <a href="mailto:justin@shakacode.com">justin@shakacode.com</a>. We can grant free
+              licenses in qualifying cases.
+            </p>
           </div>
         </section>
 
@@ -79,7 +93,7 @@ export default function ProPage(): ReactNode {
             </table>
           </div>
           <p className={styles.note}>
-            Need pricing and implementation guidance? Email{' '}
+            Need pricing, implementation guidance, or a free-license discussion? Email{' '}
             <a href="mailto:justin@shakacode.com">justin@shakacode.com</a>.
           </p>
         </section>

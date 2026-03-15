@@ -110,6 +110,25 @@ async function rewriteFlattenedOssLinks(docsRoot) {
   });
 }
 
+async function injectProFriendlyNotice(docsRoot) {
+  const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
+  if (!(await exists(proIntroPath))) {
+    return;
+  }
+
+  const original = await fs.readFile(proIntroPath, "utf8");
+  if (original.includes("Friendly evaluation policy")) {
+    return;
+  }
+
+  const notice = `> **Friendly evaluation policy**\n> You can evaluate React on Rails Pro without a license.\n> If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com). We can provide free licenses in qualifying cases.\n\n`;
+  const updated = original.replace(/^# React on Rails Pro\s*\n+/, `# React on Rails Pro\n\n${notice}`);
+
+  if (updated !== original) {
+    await fs.writeFile(proIntroPath, updated, "utf8");
+  }
+}
+
 function docsHomeMarkdown() {
   return `# React on Rails Documentation
 
@@ -120,6 +139,10 @@ Welcome to the React on Rails docs.
 - [Installation](./getting-started/installation-into-an-existing-rails-app.md)
 - [API Reference](./api-reference/view-helpers-api.md)
 - [Pro Documentation](./pro/react-on-rails-pro.md)
+
+React on Rails Pro is friendly to evaluate:
+- You can try Pro without a license.
+- If your organization is budget-constrained, contact us about free licenses.
 
 For discussions and support, visit [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions).
 `;
@@ -155,6 +178,7 @@ async function prepareDocusaurus() {
 
   await rewriteProLinks(path.join(docsRoot, "pro"));
   await rewriteFlattenedOssLinks(docsRoot);
+  await injectProFriendlyNotice(docsRoot);
   await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown(), "utf8");
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);
