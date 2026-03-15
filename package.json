@@ -8,6 +8,7 @@
     "sync:docs:subset": "node scripts/sync-docs.mjs --subset",
     "prepare:docs": "node scripts/prepare-docs.mjs --target docusaurus",
     "prepare:docs:subset": "node scripts/prepare-docs.mjs --target docusaurus --subset",
+    "audit:docs": "node scripts/audit-docs.mjs",
     "prepare": "npm run sync:docs && npm run prepare:docs",
     "prepare:subset": "npm run sync:docs:subset && npm run prepare:docs:subset",
     "install:site": "npm --prefix prototypes/docusaurus install",
