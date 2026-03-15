@@ -5,10 +5,10 @@
 .hero {
   padding: 2.8rem 0;
   margin-bottom: 2rem;
-  background:
-    radial-gradient(circle at 20% 25%, rgba(255, 150, 94, 0.25), transparent 40%),
-    linear-gradient(135deg, #09253d 0%, #0a3a44 100%);
-  color: #f8f3e9;
+  background: #f6f8fa;
+  color: #1f2328;
+  border-top: 1px solid #d0d7de;
+  border-bottom: 1px solid #d0d7de;
 }
 
 .actions {
@@ -20,8 +20,8 @@
 
 .tableWrap {
   overflow-x: auto;
-  border: 1px solid #d4dfdc;
-  border-radius: 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
 }
 
 .table {
@@ -32,14 +32,22 @@
 .table th,
 .table td {
   padding: 0.8rem;
-  border-bottom: 1px solid #e0e7e5;
+  border-bottom: 1px solid #d8dee4;
   text-align: left;
 }
 
 .table th {
-  background: #f1f6f5;
+  background: #f6f8fa;
 }
 
 .note {
   margin-top: 1rem;
+  color: #57606a;
+}
+
+@media (max-width: 996px) {
+  .actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
