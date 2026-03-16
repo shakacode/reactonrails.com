@@ -22,6 +22,7 @@ const subsetPaths = [
   "oss/getting-started/quick-start.md",
   "oss/getting-started/tutorial.md",
   "oss/getting-started/installation-into-an-existing-rails-app.md",
+  "oss/getting-started/comparing-react-on-rails-to-alternatives.md",
   "oss/core-concepts/how-react-on-rails-works.md",
   "oss/core-concepts/react-server-rendering.md",
   "oss/api-reference/view-helpers-api.md",
@@ -30,7 +31,7 @@ const subsetPaths = [
   "oss/upgrading/upgrading-react-on-rails.md",
   "pro/react-on-rails-pro.md",
   "pro/home-pro.md",
-  "pro/node-renderer/basics.md",
+  "oss/building-features/node-renderer/basics.md",
   "pro/react-server-components/tutorial.md"
 ];
 
