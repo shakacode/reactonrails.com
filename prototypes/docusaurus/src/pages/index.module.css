@@ -1,8 +1,8 @@
 .heroBanner {
-  background: #ffffff;
-  color: #1f2328;
+  background: var(--site-hero-background);
+  color: var(--ifm-color-content);
   padding: 4rem 0 3rem;
-  border-bottom: 1px solid #d0d7de;
+  border-bottom: 1px solid var(--site-border-color);
 }
 
 .heroContent {
@@ -14,7 +14,7 @@
   letter-spacing: 0.08rem;
   font-weight: 600;
   margin-bottom: 0.75rem;
-  color: #57606a;
+  color: var(--ifm-color-content-secondary);
 }
 
 .title {
@@ -27,7 +27,7 @@
   max-width: 44rem;
   font-size: clamp(1.02rem, 2vw, 1.2rem);
   line-height: 1.5;
-  color: #57606a;
+  color: var(--ifm-color-content-secondary);
 }
 
 .buttons {
@@ -42,10 +42,10 @@
 }
 
 .sectionAlt {
-  background: #f6f8fa;
+  background: var(--site-surface-1);
   padding: 2.8rem 0;
-  border-top: 1px solid #d0d7de;
-  border-bottom: 1px solid #d0d7de;
+  border-top: 1px solid var(--site-border-color);
+  border-bottom: 1px solid var(--site-border-color);
 }
 
 .stepGrid {
@@ -55,17 +55,18 @@
 }
 
 .stepCard {
-  background: #ffffff;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  padding: 1rem;
+  background: var(--site-surface-0);
+  border: 1px solid var(--site-border-color);
+  border-radius: 12px;
+  padding: 1.05rem;
+  box-shadow: var(--site-card-shadow);
 }
 
 .inlineCode {
   display: inline-block;
   margin: 0.2rem 0 0.75rem;
-  background: #f6f8fa;
-  border: 1px solid #d0d7de;
+  background: var(--site-surface-1);
+  border: 1px solid var(--site-border-color);
   border-radius: 6px;
   padding: 0.45rem 0.55rem;
 }
@@ -78,10 +79,11 @@
 
 .quoteCard {
   margin: 0;
-  background: #ffffff;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
+  background: var(--site-surface-0);
+  border: 1px solid var(--site-border-color);
+  border-radius: 12px;
   padding: 1rem 1rem 0.9rem;
+  box-shadow: var(--site-card-shadow);
 }
 
 .quoteCard footer {
@@ -89,7 +91,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  color: #57606a;
+  color: var(--ifm-color-content-secondary);
 }
 
 @media (max-width: 996px) {
@@ -100,5 +102,25 @@
   .stepGrid,
   .quoteGrid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroBanner {
+    padding: 2.4rem 0 2.1rem;
+  }
+
+  .title {
+    font-size: clamp(1.9rem, 9vw, 2.35rem);
+  }
+
+  .buttons {
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .stepCard,
+  .quoteCard {
+    border-radius: 10px;
   }
 }
