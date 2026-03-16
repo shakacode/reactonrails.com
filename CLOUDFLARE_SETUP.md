@@ -30,8 +30,29 @@ After domain setup, Cloudflare provisions TLS automatically.
 
 ## Redirect Strategy
 
-Site-level redirects already configured in:
+### Site-level redirects (this repo)
 
-- `prototypes/docusaurus/static/_redirects`
+Configured in `prototypes/docusaurus/static/_redirects`:
 
-Legacy host redirect from `https://www.shakacode.com/react-on-rails/docs/*` to `https://reactonrails.com/docs/*` must be added in the `sc-website` Cloudflare Pages project (or equivalent host-level redirect rules).
+- `/react-on-rails/docs/*` → `/docs/*` (301)
+- `/react-on-rails-pro/docs/*` → `/docs/*` (301)
+- `/docs/pro` → `/docs/pro/react-on-rails-pro` (302)
+
+### Legacy host redirects (shakacode.com Cloudflare project)
+
+These must be added in the `sc-website` Cloudflare Pages project (or via Cloudflare Redirect Rules on the shakacode.com zone):
+
+| Source | Destination | Status |
+|--------|-------------|--------|
+| `www.shakacode.com/react-on-rails/docs/*` | `https://reactonrails.com/docs/*` | 301 |
+| `www.shakacode.com/react-on-rails-pro/docs/*` | `https://reactonrails.com/docs/*` | 301 |
+
+To set up via Cloudflare Dashboard:
+
+1. Go to the shakacode.com zone → Rules → Redirect Rules
+2. Create a rule for each pattern above using dynamic redirects
+3. Use expression: `(http.host eq "www.shakacode.com" and starts_with(http.request.uri.path, "/react-on-rails/docs"))`
+4. Set destination: `concat("https://reactonrails.com/docs", substring(http.request.uri.path, 21))` (strips `/react-on-rails/docs` prefix)
+5. Repeat for `/react-on-rails-pro/docs` with appropriate path offset
+
+Verify by visiting old shakacode.com doc URLs and confirming 301 redirects to reactonrails.com.
