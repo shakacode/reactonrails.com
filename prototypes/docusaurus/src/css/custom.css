@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+@import 'https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap';
 
 :root {
   --ifm-color-primary: #b4491d;
@@ -11,7 +11,7 @@
   --ifm-background-color: #fbf7f2;
   --ifm-background-surface-color: #fffaf3;
   --ifm-font-family-base: "IBM Plex Sans", "Segoe UI", "Noto Sans", sans-serif;
-  --ifm-font-family-monospace: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --ifm-font-family-monospace: "IBM Plex Mono", ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
   --ifm-heading-font-family: "Fraunces", Georgia, serif;
   --ifm-font-size-base: 16px;
   --ifm-line-height-base: 1.5;
@@ -29,6 +29,17 @@
   --ifm-menu-color-active: #1f1b17;
   --site-border: #dccab8;
   --site-surface: #fffaf3;
+  --site-accent-warm: #8f3b18;
+  --site-accent-cool: #17787c;
+  --site-hero-glow-cool: rgba(23, 120, 124, 0.16);
+  --site-hero-glow-warm: rgba(180, 73, 29, 0.18);
+  --site-hero-surface-start: rgba(255, 250, 243, 0.98);
+  --site-hero-surface-end: rgba(244, 233, 218, 0.9);
+  --site-panel-surface: rgba(255, 250, 243, 0.88);
+  --site-panel-shadow: rgba(50, 36, 22, 0.08);
+  --site-soft-surface: rgba(244, 233, 218, 0.42);
+  --site-inline-code-surface: rgba(255, 255, 255, 0.74);
+  --site-inline-code-text: #7f2d12;
 }
 
 [data-theme='dark'] {
@@ -51,10 +62,27 @@
   --docusaurus-highlighted-code-line-bg: rgba(255, 149, 103, 0.18);
   --site-border: #4b3a2f;
   --site-surface: #221a14;
+  --site-accent-warm: #ffb48d;
+  --site-accent-cool: #7dd4d7;
+  --site-hero-glow-cool: rgba(59, 173, 177, 0.18);
+  --site-hero-glow-warm: rgba(255, 149, 103, 0.22);
+  --site-hero-surface-start: rgba(34, 26, 20, 0.96);
+  --site-hero-surface-end: rgba(22, 17, 13, 0.94);
+  --site-panel-surface: rgba(28, 21, 16, 0.92);
+  --site-panel-shadow: rgba(0, 0, 0, 0.28);
+  --site-soft-surface: rgba(38, 29, 23, 0.76);
+  --site-inline-code-surface: rgba(34, 26, 20, 0.92);
+  --site-inline-code-text: #ffb48d;
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 html,
@@ -107,14 +135,14 @@ body {
 }
 
 .markdown code {
-  background: rgba(255, 255, 255, 0.68);
+  background: var(--site-inline-code-surface);
   border: 1px solid rgba(92, 82, 70, 0.14);
   border-radius: 8px;
   font-family: var(--ifm-font-family-monospace);
+  color: var(--site-inline-code-text);
 }
 
 [data-theme='dark'] .markdown code {
-  background: rgba(34, 26, 20, 0.92);
   border-color: rgba(255, 255, 255, 0.08);
 }
 
