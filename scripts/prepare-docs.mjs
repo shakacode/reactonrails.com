@@ -501,9 +501,10 @@ React on Rails is one product with two tiers: open source for Rails + React inte
 
 ### Evaluating Rails + React options
 
-- [Examples and migration references](/examples)
+- [Compare React on Rails to alternatives](./getting-started/comparing-react-on-rails-to-alternatives.md)
 - [Migrate from react-rails](./migrating/migrating-from-react-rails.md)
 - [Migrate from vite_rails](./migrating/migrating-from-vite-rails.md)
+- [Examples and migration references](/examples)
 
 ## Dive deeper when you need it
 
