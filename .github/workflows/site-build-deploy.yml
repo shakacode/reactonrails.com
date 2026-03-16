@@ -40,7 +40,7 @@ jobs:
         run: npm run build
 
   deploy:
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'repository_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)
     needs: build
     runs-on: ubuntu-latest
     environment:
@@ -75,6 +75,8 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             echo "branch=pr-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "branch=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
           else
             echo "branch=main" >> "$GITHUB_OUTPUT"
           fi
@@ -92,7 +94,8 @@ jobs:
             if [ "${{ steps.deploy_branch.outputs.branch }}" = "main" ]; then
               DEPLOYMENT_URL="https://reactonrails.com"
             else
-              DEPLOYMENT_URL="https://${{ steps.deploy_branch.outputs.branch }}.${CLOUDFLARE_PAGES_PROJECT:-reactonrails-com}.pages.dev"
+              SAFE_BRANCH="$(echo "${{ steps.deploy_branch.outputs.branch }}" | sed 's/[^A-Za-z0-9-]/-/g')"
+              DEPLOYMENT_URL="https://${SAFE_BRANCH}.${CLOUDFLARE_PAGES_PROJECT:-reactonrails-com}.pages.dev"
             fi
           fi
 
