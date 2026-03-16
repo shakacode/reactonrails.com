@@ -13,11 +13,12 @@ function argValue(name) {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const workspaceRoot = path.resolve(__dirname, "..");
+const dateStamp = new Date().toISOString().slice(0, 10);
 const docsRoot = path.resolve(
   argValue("--docs-root") ?? path.join(workspaceRoot, "prototypes", "docusaurus", "docs")
 );
 const outputPath = path.resolve(
-  argValue("--output") ?? path.join(workspaceRoot, "VALIDATION_REPORT_2026-03-15.md")
+  argValue("--output") ?? path.join(workspaceRoot, `VALIDATION_REPORT_${dateStamp}.md`)
 );
 
 const semverPattern = /\b(\d+)\.(\d+)\.(\d+)\b/g;
@@ -157,12 +158,13 @@ function buildReport(pages) {
   const flagged = pages.filter((page) => page.hasFindings).length;
   const clean = total - flagged;
   const generatedAt = new Date().toISOString();
+  const relativeDocsRoot = path.relative(workspaceRoot, docsRoot).split(path.sep).join("/") || ".";
 
   const summary = [
     `# Docs Validation Report`,
     ``,
     `Generated: ${generatedAt}`,
-    `Docs root: \`${docsRoot}\``,
+    `Docs root: \`${relativeDocsRoot}\``,
     `Pages scanned: ${total}`,
     `Pages with findings: ${flagged}`,
     `Pages clean: ${clean}`,

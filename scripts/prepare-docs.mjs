@@ -280,7 +280,20 @@ async function fixKnownDocsIssues(docsRoot) {
   );
 
   await rewriteDoc(docsRoot, "deployment/troubleshooting.md", (content) =>
-    content.replace(/\(#-([^)]+)\)/g, "(#$1")
+    content
+      .replace(/\(#-([^)]+)\)/g, "(#$1)")
+      .replace(
+        "## 🚨 Installation Issues",
+        "## 🚨 Installation Issues {#installation-issues}"
+      )
+      .replace("## 🔧 Build Issues", "## 🔧 Build Issues {#build-issues}")
+      .replace("## ⚡ Runtime Issues", "## ⚡ Runtime Issues {#runtime-issues}")
+      .replace("## 🎨 CSS Modules Issues", "## 🎨 CSS Modules Issues {#css-modules-issues}")
+      .replace(
+        "## 🖥️ Server-Side Rendering Issues",
+        "## 🖥️ Server-Side Rendering Issues {#server-side-rendering-issues}"
+      )
+      .replace("## 🐌 Performance Issues", "## 🐌 Performance Issues {#performance-issues}")
   );
 
   await rewriteDoc(docsRoot, "migrating/rsc-data-fetching.md", (content) =>
