@@ -322,10 +322,19 @@ async function fixKnownDocsIssues(docsRoot) {
     docsRoot,
     "building-features/how-to-use-different-files-for-client-and-server-rendering.md",
     (content) =>
-      content.replace(
-        /^## How to use different versions of a file for client and server rendering/m,
-        "# How to use different versions of a file for client and server rendering"
-      )
+      content
+        .replace(
+          /^## How to use different versions of a file for client and server rendering/m,
+          "# How to use different versions of a file for client and server rendering"
+        )
+        .replace(/\.\.\. \/\/ blah blah/g, "// ... other aliases")
+  );
+
+  await rewriteDoc(docsRoot, "building-features/images.md", (content) =>
+    content.replace(
+      "1. leading slash necessary on the\n   a. Option name for the file-loader and url-loader (todo reference)\n   b. Option publicPath for the output (todo reference)",
+      "A leading slash is necessary on the `name` option for file-loader/url-loader and the `publicPath` option for output."
+    )
   );
 
   await rewriteDoc(docsRoot, "migrating/migrating-from-react-rails.md", (content) =>
