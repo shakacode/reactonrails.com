@@ -17,7 +17,7 @@ const evaluationPaths = [
     eyebrow: 'Migration path',
     title: 'Move from react-rails',
     description:
-      'Follow a migration sequence validated against a real open-source example app instead of reconstructing it from old guides.',
+      'Follow a migration sequence that now accounts for both Webpacker-era apps and newer Vite-style `react-rails` repos.',
     href: '/docs/migrating/migrating-from-react-rails',
     cta: 'Use the react-rails guide',
   },
@@ -29,26 +29,46 @@ const evaluationPaths = [
     href: '/docs/migrating/migrating-from-vite-rails',
     cta: 'Use the vite_rails guide',
   },
+  {
+    eyebrow: 'Upgrade path',
+    title: 'Upgrade an existing react_on_rails app',
+    description:
+      'Use the upgrade guide when the app already depends on React on Rails and you need the current preflight before version bumps.',
+    href: '/docs/upgrading/upgrading-react-on-rails',
+    cta: 'Use the upgrade guide',
+  },
 ];
 
 const exampleApps = [
   {
-    title: 'react_on_rails_demo_ssr_hmr',
+    title: 'ifmeorg/ifme',
     description:
-      'Canonical demo app showing React on Rails setup with SSR and hot reloading workflows.',
-    href: 'https://github.com/shakacode/react_on_rails_demo_ssr_hmr',
+      'React on Rails app on an older Webpacker-era stack that exposed `pg` lockfile issues before the upgrade could begin.',
+    href: 'https://github.com/ifmeorg/ifme',
   },
   {
-    title: 'react-rails-example-app',
+    title: 'antiwork/gumroad',
     description:
-      'Legacy react-rails app used to validate the migration guide and current Rails-version constraints.',
-    href: 'https://github.com/shakacode/react-rails-example-app',
+      'Modern Rails + Shakapacker + React on Rails app used to validate upgrade preflight guidance and exact-version expectations.',
+    href: 'https://github.com/antiwork/gumroad',
   },
   {
-    title: 'vite_ruby/examples/rails',
+    title: 'bigbinary/wheel',
     description:
-      'Official Vite Rails sample app used to document migration preflight and dependency lockfile issues.',
-    href: 'https://github.com/ElMassimo/vite_ruby/tree/main/examples/rails',
+      'React-rails app with a newer frontend toolchain that proved the migration docs needed a clearer Vite-era branch.',
+    href: 'https://github.com/bigbinary/wheel',
+  },
+  {
+    title: 'lockstep/rails_new',
+    description:
+      'React-rails + Webpacker app that hit an old `nio4r` compile failure before any React on Rails migration steps could run.',
+    href: 'https://github.com/lockstep/rails_new',
+  },
+  {
+    title: 'arish-me/rails-vite-wheel',
+    description:
+      'Small vite_rails app used to validate `packageManager`, env-var, and generator-boot preflight notes.',
+    href: 'https://github.com/arish-me/rails-vite-wheel',
   },
 ];
 
@@ -61,8 +81,8 @@ export default function ExamplesPage(): ReactNode {
             <p className={styles.kicker}>Examples and migration references</p>
             <h1>Use concrete repos and concrete guides when deciding whether React on Rails fits.</h1>
             <p className={styles.lead}>
-              These links are meant for evaluation, migration, and validation work. They are not a
-              parallel docs track.
+              These links are meant for evaluation, migration, upgrade, and validation work. They
+              are not a parallel docs track.
             </p>
           </div>
         </section>
