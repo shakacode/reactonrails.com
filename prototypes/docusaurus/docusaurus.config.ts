@@ -58,7 +58,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/react-on-rails-social-card.png',
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -66,7 +66,7 @@ const config: Config = {
       title: 'React on Rails',
       logo: {
         alt: 'React on Rails Logo',
-        src: 'img/logo.svg',
+        src: 'img/logo.png',
       },
       items: [
         {
