@@ -17,6 +17,8 @@ Production site workspace for [reactonrails.com](https://reactonrails.com), buil
    - `npm run prepare`
 3. Run the site:
    - `npm run dev`
+4. Run docs validation scan:
+   - `npm run audit:docs`
 
 ## Build
 
@@ -32,6 +34,15 @@ Production site workspace for [reactonrails.com](https://reactonrails.com), buil
 1. `REACT_ON_RAILS_REPO` env var
 2. sibling directory `../react_on_rails`
 3. shallow clone from `REACT_ON_RAILS_REPO_URL` (default: upstream GitHub repo)
+
+## Legacy Archive Handling
+
+`scripts/prepare-docs.mjs` applies a deterministic cleanup pass after sync:
+
+- fixes known broken anchors/links
+- normalizes a few outdated docs references
+- moves selected legacy docs to `docs/archive/legacy/`
+- leaves stub pages at original routes pointing to archived content and modern replacements
 
 ## Cloudflare Pages
 

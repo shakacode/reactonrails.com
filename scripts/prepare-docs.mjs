@@ -6,6 +6,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const workspaceRoot = path.resolve(__dirname, "..");
 
+const legacyDocsToArchive = [
+  {
+    source: "building-features/hmr-and-hot-reloading-with-the-webpack-dev-server.md",
+    replacement: "building-features/process-managers.md",
+    reason:
+      "This guide is webpacker-era and includes obsolete package/version guidance (React on Rails 11.x, Node 12)."
+  },
+  {
+    source: "building-features/rails-webpacker-react-integration-options.md",
+    replacement: "getting-started/installation-into-an-existing-rails-app.md",
+    reason:
+      "This comparison page targets legacy integration stacks and React < 18 compatibility workarounds."
+  },
+  {
+    source: "deployment/troubleshooting-when-using-webpacker.md",
+    replacement: "deployment/troubleshooting.md",
+    reason:
+      "This page documents webpacker-3 / Rails-5 era troubleshooting and should be treated as historical reference."
+  },
+  {
+    source: "misc/asset-pipeline.md",
+    replacement: "getting-started/project-structure.md",
+    reason: "This page is Sprockets-era migration guidance with limited value for modern setups."
+  }
+];
+
 function argValue(name) {
   const index = process.argv.indexOf(name);
   if (index === -1) {
@@ -69,6 +95,299 @@ async function walkFiles(dir, callback, relativePrefix = "") {
   }
 }
 
+function toPosix(relativePath) {
+  return relativePath.split(path.sep).join("/");
+}
+
+function stripMdExtension(relativePath) {
+  return relativePath.replace(/\.(md|mdx)$/i, "");
+}
+
+function routeForDoc(relativePath) {
+  return `/docs/${stripMdExtension(toPosix(relativePath))}`;
+}
+
+function resolveRelativeDocPath(currentRelativePath, rawTarget) {
+  const sourceDir = path.posix.dirname(toPosix(currentRelativePath));
+  return path.posix.normalize(path.posix.join(sourceDir, rawTarget));
+}
+
+function rewriteRelativeMarkdownLinksToAbsolute(markdown, sourceRelativePath) {
+  return markdown.replace(/\]\(([^)]+)\)/g, (fullMatch, rawTargetWithMaybeTitle) => {
+    const targetWithMaybeTitle = rawTargetWithMaybeTitle.trim();
+    const targetOnlyMatch = targetWithMaybeTitle.match(/^([^\s]+)(\s+["'][^"']*["'])?$/);
+    if (!targetOnlyMatch) {
+      return fullMatch;
+    }
+
+    const target = targetOnlyMatch[1];
+    const optionalTitle = targetOnlyMatch[2] ?? "";
+    if (
+      target.startsWith("http://") ||
+      target.startsWith("https://") ||
+      target.startsWith("mailto:") ||
+      target.startsWith("#") ||
+      target.startsWith("/")
+    ) {
+      return fullMatch;
+    }
+
+    const [targetPathAndQuery, anchor = ""] = target.split("#");
+    const [targetPath, query = ""] = targetPathAndQuery.split("?");
+    const resolved = resolveRelativeDocPath(sourceRelativePath, targetPath);
+    if (resolved.startsWith("..")) {
+      return fullMatch;
+    }
+
+    const querySuffix = query ? `?${query}` : "";
+    const anchorSuffix = anchor ? `#${anchor}` : "";
+    const isMarkdownDoc = /\.(md|mdx)$/i.test(resolved);
+    const absolutePath = isMarkdownDoc ? routeForDoc(resolved) : `/docs/${resolved}`;
+    return `](${absolutePath}${querySuffix}${anchorSuffix}${optionalTitle})`;
+  });
+}
+
+async function rewriteDoc(docsRoot, relativePath, transform) {
+  const absolutePath = path.join(docsRoot, ...relativePath.split("/"));
+  if (!(await exists(absolutePath))) {
+    return false;
+  }
+
+  const original = await fs.readFile(absolutePath, "utf8");
+  const updated = transform(original);
+  if (updated !== original) {
+    await fs.writeFile(absolutePath, updated, "utf8");
+    return true;
+  }
+
+  return false;
+}
+
+async function rewriteDocsByPattern(docsRoot, replacements) {
+  let rewrittenFiles = 0;
+
+  await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
+    if (!relativeFile.endsWith(".md") && !relativeFile.endsWith(".mdx")) {
+      return;
+    }
+
+    const original = await fs.readFile(absoluteFile, "utf8");
+    let updated = original;
+
+    for (const replacement of replacements) {
+      updated = updated.replace(replacement.pattern, replacement.replacement);
+    }
+
+    if (updated !== original) {
+      await fs.writeFile(absoluteFile, updated, "utf8");
+      rewrittenFiles += 1;
+    }
+  });
+
+  return rewrittenFiles;
+}
+
+function extractTitle(markdown, fallbackTitle) {
+  const match = markdown.match(/^#\s+(.+)$/m);
+  return match ? match[1].trim() : fallbackTitle;
+}
+
+function legacyArchiveIndexMarkdown(indexRows) {
+  const list = indexRows
+    .map(
+      (entry) =>
+        `- [${entry.title}](${entry.link}) — ${entry.reason} Prefer [current guidance](${entry.replacementLink}).`
+    )
+    .join("\n");
+
+  return `# Legacy Archive
+
+These pages remain available as historical reference, but they are no longer recommended for new projects.
+
+${list}
+`;
+}
+
+function archiveRootMarkdown() {
+  return `# Archive
+
+Older material is grouped here to keep the main docs focused on current React on Rails workflows.
+
+- [Legacy Archive](./legacy/README.md)
+`;
+}
+
+async function archiveLegacyDocs(docsRoot) {
+  const archiveIndexRows = [];
+
+  for (const entry of legacyDocsToArchive) {
+    const sourcePath = path.join(docsRoot, ...entry.source.split("/"));
+    if (!(await exists(sourcePath))) {
+      continue;
+    }
+
+    const original = await fs.readFile(sourcePath, "utf8");
+    const title = extractTitle(original, path.basename(entry.source, ".md"));
+    const archiveRelative = path.posix.join("archive", "legacy", entry.source);
+    const archivePath = path.join(docsRoot, ...archiveRelative.split("/"));
+    await fs.mkdir(path.dirname(archivePath), { recursive: true });
+
+    const archivedBody = rewriteRelativeMarkdownLinksToAbsolute(original, entry.source);
+    const archiveWarning = `> [!WARNING]\n> Archived legacy content. Use current docs for active guidance.\n\n`;
+    const archivedWithWarning = archivedBody.match(/^#\s+.+\n/m)
+      ? archivedBody.replace(/^#\s+.+\n/m, (match) => `${match}\n${archiveWarning}`)
+      : `# ${title}\n\n${archiveWarning}${archivedBody}`;
+    await fs.writeFile(archivePath, archivedWithWarning, "utf8");
+
+    const relativeArchiveLink = toPosix(path.relative(path.dirname(sourcePath), archivePath));
+    const replacementRoute = routeForDoc(entry.replacement);
+    const stub = `# ${title}\n\n> [!WARNING]\n> This page has moved to the [legacy archive](${relativeArchiveLink}).\n> ${entry.reason}\n> For current guidance, use [this page](${replacementRoute}).\n`;
+    await fs.writeFile(sourcePath, stub, "utf8");
+
+    archiveIndexRows.push({
+      title,
+      link: `./${entry.source}`,
+      reason: entry.reason,
+      replacementLink: replacementRoute
+    });
+  }
+
+  if (archiveIndexRows.length === 0) {
+    return;
+  }
+
+  const archiveRoot = path.join(docsRoot, "archive");
+  const legacyRoot = path.join(archiveRoot, "legacy");
+  await fs.mkdir(legacyRoot, { recursive: true });
+  await fs.writeFile(path.join(archiveRoot, "README.md"), archiveRootMarkdown(), "utf8");
+  await fs.writeFile(
+    path.join(legacyRoot, "README.md"),
+    legacyArchiveIndexMarkdown(archiveIndexRows),
+    "utf8"
+  );
+}
+
+async function fixKnownDocsIssues(docsRoot) {
+  await rewriteDoc(docsRoot, "api-reference/redux-store-api.md", (content) =>
+    content.replace(
+      "#important-redux-shared-store-caveat",
+      "#redux-shared-store-caveat"
+    )
+  );
+
+  await rewriteDoc(docsRoot, "building-features/process-managers.md", (content) =>
+    content.replaceAll("./i18n.md#internationalization", "./i18n.md")
+  );
+
+  await rewriteDoc(docsRoot, "deployment/troubleshooting.md", (content) =>
+    content
+      .replace(/\(#-([^)]+)\)/g, "(#$1)")
+      .replace(
+        "## 🚨 Installation Issues",
+        "## 🚨 Installation Issues {#installation-issues}"
+      )
+      .replace("## 🔧 Build Issues", "## 🔧 Build Issues {#build-issues}")
+      .replace("## ⚡ Runtime Issues", "## ⚡ Runtime Issues {#runtime-issues}")
+      .replace("## 🎨 CSS Modules Issues", "## 🎨 CSS Modules Issues {#css-modules-issues}")
+      .replace(
+        "## 🖥️ Server-Side Rendering Issues",
+        "## 🖥️ Server-Side Rendering Issues {#server-side-rendering-issues}"
+      )
+      .replace("## 🐌 Performance Issues", "## 🐌 Performance Issues {#performance-issues}")
+  );
+
+  await rewriteDoc(docsRoot, "migrating/rsc-data-fetching.md", (content) =>
+    content.replace(
+      "See the [runtime validation example](#runtime-validation-for-server-actions) in the Troubleshooting guide.",
+      "See the [runtime validation example](./rsc-troubleshooting.md#runtime-validation-for-server-actions) in the Troubleshooting guide."
+    )
+  );
+
+  await rewriteDoc(docsRoot, "pro/caching.md", (content) =>
+    content.replace(
+      /\n# Confirming and Debugging Cache Keys\n/,
+      "\n## Confirming and Debugging Cache Keys\n"
+    )
+  );
+
+  await rewriteDoc(docsRoot, "configuration/README.md", (content) =>
+    content.replace("docs/release-notes/16.0.0.md", "../upgrading/release-notes/16.0.0.md")
+  );
+
+  await rewriteDoc(docsRoot, "deployment/troubleshooting-when-using-shakapacker.md", (content) =>
+    content.replace("React on Rails version: 13.3.5", "React on Rails version: 16.4.0")
+  );
+
+  await rewriteDoc(
+    docsRoot,
+    "building-features/how-to-use-different-files-for-client-and-server-rendering.md",
+    (content) =>
+      content.replace(
+        /^## How to use different versions of a file for client and server rendering/m,
+        "# How to use different versions of a file for client and server rendering"
+      )
+  );
+
+  await rewriteDoc(docsRoot, "migrating/migrating-from-react-rails.md", (content) =>
+    content.replace(/^## Migrate From react-rails/m, "# Migrate From react-rails")
+  );
+
+  await rewriteDoc(docsRoot, "pro/home-pro.md", (content) =>
+    content
+      .replace("Now supports React 18", "Now supports React 19")
+      .replace(
+        "### 🚀 Next-Gen Server Rendering: Streaming with React 18's Latest APIs",
+        "### 🚀 Next-Gen Server Rendering: Streaming with React 19's Latest APIs"
+      )
+      .replace(
+        "React on Rails Pro supports React 18's Streaming Server-Side Rendering",
+        "React on Rails Pro supports React 19's Streaming Server-Side Rendering"
+      )
+  );
+
+  await rewriteDoc(docsRoot, "pro/ruby-api.md", (content) =>
+    content.replace("using React 18's `renderToPipeableStream`", "using React 19's `renderToPipeableStream`")
+  );
+
+  await rewriteDoc(docsRoot, "api-reference/view-helpers-api.md", (content) =>
+    content.replace("using React 18+ streaming", "using React 19+ streaming")
+  );
+
+  const streamDocPaths = [
+    "building-features/streaming-server-rendering.md",
+    "pro/streaming-server-rendering.md"
+  ];
+  for (const streamPath of streamDocPaths) {
+    await rewriteDoc(docsRoot, streamPath, (content) =>
+      content
+        .replace(
+          "# 🚀 Streaming Server Rendering with React 18",
+          "# 🚀 Streaming Server Rendering with React 19"
+        )
+        .replace(
+          "React on Rails Pro supports streaming server rendering using React 18's latest APIs",
+          "React on Rails Pro supports streaming server rendering using React 19's latest APIs"
+        )
+        .replace(
+          "**⚠️ Important: Redux Shared Store Caveat**",
+          "#### Redux Shared Store Caveat {#redux-shared-store-caveat}"
+        )
+        .replaceAll("React 18's Selective Hydration", "React 19's Selective Hydration")
+    );
+  }
+
+  await rewriteDocsByPattern(docsRoot, [
+    {
+      pattern: /https:\/\/www\.shakacode\.com\/react-on-rails\/docs\//g,
+      replacement: "https://reactonrails.com/docs/"
+    },
+    {
+      pattern: /https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g,
+      replacement: "https://reactonrails.com/docs/pro/"
+    }
+  ]);
+}
+
 async function rewriteProLinks(proDocsRoot) {
   if (!(await exists(proDocsRoot))) {
     return;
@@ -110,6 +429,25 @@ async function rewriteFlattenedOssLinks(docsRoot) {
   });
 }
 
+async function injectProFriendlyNotice(docsRoot) {
+  const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
+  if (!(await exists(proIntroPath))) {
+    return;
+  }
+
+  const original = await fs.readFile(proIntroPath, "utf8");
+  if (original.includes("Friendly evaluation policy")) {
+    return;
+  }
+
+  const notice = `> **Friendly evaluation policy**\n> You can evaluate React on Rails Pro without a license.\n> If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com). We can provide free licenses in qualifying cases.\n\n`;
+  const updated = original.replace(/^# React on Rails Pro\s*\n+/, `# React on Rails Pro\n\n${notice}`);
+
+  if (updated !== original) {
+    await fs.writeFile(proIntroPath, updated, "utf8");
+  }
+}
+
 function docsHomeMarkdown() {
   return `# React on Rails Documentation
 
@@ -120,6 +458,11 @@ Welcome to the React on Rails docs.
 - [Installation](./getting-started/installation-into-an-existing-rails-app.md)
 - [API Reference](./api-reference/view-helpers-api.md)
 - [Pro Documentation](./pro/react-on-rails-pro.md)
+- [Legacy Archive](./archive/legacy/README.md)
+
+React on Rails Pro is friendly to evaluate:
+- You can try Pro without a license.
+- If your organization is budget-constrained, contact us about free licenses.
 
 For discussions and support, visit [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions).
 `;
@@ -155,6 +498,9 @@ async function prepareDocusaurus() {
 
   await rewriteProLinks(path.join(docsRoot, "pro"));
   await rewriteFlattenedOssLinks(docsRoot);
+  await injectProFriendlyNotice(docsRoot);
+  await fixKnownDocsIssues(docsRoot);
+  await archiveLegacyDocs(docsRoot);
   await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown(), "utf8");
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);

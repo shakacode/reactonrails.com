@@ -75,8 +75,9 @@ const config: Config = {
           position: 'left',
           label: 'Docs',
         },
+        {to: '/docs/pro/react-on-rails-pro', label: 'Pro Docs', position: 'left'},
         {to: '/examples', label: 'Examples', position: 'left'},
-        {to: '/pro', label: 'Pro', position: 'left'},
+        {to: '/pro', label: 'Pro Plans', position: 'left'},
         {
           href: 'https://github.com/shakacode/react_on_rails',
           label: 'GitHub',
@@ -90,7 +91,7 @@ const config: Config = {
       ],
     },
     footer: {
-      style: 'dark',
+      style: 'light',
       links: [
         {
           title: 'Docs',
