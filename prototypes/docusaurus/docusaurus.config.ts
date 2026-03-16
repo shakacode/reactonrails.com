@@ -75,9 +75,8 @@ const config: Config = {
           position: 'left',
           label: 'Docs',
         },
-        {to: '/docs/pro/react-on-rails-pro', label: 'Pro Docs', position: 'left'},
         {to: '/examples', label: 'Examples', position: 'left'},
-        {to: '/pro', label: 'Pro Plans', position: 'left'},
+        {to: '/pro', label: 'React on Rails Pro', position: 'left'},
         {
           href: 'https://github.com/shakacode/react_on_rails',
           label: 'GitHub',
@@ -97,10 +96,14 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Introduction',
-              to: '/docs/introduction',
+              label: 'Documentation Guide',
+              to: '/docs',
             },
-            {label: 'Quick Start', to: '/docs/getting-started/quick-start'},
+            {label: 'Create a New App', to: '/docs/getting-started/create-react-on-rails-app'},
+            {
+              label: 'Install into Existing Rails App',
+              to: '/docs/getting-started/installation-into-an-existing-rails-app',
+            },
             {label: 'React on Rails Pro', to: '/docs/pro/react-on-rails-pro'},
           ],
         },
@@ -125,7 +128,7 @@ const config: Config = {
           title: 'More',
           items: [
             {
-              label: 'Pro',
+              label: 'React on Rails Pro',
               to: '/pro',
             },
             {
