@@ -3,12 +3,27 @@
 }
 
 .hero {
-  padding: 2.8rem 0;
-  margin-bottom: 2rem;
-  background: var(--site-hero-background);
+  padding: 4rem 0 3rem;
+  margin-bottom: 2.25rem;
+  background:
+    radial-gradient(circle at top right, rgba(23, 120, 124, 0.12), transparent 22%),
+    linear-gradient(180deg, rgba(255, 250, 243, 0.96), rgba(244, 233, 218, 0.76));
   color: var(--ifm-color-content);
-  border-top: 1px solid var(--site-border-color);
-  border-bottom: 1px solid var(--site-border-color);
+  border-top: 1px solid var(--site-border);
+  border-bottom: 1px solid var(--site-border);
+}
+
+.kicker,
+.cardEyebrow {
+  margin: 0 0 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.kicker {
+  color: #8f3b18;
 }
 
 .actions {
@@ -18,13 +33,19 @@
   flex-wrap: wrap;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
 .policyCard {
-  border: 1px solid var(--site-border-color);
-  border-radius: 12px;
-  background: var(--site-surface-1);
-  padding: 1rem;
-  margin-bottom: 1.25rem;
-  box-shadow: var(--site-card-shadow);
+  border: 1px solid var(--site-border);
+  border-radius: 22px;
+  background: var(--site-surface);
+  padding: 1.25rem;
+  box-shadow: 0 18px 40px rgba(50, 36, 22, 0.06);
 }
 
 .policyCard h2 {
@@ -32,16 +53,52 @@
   font-size: 1.1rem;
 }
 
+.cardEyebrow {
+  color: #17787c;
+}
+
 .policyCard p {
   margin-bottom: 0.55rem;
 }
 
+.stepList {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.stepList li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.stepList li + li {
+  margin-top: 0.9rem;
+}
+
+.stepList p {
+  margin: 0.2rem 0 0;
+  color: var(--ifm-color-content-secondary);
+}
+
+.stepBadge {
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(180, 73, 29, 0.12);
+  color: #8f3b18;
+  font-weight: 700;
+}
+
 .tableWrap {
   overflow-x: auto;
-  border: 1px solid var(--site-border-color);
-  border-radius: 12px;
-  background: var(--site-surface-0);
-  box-shadow: var(--site-card-shadow);
+  border: 1px solid var(--site-border);
+  border-radius: 16px;
 }
 
 .table {
@@ -52,12 +109,12 @@
 .table th,
 .table td {
   padding: 0.8rem;
-  border-bottom: 1px solid var(--ifm-table-border-color);
+  border-bottom: 1px solid rgba(92, 82, 70, 0.12);
   text-align: left;
 }
 
 .table th {
-  background: var(--site-surface-1);
+  background: rgba(244, 233, 218, 0.5);
 }
 
 .note {
@@ -70,22 +127,8 @@
     flex-direction: column;
     align-items: flex-start;
   }
-}
 
-@media (max-width: 640px) {
-  .hero {
-    padding: 2.15rem 0;
-    margin-bottom: 1.4rem;
-  }
-
-  .policyCard,
-  .tableWrap {
-    border-radius: 10px;
-  }
-
-  .table th,
-  .table td {
-    padding: 0.68rem;
-    min-width: 8rem;
+  .grid {
+    grid-template-columns: 1fr;
   }
 }

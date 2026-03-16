@@ -209,7 +209,7 @@ ${list}
 }
 
 function archiveRootMarkdown() {
-  return `# Archive
+  return `# Historical Reference
 
 Older material is grouped here to keep the main docs focused on current React on Rails workflows.
 
@@ -268,6 +268,13 @@ async function archiveLegacyDocs(docsRoot) {
 }
 
 async function fixKnownDocsIssues(docsRoot) {
+  await rewriteDocsByPattern(docsRoot, [
+    {
+      pattern: /\]\(\.\.\/\.\.\/README\.md\)/g,
+      replacement: "](/docs/)"
+    }
+  ]);
+
   await rewriteDoc(docsRoot, "api-reference/redux-store-api.md", (content) =>
     content.replace(
       "#important-redux-shared-store-caveat",
@@ -277,6 +284,10 @@ async function fixKnownDocsIssues(docsRoot) {
 
   await rewriteDoc(docsRoot, "building-features/process-managers.md", (content) =>
     content.replaceAll("./i18n.md#internationalization", "./i18n.md")
+  );
+
+  await rewriteDoc(docsRoot, "getting-started/tutorial.md", (content) =>
+    content.replace("[Conclusion](#conclusion)", "[What's Next](#whats-next)")
   );
 
   await rewriteDoc(docsRoot, "deployment/troubleshooting.md", (content) =>
@@ -460,22 +471,49 @@ async function injectProFriendlyNotice(docsRoot) {
 }
 
 function docsHomeMarkdown() {
-  return `# React on Rails Documentation
+  return `# Documentation Guide
 
-Welcome to the React on Rails docs.
+React on Rails is one product with two tiers: open source for Rails + React integration, and Pro when you need higher SSR throughput, deeper RSC support, or maintainer-backed help.
+
+## Choose the path that matches your app
+
+### Starting a new Rails + React app
+
+- [Create a new app](./getting-started/create-react-on-rails-app.md)
+- [Quick Start](./getting-started/quick-start.md)
+
+### Adding React to an existing Rails app
+
+- [Install into an existing Rails app](./getting-started/installation-into-an-existing-rails-app.md)
+- [Render your first component](./getting-started/using-react-on-rails.md)
+
+### Already using React on Rails OSS?
+
+- [Compare OSS and Pro](./getting-started/oss-vs-pro.md)
+- [Upgrade to Pro](./pro/upgrading-to-pro.md)
+
+### Evaluating Rails + React options
+
+- [Examples and migration references](/examples)
+- [Migrate from react-rails](./migrating/migrating-from-react-rails.md)
+- [Migrate from vite_rails](./migrating/migrating-from-vite-rails.md)
+
+## Dive deeper when you need it
 
 - [Introduction](./introduction.md)
-- [Quick Start](./getting-started/quick-start.md)
-- [Installation](./getting-started/installation-into-an-existing-rails-app.md)
+- [Core Concepts](./core-concepts/how-react-on-rails-works.md)
 - [API Reference](./api-reference/view-helpers-api.md)
-- [Pro Documentation](/docs/pro)
-- [Legacy Archive](./archive/legacy/README.md)
+- [Deployment and troubleshooting](./deployment/README.md)
 
-React on Rails Pro is friendly to evaluate:
-- You can try Pro without a license.
+## Friendly evaluation policy
+
+- You can try React on Rails Pro without a license while evaluating.
 - If your organization is budget-constrained, contact us about free licenses.
 
-For discussions and support, visit [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions).
+## Need older material?
+
+- [Historical Reference](./archive/legacy/README.md)
+- [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions)
 `;
 }
 
@@ -512,6 +550,7 @@ async function prepareDocusaurus() {
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
   await archiveLegacyDocs(docsRoot);
+  await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch(() => {});
   await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown(), "utf8");
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);
