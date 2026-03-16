@@ -34,9 +34,9 @@ const personaPaths = [
     eyebrow: 'Persona D',
     title: 'Evaluating Rails + React options',
     description:
-      'Review example apps, migration references, and concrete paths from react-rails or vite_rails.',
-    href: '/examples',
-    cta: 'Evaluate the ecosystem fit',
+      'Compare React on Rails with Hotwire/Turbo, Inertia Rails, and react-rails before you dive into migration details.',
+    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
+    cta: 'Compare the options',
   },
 ];
 
@@ -66,6 +66,12 @@ const recommendedFlows = [
 
 const migrationGuides = [
   {
+    title: 'Compare Rails + React approaches',
+    description:
+      'Use the new evaluator guide first, then branch into concrete migration docs if React on Rails is the right fit.',
+    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
+  },
+  {
     title: 'Migrate from react-rails',
     description:
       'Swap from `react-rails` to React on Rails with a migration checklist grounded in a real sample app.',
@@ -74,7 +80,7 @@ const migrationGuides = [
   {
     title: 'Browse sample apps',
     description:
-      'Open repositories that show canonical SSR, migration, and evaluation workflows without marketing detours.',
+      'Open repositories that back the migration and evaluation docs with concrete examples.',
     href: '/examples',
   },
 ];
