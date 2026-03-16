@@ -7,8 +7,8 @@
   margin-bottom: 3rem;
   border-bottom: 1px solid var(--site-border);
   background:
-    radial-gradient(circle at 20% 10%, rgba(23, 120, 124, 0.12), transparent 24%),
-    linear-gradient(180deg, rgba(255, 250, 243, 0.94), rgba(244, 233, 218, 0.62));
+    radial-gradient(circle at 20% 10%, var(--site-hero-glow-cool), transparent 24%),
+    linear-gradient(180deg, var(--site-hero-surface-start), var(--site-hero-surface-end));
 }
 
 .kicker,
@@ -23,11 +23,11 @@
 
 .kicker,
 .sectionEyebrow {
-  color: #8f3b18;
+  color: var(--site-accent-warm);
 }
 
 .cardEyebrow {
-  color: #17787c;
+  color: var(--site-accent-cool);
 }
 
 .lead {
