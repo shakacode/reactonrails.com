@@ -74,13 +74,19 @@ const migrationGuides = [
   {
     title: 'Migrate from react-rails',
     description:
-      'Swap from `react-rails` to React on Rails with a migration checklist grounded in a real sample app.',
+      'Move from `react-rails` with guidance for both Webpacker-era apps and newer Vite-style setups.',
     href: '/docs/migrating/migrating-from-react-rails',
+  },
+  {
+    title: 'Upgrade an existing react_on_rails app',
+    description:
+      'Start with the preflight that surfaced real `pg`, `nio4r`, and `mysql2` blockers before applying the current upgrade steps.',
+    href: '/docs/upgrading/upgrading-react-on-rails',
   },
   {
     title: 'Browse sample apps',
     description:
-      'Open repositories that back the migration and evaluation docs with concrete examples.',
+      'Open the public apps used to validate the migration and upgrade docs with concrete examples.',
     href: '/examples',
   },
 ];
