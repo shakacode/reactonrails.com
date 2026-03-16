@@ -471,7 +471,11 @@ async function injectProFriendlyNotice(docsRoot) {
 }
 
 function docsHomeMarkdown() {
-  return `# Documentation Guide
+  return `---
+custom_edit_url: null
+---
+
+# Documentation Guide
 
 React on Rails is one product with two tiers: open source for Rails + React integration, and Pro when you need higher SSR throughput, deeper RSC support, or maintainer-backed help.
 
@@ -550,7 +554,11 @@ async function prepareDocusaurus() {
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
   await archiveLegacyDocs(docsRoot);
-  await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch(() => {});
+  await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch((error) => {
+    if (error?.code !== "ENOENT") {
+      throw error;
+    }
+  });
   await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown(), "utf8");
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);
