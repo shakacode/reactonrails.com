@@ -436,12 +436,23 @@ async function injectProFriendlyNotice(docsRoot) {
   }
 
   const original = await fs.readFile(proIntroPath, "utf8");
-  if (original.includes("Friendly evaluation policy")) {
-    return;
+  let updated = original;
+
+  // Inject slug so this doc serves at /docs/pro/ instead of /docs/pro/react-on-rails-pro
+  if (!updated.includes("slug:")) {
+    if (updated.startsWith("---")) {
+      // Existing frontmatter — insert slug after opening ---
+      updated = updated.replace(/^---\n/, "---\nslug: /pro\n");
+    } else {
+      // No frontmatter — add it
+      updated = `---\nslug: /pro\n---\n\n${updated}`;
+    }
   }
 
-  const notice = `> **Friendly evaluation policy**\n> You can evaluate React on Rails Pro without a license.\n> If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com). We can provide free licenses in qualifying cases.\n\n`;
-  const updated = original.replace(/^# React on Rails Pro\s*\n+/, `# React on Rails Pro\n\n${notice}`);
+  if (!updated.includes("Friendly evaluation policy")) {
+    const notice = `> **Friendly evaluation policy**\n> You can evaluate React on Rails Pro without a license.\n> If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com). We can provide free licenses in qualifying cases.\n\n`;
+    updated = updated.replace(/^# React on Rails Pro\s*\n+/m, `# React on Rails Pro\n\n${notice}`);
+  }
 
   if (updated !== original) {
     await fs.writeFile(proIntroPath, updated, "utf8");
@@ -457,7 +468,7 @@ Welcome to the React on Rails docs.
 - [Quick Start](./getting-started/quick-start.md)
 - [Installation](./getting-started/installation-into-an-existing-rails-app.md)
 - [API Reference](./api-reference/view-helpers-api.md)
-- [Pro Documentation](./pro/react-on-rails-pro.md)
+- [Pro Documentation](/docs/pro)
 - [Legacy Archive](./archive/legacy/README.md)
 
 React on Rails Pro is friendly to evaluate:

@@ -44,7 +44,7 @@ export default function ProPage(): ReactNode {
               production support. You can evaluate Pro without a license.
             </p>
             <div className={styles.actions}>
-              <Link className="button button--primary button--lg" to="/docs/pro/react-on-rails-pro">
+              <Link className="button button--primary button--lg" to="/docs/pro">
                 Try Pro Free (No License)
               </Link>
               <Link
