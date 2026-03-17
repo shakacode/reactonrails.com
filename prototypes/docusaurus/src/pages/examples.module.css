@@ -48,8 +48,15 @@
 .grid {
   margin-bottom: 3rem;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
+}
+
+.evaluationGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.exampleAppsGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .card {
@@ -77,7 +84,8 @@
     padding: 3rem 0 2.4rem;
   }
 
-  .grid {
+  .evaluationGrid,
+  .exampleAppsGrid {
     grid-template-columns: 1fr;
   }
 }

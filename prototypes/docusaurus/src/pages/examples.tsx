@@ -64,7 +64,7 @@ export default function ExamplesPage(): ReactNode {
             <p className={styles.sectionEyebrow}>Start with a decision path</p>
             <h2>Choose the guide that matches your migration or evaluation goal.</h2>
           </div>
-          <div className={styles.grid}>
+          <div className={`${styles.grid} ${styles.evaluationGrid}`}>
             {evaluationPaths.map((path) => (
               <article className={styles.card} key={path.title}>
                 <p className={styles.cardEyebrow}>{path.eyebrow}</p>
@@ -83,7 +83,7 @@ export default function ExamplesPage(): ReactNode {
             <p className={styles.sectionEyebrow}>Reference repos</p>
             <h2>Open-source apps that map to the docs.</h2>
           </div>
-          <div className={styles.grid}>
+          <div className={`${styles.grid} ${styles.exampleAppsGrid}`}>
             {exampleApps.map((app) => (
               <article className={styles.card} key={app.title}>
                 <h3>{app.title}</h3>
