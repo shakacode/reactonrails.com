@@ -98,6 +98,24 @@ body {
   backdrop-filter: blur(18px);
 }
 
+.navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+}
+
+.navbar__logo {
+  width: 2.15rem;
+  height: 2.15rem;
+  margin-right: 0.3rem;
+}
+
+.navbar__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .navbar__title {
   font-family: var(--ifm-heading-font-family);
   font-weight: 700;
@@ -187,4 +205,49 @@ body {
 
 [data-theme='dark'] .button--secondary:hover {
   background: rgba(56, 44, 36, 0.92);
+}
+
+@media (max-width: 996px) {
+  .navbar__brand {
+    min-width: 0;
+    max-width: calc(100vw - 5rem);
+    gap: 0.2rem;
+  }
+
+  .navbar__logo {
+    width: 1.95rem;
+    height: 1.95rem;
+    margin-right: 0.22rem;
+  }
+
+  .navbar__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .menu {
+    padding: 0.6rem;
+  }
+
+  .pagination-nav__link {
+    border-radius: 9px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --ifm-font-size-base: 15.5px;
+  }
+
+  .button--lg {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .theme-doc-toc-mobile {
+    border-top: 1px solid var(--site-border);
+    border-bottom: 1px solid var(--site-border);
+    background: var(--site-surface);
+  }
 }
