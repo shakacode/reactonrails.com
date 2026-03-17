@@ -253,7 +253,7 @@ async function archiveLegacyDocs(docsRoot) {
   }
 
   if (archiveIndexRows.length === 0) {
-    return;
+    return false;
   }
 
   const archiveRoot = path.join(docsRoot, "archive");
@@ -265,6 +265,7 @@ async function archiveLegacyDocs(docsRoot) {
     legacyArchiveIndexMarkdown(archiveIndexRows),
     "utf8"
   );
+  return true;
 }
 
 async function fixKnownDocsIssues(docsRoot) {
@@ -459,7 +460,20 @@ async function injectProFriendlyNotice(docsRoot) {
   }
 }
 
-function docsHomeMarkdown() {
+function docsHomeMarkdown({ hasArchive }) {
+  const archiveSection = hasArchive
+    ? `
+## Need older material?
+
+- [Historical Reference](./archive/README.md)
+- [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions)
+`
+    : `
+## Need more help?
+
+- [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions)
+`;
+
   return `---
 custom_edit_url: null
 ---
@@ -503,11 +517,7 @@ React on Rails is one product with two tiers: open source for Rails + React inte
 - You can try React on Rails Pro without a license while evaluating.
 - If your organization is budget-constrained, contact us about free licenses.
 
-## Need older material?
-
-- [Historical Reference](./archive/legacy/README.md)
-- [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions)
-`;
+${archiveSection}`;
 }
 
 async function prepareDocusaurus() {
@@ -542,13 +552,13 @@ async function prepareDocusaurus() {
   await rewriteFlattenedOssLinks(docsRoot);
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
-  await archiveLegacyDocs(docsRoot);
+  const hasArchive = await archiveLegacyDocs(docsRoot);
   await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch((error) => {
     if (error?.code !== "ENOENT") {
       throw error;
     }
   });
-  await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown(), "utf8");
+  await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown({ hasArchive }), "utf8");
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);
 }
