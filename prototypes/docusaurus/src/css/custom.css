@@ -105,9 +105,9 @@ body {
 }
 
 .navbar__logo {
-  width: 2.15rem;
-  height: 2.15rem;
-  margin-right: 0.3rem;
+  width: 2.35rem;
+  height: 2.35rem;
+  margin-right: 0.35rem;
 }
 
 .navbar__logo img {
@@ -215,9 +215,9 @@ body {
   }
 
   .navbar__logo {
-    width: 1.95rem;
-    height: 1.95rem;
-    margin-right: 0.22rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    margin-right: 0.24rem;
   }
 
   .navbar__title {
