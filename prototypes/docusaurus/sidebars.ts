@@ -13,7 +13,6 @@ const sidebars: SidebarsConfig = {
         'getting-started/oss-vs-pro',
         'pro/upgrading-to-pro',
         'migrating/migrating-from-react-rails',
-        'migrating/migrating-from-vite-rails',
       ],
     },
     'introduction',
