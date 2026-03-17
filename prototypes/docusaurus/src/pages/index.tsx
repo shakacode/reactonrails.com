@@ -30,18 +30,6 @@ const testimonials = [
     author: 'Justis Blasco',
     role: 'Popmenu',
   },
-  {
-    quote:
-      'Our blog and product pages were 80-90% faster after moving to React on Rails Pro.',
-    author: 'Paul Benigeri',
-    role: 'Head of E-Commerce, HVMN',
-  },
-  {
-    quote:
-      'The team helped us set strong design foundations and move to server rendering with much faster page performance.',
-    author: 'Leora Juster',
-    role: 'Full-Stack Lead Software Developer, ResortPass',
-  },
 ];
 
 function HeroSection() {
