@@ -5,10 +5,10 @@
 .hero {
   padding: 2.8rem 0;
   margin-bottom: 2rem;
-  background: #f6f8fa;
-  color: #1f2328;
-  border-top: 1px solid #d0d7de;
-  border-bottom: 1px solid #d0d7de;
+  background: var(--site-hero-background);
+  color: var(--ifm-color-content);
+  border-top: 1px solid var(--site-border-color);
+  border-bottom: 1px solid var(--site-border-color);
 }
 
 .actions {
@@ -19,11 +19,12 @@
 }
 
 .policyCard {
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  background: #f6f8fa;
+  border: 1px solid var(--site-border-color);
+  border-radius: 12px;
+  background: var(--site-surface-1);
   padding: 1rem;
   margin-bottom: 1.25rem;
+  box-shadow: var(--site-card-shadow);
 }
 
 .policyCard h2 {
@@ -37,8 +38,10 @@
 
 .tableWrap {
   overflow-x: auto;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
+  border: 1px solid var(--site-border-color);
+  border-radius: 12px;
+  background: var(--site-surface-0);
+  box-shadow: var(--site-card-shadow);
 }
 
 .table {
@@ -49,22 +52,40 @@
 .table th,
 .table td {
   padding: 0.8rem;
-  border-bottom: 1px solid #d8dee4;
+  border-bottom: 1px solid var(--ifm-table-border-color);
   text-align: left;
 }
 
 .table th {
-  background: #f6f8fa;
+  background: var(--site-surface-1);
 }
 
 .note {
   margin-top: 1rem;
-  color: #57606a;
+  color: var(--ifm-color-content-secondary);
 }
 
 @media (max-width: 996px) {
   .actions {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 2.15rem 0;
+    margin-bottom: 1.4rem;
+  }
+
+  .policyCard,
+  .tableWrap {
+    border-radius: 10px;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.68rem;
+    min-width: 8rem;
   }
 }
