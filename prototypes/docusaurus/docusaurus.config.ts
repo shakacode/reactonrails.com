@@ -105,7 +105,7 @@ const config: Config = {
               to: '/docs/getting-started/installation-into-an-existing-rails-app',
             },
             {label: 'Quick Start', to: '/docs/getting-started/quick-start'},
-            {label: 'React on Rails Pro', to: '/docs/pro/react-on-rails-pro'},
+            {label: 'React on Rails Pro', to: '/docs/pro'},
           ],
         },
         {
