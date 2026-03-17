@@ -36,7 +36,6 @@ Configured in `prototypes/docusaurus/static/_redirects`:
 
 - `/react-on-rails/docs/*` → `/docs/*` (301)
 - `/react-on-rails-pro/docs/*` → `/docs/*` (301)
-- `/docs/pro` → `/docs/pro/react-on-rails-pro` (302)
 
 ### Legacy host redirects (shakacode.com Cloudflare project)
 

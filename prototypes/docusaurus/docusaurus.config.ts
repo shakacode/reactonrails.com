@@ -75,7 +75,7 @@ const config: Config = {
           position: 'left',
           label: 'Docs',
         },
-        {to: '/docs/pro/react-on-rails-pro', label: 'Pro Docs', position: 'left'},
+        {to: '/docs/pro', label: 'Pro Docs', position: 'left'},
         {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/pro', label: 'Pro Plans', position: 'left'},
         {
@@ -101,7 +101,7 @@ const config: Config = {
               to: '/docs/introduction',
             },
             {label: 'Quick Start', to: '/docs/getting-started/quick-start'},
-            {label: 'React on Rails Pro', to: '/docs/pro/react-on-rails-pro'},
+            {label: 'React on Rails Pro', to: '/docs/pro'},
           ],
         },
         {
