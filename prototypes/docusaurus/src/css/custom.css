@@ -138,7 +138,7 @@ body {
 
 .markdown code {
   background: var(--site-inline-code-surface);
-  border: 1px solid rgba(92, 82, 70, 0.14);
+  border: 1px solid var(--site-border);
   border-radius: 8px;
   font-family: var(--ifm-font-family-monospace);
   color: var(--site-inline-code-text);
