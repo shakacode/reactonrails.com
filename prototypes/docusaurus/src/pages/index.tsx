@@ -35,7 +35,7 @@ const personaPaths = [
     title: 'Evaluating Rails + React options',
     description:
       'Compare React on Rails with Hotwire/Turbo, Inertia Rails, and react-rails before you dive into migration details.',
-    href: '/docs/getting-started/comparison-with-alternatives',
+    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
     cta: 'Compare the options',
   },
 ];
@@ -69,7 +69,7 @@ const migrationGuides = [
     title: 'Compare Rails + React approaches',
     description:
       'Use the new evaluator guide first, then branch into concrete migration docs if React on Rails is the right fit.',
-    href: '/docs/getting-started/comparison-with-alternatives',
+    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
   },
   {
     title: 'Migrate from react-rails',
@@ -124,7 +124,7 @@ function HeroSection() {
             <Link className="button button--secondary button--lg" to="/docs/getting-started/create-react-on-rails-app">
               Create an app
             </Link>
-            <Link className="button button--secondary button--lg" to="/docs/getting-started/comparison-with-alternatives">
+            <Link className="button button--secondary button--lg" to="/docs/getting-started/comparing-react-on-rails-to-alternatives">
               Compare approaches
             </Link>
           </div>
