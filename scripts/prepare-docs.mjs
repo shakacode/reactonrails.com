@@ -287,10 +287,6 @@ async function fixKnownDocsIssues(docsRoot) {
     content.replaceAll("./i18n.md#internationalization", "./i18n.md")
   );
 
-  await rewriteDoc(docsRoot, "getting-started/tutorial.md", (content) =>
-    content.replace("[Conclusion](#conclusion)", "[What's Next](#whats-next)")
-  );
-
   await rewriteDoc(docsRoot, "deployment/troubleshooting.md", (content) =>
     content
       .replace(/\(#-([^)]+)\)/g, "(#$1)")
