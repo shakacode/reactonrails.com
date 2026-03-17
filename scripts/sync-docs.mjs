@@ -13,10 +13,8 @@ const args = new Set(process.argv.slice(2));
 const buildSubset = args.has("--subset");
 
 const upstreamRoot = path.join(workspaceRoot, "content", "upstream");
-const overridesRoot = path.join(workspaceRoot, "content", "overrides");
 const fullDocsTarget = path.join(upstreamRoot, "docs");
 const subsetDocsTarget = path.join(upstreamRoot, "docs-subset");
-const docsOverridesSource = path.join(overridesRoot, "docs");
 
 const subsetPaths = [
   "README.md",
@@ -129,10 +127,6 @@ async function main() {
   await fs.mkdir(path.dirname(fullDocsTarget), { recursive: true });
   await fs.cp(sourceDocsRoot, fullDocsTarget, { recursive: true });
 
-  if (await exists(docsOverridesSource)) {
-    await fs.cp(docsOverridesSource, fullDocsTarget, { recursive: true, force: true });
-  }
-
   let subsetStats = null;
   if (buildSubset) {
     subsetStats = await writeSubset(fullDocsTarget, subsetDocsTarget);
@@ -142,9 +136,6 @@ async function main() {
 
   console.log(`Synced docs to ${fullDocsTarget}`);
   console.log(`File count: ${docsCount}`);
-  if (await exists(docsOverridesSource)) {
-    console.log(`Applied docs overrides from ${docsOverridesSource}`);
-  }
   if (subsetStats) {
     console.log(`Subset: copied ${subsetStats.copied} docs to ${subsetDocsTarget}`);
     if (subsetStats.missing.length > 0) {
