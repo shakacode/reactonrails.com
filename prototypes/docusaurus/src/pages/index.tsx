@@ -26,6 +26,12 @@ const quickStartSteps = [
 const testimonials = [
   {
     quote:
+      "React on Rails lets us run React at scale inside Rails without the complexity of a separate frontend deployment. ShakaCode's implementation optimized the framework for our specific workload, delivering 97% Good LCP scores and 80% faster hydration across our platform.",
+    author: 'Justis Blasco',
+    role: 'Popmenu',
+  },
+  {
+    quote:
       'Our blog and product pages were 80-90% faster after moving to React on Rails Pro.',
     author: 'Paul Benigeri',
     role: 'Head of E-Commerce, HVMN',
