@@ -21,14 +21,6 @@ const evaluationPaths = [
     href: '/docs/migrating/migrating-from-react-rails',
     cta: 'Use the react-rails guide',
   },
-  {
-    eyebrow: 'Migration path',
-    title: 'Move from vite_rails',
-    description:
-      'Review the Vite migration guide, including the environment and lockfile issues that show up before app-code changes do.',
-    href: '/docs/migrating/migrating-from-vite-rails',
-    cta: 'Use the vite_rails guide',
-  },
 ];
 
 const exampleApps = [

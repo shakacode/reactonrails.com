@@ -72,12 +72,6 @@ const migrationGuides = [
     href: '/docs/migrating/migrating-from-react-rails',
   },
   {
-    title: 'Migrate from vite_rails',
-    description:
-      'Keep Vite-era lessons that still matter, then move to the supported React on Rails integration model.',
-    href: '/docs/migrating/migrating-from-vite-rails',
-  },
-  {
     title: 'Browse sample apps',
     description:
       'Open repositories that show canonical SSR, migration, and evaluation workflows without marketing detours.',
