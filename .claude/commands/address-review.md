@@ -95,6 +95,7 @@ Create a todo list with TodoWrite containing **only the `MUST-FIX` items**:
 
 Present the triage to the user - **DO NOT automatically start addressing items**:
 
+- Number all items sequentially across categories so users can reference any item by number
 - `MUST-FIX ({count})`: list the todos created
 - `DISCUSS ({count})`: list items needing user choice, with a short reason
 - `SKIPPED ({count})`: list skipped comments with a short reason, including duplicates and factually incorrect suggestions
