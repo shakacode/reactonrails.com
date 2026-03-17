@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
@@ -10,7 +11,7 @@ const evaluationPaths = [
     title: 'Compare setup approaches',
     description:
       'Read the evaluator guide first to compare React on Rails with Hotwire/Turbo, Inertia Rails, and react-rails.',
-    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
+    href: '/docs/getting-started/comparison-with-alternatives',
     cta: 'Open the comparison guide',
   },
   {
@@ -69,13 +70,31 @@ export default function ExamplesPage(): ReactNode {
     <Layout title="Examples" description="React on Rails example applications and references">
       <main className={styles.main}>
         <section className={styles.hero}>
-          <div className="container">
-            <p className={styles.kicker}>Examples and migration references</p>
-            <h1>Use concrete repos and concrete guides when deciding whether React on Rails fits.</h1>
-            <p className={styles.lead}>
-              These links are meant for evaluation, migration, upgrade, and validation work. They
-              are not a parallel docs track.
-            </p>
+          <div className={clsx('container', styles.heroLayout)}>
+            <div className={styles.heroContent}>
+              <p className={styles.kicker}>Examples and migration references</p>
+              <h1>Use concrete repos and concrete guides when deciding whether React on Rails fits.</h1>
+              <p className={styles.lead}>
+                These links are for evaluation, migration, upgrade, and validation work. They are
+                supporting material for the docs, not a parallel docs track.
+              </p>
+              <div className={styles.actions}>
+                <Link className="button button--primary button--lg" to="/docs/getting-started/comparison-with-alternatives">
+                  Start with comparison
+                </Link>
+                <Link className="button button--secondary button--lg" to="/docs/upgrading/upgrading-react-on-rails">
+                  Review upgrade preflight
+                </Link>
+              </div>
+            </div>
+            <aside className={styles.heroPanel}>
+              <p className={styles.panelLabel}>Decision sequence</p>
+              <ol className={styles.heroSteps}>
+                <li>Compare React on Rails with Hotwire, Inertia, and react-rails.</li>
+                <li>Open the guide that matches your current stack.</li>
+                <li>Validate against a public repo before cutting over your app.</li>
+              </ol>
+            </aside>
           </div>
         </section>
 
