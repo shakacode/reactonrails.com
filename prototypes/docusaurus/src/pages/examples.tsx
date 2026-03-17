@@ -11,7 +11,7 @@ const evaluationPaths = [
     title: 'Compare setup approaches',
     description:
       'Read the evaluator guide first to compare React on Rails with Hotwire/Turbo, Inertia Rails, and react-rails.',
-    href: '/docs/getting-started/comparison-with-alternatives',
+    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
     cta: 'Open the comparison guide',
   },
   {
@@ -87,7 +87,7 @@ export default function ExamplesPage(): ReactNode {
                 supporting material for the docs, not a parallel docs track.
               </p>
               <div className={styles.actions}>
-                <Link className="button button--primary button--lg" to="/docs/getting-started/comparison-with-alternatives">
+                <Link className="button button--primary button--lg" to="/docs/getting-started/comparing-react-on-rails-to-alternatives">
                   Start with comparison
                 </Link>
                 <Link className="button button--secondary button--lg" to="/docs/upgrading/upgrading-react-on-rails">
