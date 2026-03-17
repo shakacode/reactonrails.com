@@ -7,7 +7,7 @@ import styles from './index.module.css';
 
 const personaPaths = [
   {
-    eyebrow: 'Persona A',
+    eyebrow: 'New app',
     title: 'Starting a new Rails + React app',
     description:
       'Use the CLI-backed happy path, get to a working app quickly, and customize from a clean baseline.',
@@ -15,7 +15,7 @@ const personaPaths = [
     cta: 'Create a new app',
   },
   {
-    eyebrow: 'Persona B',
+    eyebrow: 'Existing app',
     title: 'Adding React to an existing Rails app',
     description:
       'Keep the Rails app you already have, install React on Rails, and render components without rebuilding the stack.',
@@ -23,7 +23,7 @@ const personaPaths = [
     cta: 'Install into an existing app',
   },
   {
-    eyebrow: 'Persona C',
+    eyebrow: 'Upgrade',
     title: 'Already on OSS and need more performance',
     description:
       'See what Pro adds, how the upgrade works, and where higher-throughput SSR or RSC support fits.',
@@ -31,11 +31,11 @@ const personaPaths = [
     cta: 'Compare OSS and Pro',
   },
   {
-    eyebrow: 'Persona D',
+    eyebrow: 'Evaluate',
     title: 'Evaluating Rails + React options',
     description:
       'Compare React on Rails with Hotwire/Turbo, Inertia Rails, and react-rails before you dive into migration details.',
-    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
+    href: '/docs/getting-started/comparison-with-alternatives',
     cta: 'Compare the options',
   },
 ];
@@ -69,7 +69,7 @@ const migrationGuides = [
     title: 'Compare Rails + React approaches',
     description:
       'Use the new evaluator guide first, then branch into concrete migration docs if React on Rails is the right fit.',
-    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
+    href: '/docs/getting-started/comparison-with-alternatives',
   },
   {
     title: 'Migrate from react-rails',
@@ -111,40 +111,49 @@ function HeroSection() {
     <header className={clsx(styles.heroBanner)}>
       <div className={clsx('container', styles.heroLayout)}>
         <div className={styles.heroContent}>
-          <p className={styles.kicker}>Official documentation for one product with two tiers</p>
-          <h1 className={styles.title}>React on Rails keeps Rails conventions and adds modern React.</h1>
+          <p className={styles.kicker}>React on Rails documentation</p>
+          <h1 className={styles.title}>Build Rails apps with React without dropping Rails conventions.</h1>
           <p className={styles.subtitle}>
-            Start with one recommended path, then branch into SSR, streaming, RSC, migration, or
-            Pro only when you need them.
+            Choose the path that matches your app first. Then add SSR, streaming, RSC, migration,
+            or Pro support only when you actually need it.
           </p>
           <div className={styles.buttons}>
             <Link className="button button--primary button--lg" to="/docs">
-              Start with the docs
+              Get started
             </Link>
-            <Link className="button button--secondary button--lg" to="/examples">
-              Review examples
+            <Link className="button button--secondary button--lg" to="/docs/getting-started/create-react-on-rails-app">
+              Create an app
             </Link>
-            <Link className="button button--secondary button--lg" to="/pro">
-              Understand Pro
+            <Link className="button button--secondary button--lg" to="/docs/getting-started/comparison-with-alternatives">
+              Compare approaches
             </Link>
           </div>
         </div>
         <div className={styles.heroPanel}>
+          <div className={styles.heroWindowBar}>
+            <span className={styles.windowTitle}>quickstart.sh</span>
+            <div className={styles.windowDots} aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </div>
+          </div>
           <p className={styles.panelLabel}>Recommended first run</p>
-          <ol className={styles.heroSteps}>
-            <li>
-              <code>npx create-react-on-rails-app@latest my-app</code>
-            </li>
-            <li>
-              <code>bin/rails db:prepare</code>
-            </li>
-            <li>
-              <code>bin/dev</code>
-            </li>
-          </ol>
+          <pre className={styles.heroCode}>
+            <code>{`npx create-react-on-rails-app@latest my-app
+cd my-app
+bin/rails db:prepare
+bin/dev`}</code>
+          </pre>
+          <div className={styles.heroPills}>
+            <span>New app</span>
+            <span>Rails views</span>
+            <span>SSR ready</span>
+            <span>TypeScript</span>
+          </div>
           <p className={styles.panelNote}>
-            If you are not starting fresh, the docs route you into existing-app install, migration,
-            or Pro upgrade paths instead.
+            Existing-app install, migration, and Pro upgrade paths stay on equal footing in the
+            docs. This is just the cleanest first run.
           </p>
         </div>
       </div>
@@ -158,7 +167,7 @@ function PersonaSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>Choose your path</p>
-          <h2>Docs should start from your situation, not from our internal file layout.</h2>
+          <h2>Start from your situation, not from our internal docs structure.</h2>
         </div>
         <div className={styles.personaGrid}>
           {personaPaths.map((persona) => (
@@ -183,7 +192,7 @@ function FlowSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>Recommended flow</p>
-          <h2>Keep the first-run path obvious. Put alternatives behind it, not in front of it.</h2>
+          <h2>Lead with the default. Put alternate paths beside it, not ahead of it.</h2>
         </div>
         <div className={styles.flowGrid}>
           {recommendedFlows.map((flow) => (
@@ -208,7 +217,7 @@ function MigrationSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>Migration and evaluation</p>
-          <h2>Modern docs need concrete migration routes, not generic reassurance.</h2>
+          <h2>Evaluation and migration work better when the docs point to concrete routes.</h2>
         </div>
         <div className={styles.migrationGrid}>
           {migrationGuides.map((guide) => (
@@ -232,7 +241,7 @@ function TestimonialsSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>Production feedback</p>
-          <h2>React on Rails Pro is an upgrade tier for teams that need more, not a separate ecosystem.</h2>
+          <h2>Teams adopt Pro when they need more throughput or guided help, not a separate toolchain.</h2>
         </div>
         <div className={styles.quoteGrid}>
           {testimonials.map((entry) => (
