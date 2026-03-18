@@ -239,7 +239,7 @@ function FlowSection() {
         <div className={styles.flowGrid}>
           {recommendedFlows.map((flow) => (
             <article className={styles.flowCard} key={flow.title}>
-              <p className={styles.cardEyebrow}>{flow.title}</p>
+              <h3 className={styles.cardEyebrow}>{flow.title}</h3>
               <p className={styles.flowSummary}>{flow.summary}</p>
               <code className={styles.inlineCode}>{flow.command}</code>
               <Link className={styles.cardLink} to={flow.href}>
