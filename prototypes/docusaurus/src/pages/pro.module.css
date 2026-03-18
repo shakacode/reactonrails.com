@@ -1,11 +1,11 @@
 .main {
-  padding-bottom: 3rem;
+  padding-bottom: 3.2rem;
 }
 
 .hero {
-  padding: 3rem 0 2.4rem;
-  margin-bottom: 1.8rem;
-  background: var(--site-soft-surface);
+  padding: 3.3rem 0 2.6rem;
+  margin-bottom: 2.1rem;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
   color: var(--ifm-color-content);
   border-top: 1px solid var(--site-border);
   border-bottom: 1px solid var(--site-border);
@@ -25,29 +25,29 @@
 }
 
 .actions {
-  margin-top: 1.2rem;
+  margin-top: 1.35rem;
   display: flex;
-  gap: 0.75rem;
+  gap: 0.8rem;
   flex-wrap: wrap;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.6rem;
+  gap: 1.1rem;
+  margin-bottom: 1.9rem;
 }
 
 .policyCard {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--site-surface);
-  padding: 1.05rem;
+  padding: 1.2rem;
   box-shadow: none;
 }
 
 .policyCard h2 {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.55rem;
   font-size: 1.1rem;
 }
 
@@ -61,19 +61,19 @@
 
 .stepList {
   list-style: none;
-  margin: 1rem 0 0;
+  margin: 1.1rem 0 0;
   padding: 0;
 }
 
 .stepList li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.8rem;
+  gap: 0.85rem;
   align-items: start;
 }
 
 .stepList li + li {
-  margin-top: 0.9rem;
+  margin-top: 1rem;
 }
 
 .stepList p {
@@ -96,7 +96,7 @@
 .tableWrap {
   overflow-x: auto;
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .table {
@@ -106,7 +106,7 @@
 
 .table th,
 .table td {
-  padding: 0.8rem;
+  padding: 0.9rem;
   border-bottom: 1px solid var(--site-border);
   text-align: left;
 }

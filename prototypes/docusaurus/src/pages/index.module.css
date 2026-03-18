@@ -1,13 +1,13 @@
 .heroBanner {
-  padding: 3.25rem 0 2.75rem;
+  padding: 3.7rem 0 3.15rem;
   border-bottom: 1px solid var(--site-border);
-  background: var(--site-soft-surface);
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
 }
 
 .heroLayout {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.95fr);
-  gap: 1rem;
+  gap: 1.2rem;
   align-items: end;
 }
 
@@ -17,9 +17,9 @@
 
 .heroPanel {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
-  padding: 1rem;
-  background: var(--site-surface);
+  border-radius: 12px;
+  padding: 1.2rem;
+  background: #fcfdff;
 }
 
 .kicker,
@@ -44,9 +44,9 @@
 }
 
 .title {
-  max-width: 14ch;
-  margin-bottom: 0.85rem;
-  font-size: clamp(2.05rem, 5vw, 3.25rem);
+  max-width: 15ch;
+  margin-bottom: 1rem;
+  font-size: clamp(2.1rem, 5.3vw, 3.35rem);
   line-height: 1.12;
   letter-spacing: -0.02em;
 }
@@ -60,9 +60,9 @@
 }
 
 .buttons {
-  margin-top: 1.2rem;
+  margin-top: 1.35rem;
   display: flex;
-  gap: 0.75rem;
+  gap: 0.8rem;
   flex-wrap: wrap;
 }
 
@@ -83,17 +83,17 @@
 .section,
 .sectionSoft,
 .sectionInk {
-  padding: 3rem 0;
+  padding: 3.3rem 0;
 }
 
 .sectionSoft {
-  background: var(--site-soft-surface);
+  background: #f8fbff;
   border-top: 1px solid var(--site-border);
   border-bottom: 1px solid var(--site-border);
 }
 
 .sectionInk {
-  background: var(--site-soft-surface);
+  background: #f8fbff;
   color: var(--ifm-color-content);
   border-top: 1px solid var(--site-border);
   border-bottom: 1px solid var(--site-border);
@@ -105,7 +105,7 @@
 
 .sectionHeader {
   max-width: 42rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.4rem;
 }
 
 .sectionHeader h2 {
@@ -118,7 +118,7 @@
 .flowGrid,
 .migrationGrid {
   display: grid;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
 .personaGrid {
@@ -135,9 +135,9 @@
 .migrationCard,
 .quoteCard {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--site-surface);
-  padding: 1.1rem;
+  padding: 1.2rem;
   box-shadow: none;
 }
 
@@ -149,16 +149,16 @@
 }
 
 .flowSummary {
-  min-height: 5rem;
+  min-height: 5.3rem;
   color: var(--ifm-color-content-secondary);
 }
 
 .inlineCode {
   display: block;
   margin: 0 0 1rem;
-  padding: 0.7rem 0.8rem;
+  padding: 0.75rem 0.85rem;
   border: 1px solid var(--site-border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--site-inline-code-surface);
   color: var(--ifm-color-content);
   overflow-x: auto;
@@ -174,7 +174,7 @@
 .quoteGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
 .quoteCard {
@@ -189,7 +189,7 @@
 }
 
 .quoteCard footer {
-  margin-top: 1rem;
+  margin-top: 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
@@ -198,7 +198,7 @@
 
 @media (max-width: 996px) {
   .heroBanner {
-    padding: 2.6rem 0 2.2rem;
+    padding: 2.8rem 0 2.3rem;
   }
 
   .heroLayout,

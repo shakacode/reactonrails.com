@@ -25,10 +25,10 @@
   --ifm-footer-color: #57606a;
   --ifm-menu-color: #57606a;
   --ifm-menu-color-active: #24292f;
-  --site-border: #d0d7de;
+  --site-border: #d8dee4;
   --site-surface: #ffffff;
-  --site-soft-surface: #f6f8fa;
-  --site-inline-code-surface: #f6f8fa;
+  --site-soft-surface: #f8fbff;
+  --site-inline-code-surface: #f2f8ff;
   --site-inline-code-text: #24292f;
 }
 
@@ -93,7 +93,7 @@ body {
 }
 
 .menu__link--active {
-  background: rgba(9, 105, 218, 0.1);
+  background: rgba(9, 105, 218, 0.08);
   color: var(--ifm-color-primary-dark);
   font-weight: 600;
 }
@@ -113,12 +113,12 @@ body {
 
 .pagination-nav__link {
   border: 1px solid var(--site-border);
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: none;
 }
 
 .button {
-  border-radius: 6px;
+  border-radius: 8px;
   font-weight: 600;
   box-shadow: none;
 }
@@ -134,7 +134,7 @@ body {
 }
 
 .button--secondary {
-  background: var(--site-surface);
+  background: #f8fbff;
   border: 1px solid var(--site-border);
   color: var(--ifm-color-content);
 }
