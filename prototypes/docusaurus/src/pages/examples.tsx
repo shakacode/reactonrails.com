@@ -9,9 +9,9 @@ const evaluationPaths = [
     eyebrow: 'Evaluator path',
     title: 'Compare setup approaches',
     description:
-      'Start with the docs landing page to choose between new app setup, existing app install, migration, or Pro evaluation.',
-    href: '/docs',
-    cta: 'Open the docs guide',
+      'Read the evaluator guide first to compare React on Rails with Hotwire/Turbo, Inertia Rails, and react-rails.',
+    href: '/docs/getting-started/comparing-react-on-rails-to-alternatives',
+    cta: 'Open the comparison guide',
   },
   {
     eyebrow: 'Migration path',
