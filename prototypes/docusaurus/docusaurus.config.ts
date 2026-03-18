@@ -67,8 +67,8 @@ const config: Config = {
       logo: {
         alt: 'React on Rails Logo',
         src: 'img/logo-mark.png',
-        width: 64,
-        height: 64,
+        width: 40,
+        height: 40,
       },
       items: [
         {
