@@ -1,13 +1,11 @@
 .main {
-  padding-bottom: 3.5rem;
+  padding-bottom: 3rem;
 }
 
 .hero {
-  padding: 4rem 0 3rem;
-  margin-bottom: 2.25rem;
-  background:
-    radial-gradient(circle at top right, var(--site-hero-glow-cool), transparent 22%),
-    linear-gradient(180deg, var(--site-hero-surface-start), var(--site-hero-surface-end));
+  padding: 3rem 0 2.4rem;
+  margin-bottom: 1.8rem;
+  background: var(--site-soft-surface);
   color: var(--ifm-color-content);
   border-top: 1px solid var(--site-border);
   border-bottom: 1px solid var(--site-border);
@@ -17,13 +15,13 @@
 .cardEyebrow {
   margin: 0 0 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  font-size: 0.8rem;
+  letter-spacing: 0.06rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
 .kicker {
-  color: var(--site-accent-warm);
+  color: var(--ifm-color-primary-dark);
 }
 
 .actions {
@@ -37,15 +35,15 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.6rem;
 }
 
 .policyCard {
   border: 1px solid var(--site-border);
-  border-radius: 22px;
+  border-radius: 10px;
   background: var(--site-surface);
-  padding: 1.25rem;
-  box-shadow: 0 18px 40px var(--site-panel-shadow);
+  padding: 1.05rem;
+  box-shadow: none;
 }
 
 .policyCard h2 {
@@ -54,7 +52,7 @@
 }
 
 .cardEyebrow {
-  color: var(--site-accent-cool);
+  color: var(--ifm-color-content-secondary);
 }
 
 .policyCard p {
@@ -90,15 +88,15 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: rgba(180, 73, 29, 0.12);
-  color: var(--site-accent-warm);
+  background: rgba(9, 105, 218, 0.1);
+  color: var(--ifm-color-primary-dark);
   font-weight: 700;
 }
 
 .tableWrap {
   overflow-x: auto;
   border: 1px solid var(--site-border);
-  border-radius: 16px;
+  border-radius: 10px;
 }
 
 .table {
@@ -109,7 +107,7 @@
 .table th,
 .table td {
   padding: 0.8rem;
-  border-bottom: 1px solid rgba(92, 82, 70, 0.12);
+  border-bottom: 1px solid var(--site-border);
   text-align: left;
 }
 

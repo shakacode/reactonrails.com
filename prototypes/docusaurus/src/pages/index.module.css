@@ -1,20 +1,13 @@
 .heroBanner {
-  position: relative;
-  overflow: hidden;
-  padding: 5rem 0 4rem;
+  padding: 3.25rem 0 2.75rem;
   border-bottom: 1px solid var(--site-border);
-  background:
-    radial-gradient(circle at top left, var(--site-hero-glow-cool), transparent 28%),
-    radial-gradient(circle at 85% 15%, var(--site-hero-glow-warm), transparent 24%),
-    linear-gradient(180deg, var(--site-hero-surface-start), var(--site-hero-surface-end));
+  background: var(--site-soft-surface);
 }
 
 .heroLayout {
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.95fr);
-  gap: 1.4rem;
+  gap: 1rem;
   align-items: end;
 }
 
@@ -23,11 +16,10 @@
 }
 
 .heroPanel {
-  border: 1px solid rgba(92, 82, 70, 0.16);
-  border-radius: 24px;
-  padding: 1.4rem;
-  background: var(--site-panel-surface);
-  box-shadow: 0 24px 50px var(--site-panel-shadow);
+  border: 1px solid var(--site-border);
+  border-radius: 10px;
+  padding: 1rem;
+  background: var(--site-surface);
 }
 
 .kicker,
@@ -36,38 +28,39 @@
 .cardEyebrow {
   margin: 0 0 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.1rem;
-  font-size: 0.8rem;
+  letter-spacing: 0.06rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
 .kicker,
 .sectionEyebrow {
-  color: var(--site-accent-warm);
+  color: var(--ifm-color-primary-dark);
 }
 
 .panelLabel,
 .cardEyebrow {
-  color: var(--site-accent-cool);
+  color: var(--ifm-color-content-secondary);
 }
 
 .title {
-  max-width: 13ch;
+  max-width: 14ch;
   margin-bottom: 0.85rem;
-  font-size: clamp(2.8rem, 6vw, 5rem);
-  line-height: 1.02;
+  font-size: clamp(2.05rem, 5vw, 3.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
 }
 
 .subtitle {
   max-width: 40rem;
   margin-bottom: 0;
-  font-size: clamp(1.08rem, 1.9vw, 1.28rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.75vw, 1.18rem);
+  line-height: 1.55;
   color: var(--ifm-color-content-secondary);
 }
 
 .buttons {
-  margin-top: 1.65rem;
+  margin-top: 1.2rem;
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
@@ -90,7 +83,7 @@
 .section,
 .sectionSoft,
 .sectionInk {
-  padding: 4rem 0;
+  padding: 3rem 0;
 }
 
 .sectionSoft {
@@ -100,25 +93,25 @@
 }
 
 .sectionInk {
-  background:
-    linear-gradient(180deg, rgba(31, 27, 23, 0.98), rgba(44, 33, 27, 0.98)),
-    #1f1b17;
-  color: #f5eee5;
+  background: var(--site-soft-surface);
+  color: var(--ifm-color-content);
+  border-top: 1px solid var(--site-border);
+  border-bottom: 1px solid var(--site-border);
 }
 
 .sectionInk .sectionEyebrow {
-  color: #f3c27a;
+  color: var(--ifm-color-primary-dark);
 }
 
 .sectionHeader {
   max-width: 42rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .sectionHeader h2 {
   margin-bottom: 0;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.08;
+  font-size: clamp(1.7rem, 3.4vw, 2.35rem);
+  line-height: 1.18;
 }
 
 .personaGrid,
@@ -142,10 +135,10 @@
 .migrationCard,
 .quoteCard {
   border: 1px solid var(--site-border);
-  border-radius: 24px;
+  border-radius: 10px;
   background: var(--site-surface);
-  padding: 1.3rem;
-  box-shadow: 0 18px 40px rgba(50, 36, 22, 0.06);
+  padding: 1.1rem;
+  box-shadow: none;
 }
 
 .personaCard h3,
@@ -163,11 +156,11 @@
 .inlineCode {
   display: block;
   margin: 0 0 1rem;
-  padding: 0.75rem 0.85rem;
-  border: 1px solid rgba(92, 82, 70, 0.14);
-  border-radius: 16px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
   background: var(--site-inline-code-surface);
-  color: var(--site-inline-code-text);
+  color: var(--ifm-color-content);
   overflow-x: auto;
 }
 
@@ -186,13 +179,13 @@
 
 .quoteCard {
   margin: 0;
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 250, 243, 0.08);
+  border-color: var(--site-border);
+  background: var(--site-surface);
   box-shadow: none;
 }
 
 .quoteCard p {
-  color: rgba(245, 238, 229, 0.92);
+  color: var(--ifm-color-content);
 }
 
 .quoteCard footer {
@@ -200,12 +193,12 @@
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  color: rgba(245, 238, 229, 0.78);
+  color: var(--ifm-color-content-secondary);
 }
 
 @media (max-width: 996px) {
   .heroBanner {
-    padding: 4rem 0 3rem;
+    padding: 2.6rem 0 2.2rem;
   }
 
   .heroLayout,
