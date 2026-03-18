@@ -1,5 +1,5 @@
 .heroBanner {
-  padding: 3.25rem 0 2.75rem;
+  padding: 2.7rem 0 2.2rem;
   border-bottom: 1px solid var(--site-border);
   background: var(--site-soft-surface);
 }
@@ -7,7 +7,7 @@
 .heroLayout {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.95fr);
-  gap: 1rem;
+  gap: 0.9rem;
   align-items: end;
 }
 
@@ -17,8 +17,8 @@
 
 .heroPanel {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
-  padding: 1rem;
+  border-radius: 8px;
+  padding: 0.9rem;
   background: var(--site-surface);
 }
 
@@ -26,7 +26,7 @@
 .panelLabel,
 .sectionEyebrow,
 .cardEyebrow {
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.55rem;
   text-transform: uppercase;
   letter-spacing: 0.06rem;
   font-size: 0.75rem;
@@ -45,8 +45,8 @@
 
 .title {
   max-width: 14ch;
-  margin-bottom: 0.85rem;
-  font-size: clamp(2.05rem, 5vw, 3.25rem);
+  margin-bottom: 0.7rem;
+  font-size: clamp(1.95rem, 4.5vw, 3rem);
   line-height: 1.12;
   letter-spacing: -0.02em;
 }
@@ -54,15 +54,15 @@
 .subtitle {
   max-width: 40rem;
   margin-bottom: 0;
-  font-size: clamp(1rem, 1.75vw, 1.18rem);
+  font-size: clamp(0.98rem, 1.5vw, 1.08rem);
   line-height: 1.55;
   color: var(--ifm-color-content-secondary);
 }
 
 .buttons {
-  margin-top: 1.2rem;
+  margin-top: 1rem;
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
 }
 
@@ -83,7 +83,7 @@
 .section,
 .sectionSoft,
 .sectionInk {
-  padding: 3rem 0;
+  padding: 2.5rem 0;
 }
 
 .sectionSoft {
@@ -105,7 +105,7 @@
 
 .sectionHeader {
   max-width: 42rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .sectionHeader h2 {
@@ -118,7 +118,7 @@
 .flowGrid,
 .migrationGrid {
   display: grid;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .personaGrid {
@@ -135,9 +135,9 @@
 .migrationCard,
 .quoteCard {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--site-surface);
-  padding: 1.1rem;
+  padding: 0.95rem;
   box-shadow: none;
 }
 
@@ -149,16 +149,16 @@
 }
 
 .flowSummary {
-  min-height: 5rem;
+  min-height: 4.4rem;
   color: var(--ifm-color-content-secondary);
 }
 
 .inlineCode {
   display: block;
   margin: 0 0 1rem;
-  padding: 0.7rem 0.8rem;
+  padding: 0.6rem 0.7rem;
   border: 1px solid var(--site-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--site-inline-code-surface);
   color: var(--ifm-color-content);
   overflow-x: auto;
@@ -174,7 +174,7 @@
 .quoteGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .quoteCard {
@@ -189,7 +189,7 @@
 }
 
 .quoteCard footer {
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
@@ -198,7 +198,7 @@
 
 @media (max-width: 996px) {
   .heroBanner {
-    padding: 2.6rem 0 2.2rem;
+    padding: 2.2rem 0 1.8rem;
   }
 
   .heroLayout,
@@ -210,7 +210,7 @@
   }
 
   .heroPanel {
-    max-width: 32rem;
+    max-width: 30rem;
   }
 
   .flowSummary {
