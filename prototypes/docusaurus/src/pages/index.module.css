@@ -1,13 +1,14 @@
 .heroBanner {
   padding: 3.25rem 0 2.75rem;
+  border-top: 1px solid var(--site-border);
   border-bottom: 1px solid var(--site-border);
-  background: var(--site-soft-surface);
+  background: var(--site-surface);
 }
 
 .heroLayout {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.95fr);
-  gap: 1rem;
+  gap: 1.1rem;
   align-items: end;
 }
 
@@ -17,9 +18,9 @@
 
 .heroPanel {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 1rem;
-  background: var(--site-surface);
+  background: var(--site-soft-surface);
 }
 
 .kicker,
@@ -28,7 +29,7 @@
 .cardEyebrow {
   margin: 0 0 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.06rem;
+  letter-spacing: 0.07rem;
   font-size: 0.75rem;
   font-weight: 700;
 }
@@ -46,9 +47,9 @@
 .title {
   max-width: 14ch;
   margin-bottom: 0.85rem;
-  font-size: clamp(2.05rem, 5vw, 3.25rem);
+  font-size: clamp(2rem, 4.9vw, 3.15rem);
   line-height: 1.12;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 .subtitle {
@@ -83,7 +84,7 @@
 .section,
 .sectionSoft,
 .sectionInk {
-  padding: 3rem 0;
+  padding: 2.9rem 0;
 }
 
 .sectionSoft {
@@ -105,7 +106,7 @@
 
 .sectionHeader {
   max-width: 42rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.1rem;
 }
 
 .sectionHeader h2 {
@@ -118,7 +119,7 @@
 .flowGrid,
 .migrationGrid {
   display: grid;
-  gap: 1rem;
+  gap: 0.95rem;
 }
 
 .personaGrid {
@@ -135,9 +136,9 @@
 .migrationCard,
 .quoteCard {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 6px;
   background: var(--site-surface);
-  padding: 1.1rem;
+  padding: 1rem;
   box-shadow: none;
 }
 
@@ -156,9 +157,9 @@
 .inlineCode {
   display: block;
   margin: 0 0 1rem;
-  padding: 0.7rem 0.8rem;
+  padding: 0.65rem 0.75rem;
   border: 1px solid var(--site-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--site-inline-code-surface);
   color: var(--ifm-color-content);
   overflow-x: auto;
@@ -174,7 +175,7 @@
 .quoteGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 0.95rem;
 }
 
 .quoteCard {

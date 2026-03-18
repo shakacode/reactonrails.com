@@ -1,11 +1,11 @@
 :root {
-  --ifm-color-primary: #0969da;
-  --ifm-color-primary-dark: #0550ae;
-  --ifm-color-primary-darker: #033d8b;
-  --ifm-color-primary-darkest: #022f6d;
-  --ifm-color-primary-light: #218bff;
-  --ifm-color-primary-lighter: #54aeff;
-  --ifm-color-primary-lightest: #80ccff;
+  --ifm-color-primary: #1f6feb;
+  --ifm-color-primary-dark: #1a5cc2;
+  --ifm-color-primary-darker: #14489a;
+  --ifm-color-primary-darkest: #0f3776;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #5a9bf8;
+  --ifm-color-primary-lightest: #84b8fb;
   --ifm-background-color: #ffffff;
   --ifm-background-surface-color: #ffffff;
   --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
@@ -17,19 +17,19 @@
   --ifm-heading-line-height: 1.25;
   --ifm-code-font-size: 85%;
   --ifm-heading-font-weight: 600;
-  --ifm-color-content: #24292f;
-  --ifm-color-content-secondary: #57606a;
-  --docusaurus-highlighted-code-line-bg: rgba(9, 105, 218, 0.12);
+  --ifm-color-content: #1f2328;
+  --ifm-color-content-secondary: #4a5560;
+  --docusaurus-highlighted-code-line-bg: rgba(31, 111, 235, 0.14);
   --ifm-navbar-background-color: #ffffff;
-  --ifm-footer-background-color: #f6f8fa;
-  --ifm-footer-color: #57606a;
-  --ifm-menu-color: #57606a;
-  --ifm-menu-color-active: #24292f;
-  --site-border: #d0d7de;
+  --ifm-footer-background-color: #f3f4f6;
+  --ifm-footer-color: #4a5560;
+  --ifm-menu-color: #4a5560;
+  --ifm-menu-color-active: #1f2328;
+  --site-border: #c5cdd5;
   --site-surface: #ffffff;
-  --site-soft-surface: #f6f8fa;
-  --site-inline-code-surface: #f6f8fa;
-  --site-inline-code-text: #24292f;
+  --site-soft-surface: #f3f4f6;
+  --site-inline-code-surface: #f0f2f5;
+  --site-inline-code-text: #1f2328;
 }
 
 [data-theme='dark'] {
@@ -86,15 +86,15 @@ body {
 }
 
 .menu__link {
-  border-radius: 6px;
+  border-radius: 4px;
   font-size: 0.92rem;
   line-height: 1.35;
   font-weight: 500;
 }
 
 .menu__link--active {
-  background: rgba(9, 105, 218, 0.1);
-  color: var(--ifm-color-primary-dark);
+  background: rgba(31, 35, 40, 0.08);
+  color: var(--ifm-color-content);
   font-weight: 600;
 }
 
@@ -113,12 +113,12 @@ body {
 
 .pagination-nav__link {
   border: 1px solid var(--site-border);
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: none;
 }
 
 .button {
-  border-radius: 6px;
+  border-radius: 4px;
   font-weight: 600;
   box-shadow: none;
 }
@@ -136,7 +136,7 @@ body {
 .button--secondary {
   background: var(--site-surface);
   border: 1px solid var(--site-border);
-  color: var(--ifm-color-content);
+  color: var(--ifm-color-content-secondary);
 }
 
 .button--secondary:hover {
