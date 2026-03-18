@@ -209,7 +209,7 @@ ${list}
 }
 
 function archiveRootMarkdown() {
-  return `# Archive
+  return `# Historical Reference
 
 Older material is grouped here to keep the main docs focused on current React on Rails workflows.
 
@@ -253,7 +253,7 @@ async function archiveLegacyDocs(docsRoot) {
   }
 
   if (archiveIndexRows.length === 0) {
-    return;
+    return false;
   }
 
   const archiveRoot = path.join(docsRoot, "archive");
@@ -265,9 +265,17 @@ async function archiveLegacyDocs(docsRoot) {
     legacyArchiveIndexMarkdown(archiveIndexRows),
     "utf8"
   );
+  return true;
 }
 
 async function fixKnownDocsIssues(docsRoot) {
+  await rewriteDocsByPattern(docsRoot, [
+    {
+      pattern: /\]\(\.\.\/\.\.\/README\.md\)/g,
+      replacement: "](/docs/)"
+    }
+  ]);
+
   await rewriteDoc(docsRoot, "api-reference/redux-store-api.md", (content) =>
     content.replace(
       "#important-redux-shared-store-caveat",
@@ -459,24 +467,63 @@ async function injectProFriendlyNotice(docsRoot) {
   }
 }
 
-function docsHomeMarkdown() {
-  return `# React on Rails Documentation
+function docsHomeMarkdown({ hasArchive }) {
+  const archiveSection = hasArchive
+    ? `
+## Need older material?
 
-Welcome to the React on Rails docs.
+- [Historical Reference](./archive/README.md)
+- [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions)
+`
+    : `
+## Need more help?
+
+- [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions)
+`;
+
+  return `---
+custom_edit_url: null
+---
+
+# Documentation Guide
+
+React on Rails is one product with two tiers: open source for Rails + React integration, and Pro when you need higher SSR throughput, deeper RSC support, or maintainer-backed help.
+
+## Choose the path that matches your app
+
+### Starting a new Rails + React app
+
+- [Create a new app](./getting-started/create-react-on-rails-app.md)
+- [Quick Start](./getting-started/quick-start.md)
+
+### Adding React to an existing Rails app
+
+- [Install into an existing Rails app](./getting-started/installation-into-an-existing-rails-app.md)
+- [Render your first component](./getting-started/using-react-on-rails.md)
+
+### Already using React on Rails OSS?
+
+- [Compare OSS and Pro](./getting-started/oss-vs-pro.md)
+- [Upgrade to Pro](./pro/upgrading-to-pro.md)
+
+### Evaluating Rails + React options
+
+- [Examples and migration references](/examples)
+- [Migrate from react-rails](./migrating/migrating-from-react-rails.md)
+
+## Dive deeper when you need it
 
 - [Introduction](./introduction.md)
-- [Quick Start](./getting-started/quick-start.md)
-- [Installation](./getting-started/installation-into-an-existing-rails-app.md)
+- [Core Concepts](./core-concepts/how-react-on-rails-works.md)
 - [API Reference](./api-reference/view-helpers-api.md)
-- [Pro Documentation](/docs/pro)
-- [Legacy Archive](./archive/legacy/README.md)
+- [Deployment and troubleshooting](./deployment/README.md)
 
-React on Rails Pro is friendly to evaluate:
-- You can try Pro without a license.
+## Friendly evaluation policy
+
+- You can try React on Rails Pro without a license while evaluating.
 - If your organization is budget-constrained, contact us about free licenses.
 
-For discussions and support, visit [GitHub Discussions](https://github.com/shakacode/react_on_rails/discussions).
-`;
+${archiveSection}`;
 }
 
 async function prepareDocusaurus() {
@@ -511,8 +558,13 @@ async function prepareDocusaurus() {
   await rewriteFlattenedOssLinks(docsRoot);
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
-  await archiveLegacyDocs(docsRoot);
-  await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown(), "utf8");
+  const hasArchive = await archiveLegacyDocs(docsRoot);
+  await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch((error) => {
+    if (error?.code !== "ENOENT") {
+      throw error;
+    }
+  });
+  await fs.writeFile(path.join(docsRoot, "README.md"), docsHomeMarkdown({ hasArchive }), "utf8");
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);
 }

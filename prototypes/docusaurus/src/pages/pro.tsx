@@ -4,6 +4,27 @@ import Layout from '@theme/Layout';
 
 import styles from './pro.module.css';
 
+const upgradeSteps = [
+  {
+    step: '1',
+    title: 'Compare OSS and Pro',
+    description:
+      'Decide whether you need higher-throughput SSR, deeper RSC support, or maintainer-backed help.',
+  },
+  {
+    step: '2',
+    title: 'Follow the upgrade guide',
+    description:
+      'Add the Pro gem and package changes without switching to a different product story or docs tree.',
+  },
+  {
+    step: '3',
+    title: 'Validate on the paths that matter',
+    description:
+      'Turn on the Pro features you actually need, then validate production rendering and performance behavior.',
+  },
+];
+
 const featureRows = [
   {
     feature: 'Open-source Rails + React integration',
@@ -38,18 +59,25 @@ export default function ProPage(): ReactNode {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className="container">
+            <p className={styles.kicker}>Performance tier, not separate product</p>
             <h1>React on Rails Pro</h1>
             <p>
-              Pro extends React on Rails for teams that need higher SSR throughput and guided
-              production support. You can evaluate Pro without a license.
+              Pro extends React on Rails for teams that need higher SSR throughput, RSC-oriented
+              rendering features, and guided production support. You can evaluate Pro without a
+              license.
             </p>
             <div className={styles.actions}>
-              <Link className="button button--primary button--lg" to="/docs/pro">
-                Try Pro Free (No License)
+              <Link className="button button--primary button--lg" to="/docs/pro/upgrading-to-pro">
+                Review the upgrade guide
               </Link>
               <Link
                 className="button button--secondary button--lg"
-                to="https://www.shakacode.com/react-on-rails-pro/">
+                to="/docs/getting-started/oss-vs-pro">
+                Compare OSS and Pro
+              </Link>
+              <Link
+                className="button button--secondary button--lg"
+                href="https://www.shakacode.com/react-on-rails-pro/">
                 Contact ShakaCode
               </Link>
             </div>
@@ -57,16 +85,37 @@ export default function ProPage(): ReactNode {
         </section>
 
         <section className="container">
-          <div className={styles.policyCard}>
-            <h2>Friendly Evaluation Policy</h2>
-            <p>
-              You can try React on Rails Pro without a license while evaluating.
-            </p>
-            <p>
-              If your organization is budget-constrained, email{' '}
-              <a href="mailto:justin@shakacode.com">justin@shakacode.com</a>. We can grant free
-              licenses in qualifying cases.
-            </p>
+          <div className={styles.grid}>
+            <article className={styles.policyCard}>
+              <p className={styles.cardEyebrow}>Upgrade path</p>
+              <h2>Three steps from OSS to Pro</h2>
+              <ol className={styles.stepList}>
+                {upgradeSteps.map((step) => (
+                  <li key={step.step}>
+                    <span className={styles.stepBadge}>{step.step}</span>
+                    <div>
+                      <strong>{step.title}</strong>
+                      <p>{step.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </article>
+
+            <article className={styles.policyCard}>
+              <p className={styles.cardEyebrow}>Friendly evaluation policy</p>
+              <h2>Evaluate first, sort licensing second.</h2>
+              <p>You can try React on Rails Pro without a license while evaluating.</p>
+              <p>
+                If your organization is budget-constrained, email{' '}
+                <a href="mailto:justin@shakacode.com">justin@shakacode.com</a>. We can grant free
+                licenses in qualifying cases.
+              </p>
+              <p className={styles.note}>
+                The goal is to make the upgrade path clear and low-friction, not to force a second
+                docs silo.
+              </p>
+            </article>
           </div>
         </section>
 
