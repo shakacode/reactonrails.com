@@ -30,6 +30,8 @@
   --site-soft-surface: #f6f8fa;
   --site-inline-code-surface: #f6f8fa;
   --site-inline-code-text: #24292f;
+  --site-panel-surface: #ffffff;
+  --site-panel-shadow: rgba(31, 35, 40, 0.08);
 }
 
 [data-theme='dark'] {
@@ -55,6 +57,8 @@
   --site-soft-surface: #0d1117;
   --site-inline-code-surface: #161b22;
   --site-inline-code-text: #c9d1d9;
+  --site-panel-surface: #161b22;
+  --site-panel-shadow: rgba(1, 4, 9, 0.28);
 }
 
 html,
