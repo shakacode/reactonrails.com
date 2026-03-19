@@ -75,6 +75,17 @@
   margin-top: 0.45rem;
 }
 
+.panelActions {
+  margin-top: 0.7rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.copyButton {
+  min-width: 8.6rem;
+  justify-content: center;
+}
+
 .panelNote {
   margin: 1rem 0 0;
   color: var(--ifm-color-content-secondary);
