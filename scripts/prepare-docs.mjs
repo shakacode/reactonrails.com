@@ -268,6 +268,140 @@ async function archiveLegacyDocs(docsRoot) {
   return true;
 }
 
+function upgradeGuide1640Section() {
+  return `## Upgrading to v16.4.0 (from v16.3.x)
+
+This release includes many generator, SSR, and RSC fixes. See the [CHANGELOG](https://github.com/shakacode/react_on_rails/blob/master/CHANGELOG.md) for the full list.
+
+**Key actions required:**
+
+1. **Pro users: Legacy license key file removed.** \`config/react_on_rails_pro_license.key\` is no longer read. Move your token to the \`REACT_ON_RAILS_PRO_LICENSE\` environment variable.
+2. **Pro users: \`jwt >= 2.7\` now required.** If your Gemfile pins \`jwt\` to an older version (e.g., 2.2.x for OAuth compatibility), you must upgrade it before bundling \`react_on_rails_pro\` 16.4.0.
+3. **Pro users: RSC payload template override.** If your app overrides \`custom_rsc_payload_template\`, make sure it resolves to a text or format-neutral template (e.g., \`.text.erb\`). HTML-only overrides will raise \`ActionView::MissingTemplate\`.
+4. **Generator layout renamed.** Fresh installs now generate \`react_on_rails_default.html.erb\` instead of \`hello_world.html.erb\`. Existing apps are unaffected unless re-running the generator.
+5. **Pro users: Review changed defaults** (see table below).
+
+### Changed Pro Defaults in 16.4.0
+
+If you relied on previous defaults without explicitly setting values, behavior will change after upgrading:
+
+| Setting | Old default (3.x / 16.2.x) | New default (16.4.0) |
+| ------- | --------------------------- | -------------------- |
+| \`ssr_timeout\` | 20s | 5s |
+| \`renderer_request_retry_limit\` | 3 | 5 |
+| \`renderer_use_fallback_exec_js\` | \`false\` | \`true\` |
+
+To preserve old behavior, explicitly set these values in \`config/initializers/react_on_rails_pro.rb\`.
+
+### Pro Node Renderer: \`bundlePath\` → \`serverBundleCachePath\`
+
+In your node renderer config file, rename \`bundlePath\` to \`serverBundleCachePath\`:
+
+\`\`\`diff
+- bundlePath: path.resolve(__dirname, '../.node-renderer-bundles'),
++ serverBundleCachePath: path.resolve(__dirname, '../.node-renderer-bundles'),
+\`\`\`
+
+### Pro users upgrading from 3.x: Version numbering
+
+\`react_on_rails_pro\` jumped from version 3.3.x to 16.x.x to align with the core gem version. If you are on Pro 3.3.x, version 16.2.0 is your next upgrade target. See the [Pro Upgrade Guide](/docs/pro/updating) for the full migration path (package renames, import changes, license setup).
+
+`;
+}
+
+function upgradeGuide1630Section() {
+  return `## Upgrading to v16.3.0 (from v16.2.x)
+
+This is a minor release. Update your gem and npm package versions, then run \`bundle install\` and your package manager's install command. See the [CHANGELOG](https://github.com/shakacode/react_on_rails/blob/master/CHANGELOG.md) for details.
+
+**Key changes:**
+
+1. **Simplified Shakapacker version handling.** Obsolete minimum version checks (6.5.1) were removed. The gemspec dependency \`shakapacker >= 6.0\` is now the only minimum version requirement.
+2. **Pro users: License-optional model.** Pro now works without a license for evaluation, development, testing, and CI/CD. A paid license is only required for production deployments.
+3. **Pro users: Multiple license plan types.** License validation now supports plan types beyond "paid" (startup, nonprofit, education, oss, partner).
+
+`;
+}
+
+function proUpdatingVersionNote() {
+  return `### Version Numbering: 3.x → 16.x
+
+\`react_on_rails_pro\` was renumbered from 3.3.x to 16.x.x starting with version 16.2.0 to align with the core \`react_on_rails\` gem. This is the same product — the version numbers were aligned so that both gems share the same version. If you are on Pro 3.3.x, upgrade to 16.2.0 or later.
+
+### Gemfile: Only \`react_on_rails_pro\` Needed
+
+Since \`react_on_rails_pro\` declares \`react_on_rails\` as a dependency, you do not need a separate \`gem "react_on_rails"\` line in your Gemfile. Having both lines can cause confusion about which controls the version:
+
+\`\`\`diff
+- gem "react_on_rails", "16.4.0"
+- source "https://rubygems.pkg.github.com/shakacode-tools" do
+-   gem "react_on_rails_pro", "3.3.1"
+- end
++ gem "react_on_rails_pro", "= 16.4.0"
+\`\`\`
+
+### \`.npmrc\` Cleanup
+
+If you have an \`.npmrc\` with \`@shakacode-tools:registry=https://npm.pkg.github.com\`, remove it. The node renderer package is now on the public npm registry.
+
+`;
+}
+
+function proUpdatingJwtNote() {
+  return `#### JWT Dependency
+
+\`react_on_rails_pro\` 16.4.0 requires \`jwt >= 2.7\`. If your Gemfile or other gems pin \`jwt\` to an older version (common with OAuth gems), you will see a \`Bundler::VersionConflict\`. Upgrade \`jwt\` first:
+
+\`\`\`ruby
+# Gemfile
+gem "jwt", ">= 2.7"
+\`\`\`
+
+`;
+}
+
+function proUpdatingDefaultsAndRenames() {
+  return `#### Changed Defaults
+
+Several Pro configuration defaults changed between 3.3.x and 16.4.0. If you relied on previous defaults without explicitly setting values, behavior will change:
+
+| Setting | Old default (3.x) | New default (16.4.0) |
+| ------- | ------------------ | -------------------- |
+| \`ssr_timeout\` | 20s | 5s |
+| \`renderer_request_retry_limit\` | 3 | 5 |
+| \`renderer_use_fallback_exec_js\` | \`false\` | \`true\` |
+
+To preserve old behavior, explicitly set these values in \`config/initializers/react_on_rails_pro.rb\`.
+
+#### Node Renderer Config: \`bundlePath\` → \`serverBundleCachePath\`
+
+Rename \`bundlePath\` to \`serverBundleCachePath\` in your node renderer configuration file:
+
+\`\`\`diff
+- bundlePath: path.resolve(__dirname, '../.node-renderer-bundles'),
++ serverBundleCachePath: path.resolve(__dirname, '../.node-renderer-bundles'),
+\`\`\`
+
+`;
+}
+
+function proUpdatingNpmPackagesExplanation() {
+  return `### Understanding the Two npm Packages
+
+React on Rails Pro has two separate npm packages:
+
+| Package | Purpose | When needed |
+| ------- | ------- | ----------- |
+| \`react-on-rails-pro\` | Client-side Pro features (immediate hydration, RSC, async loading) | **Always** — all Pro users need this |
+| \`react-on-rails-pro-node-renderer\` | Server-side Node.js renderer | Only if using \`NodeRenderer\` for SSR |
+
+**Important:** When using \`react-on-rails-pro\`, you must **not** also import from \`react-on-rails\`. The Pro package re-exports everything from core. Importing from both will raise a runtime error.
+
+If you only use the Node Renderer for SSR and do not use RSC or immediate hydration features, you still need \`react-on-rails-pro\` — it is the client package that registers components. \`react-on-rails-pro-node-renderer\` is only the server-side renderer process.
+
+`;
+}
+
 async function fixKnownDocsIssues(docsRoot) {
   await rewriteDocsByPattern(docsRoot, [
     {
@@ -394,6 +528,49 @@ async function fixKnownDocsIssues(docsRoot) {
       replacement: "https://reactonrails.com/docs/pro/"
     }
   ]);
+
+  // Inject v16.4.0 and v16.3.0 upgrade sections into the OSS upgrade guide
+  await rewriteDoc(docsRoot, "upgrading/upgrading-react-on-rails.md", (content) => {
+    const anchor = "## Upgrading to v16.2.x (from v16.1.x)";
+    if (content.includes("## Upgrading to v16.4.0") || !content.includes(anchor)) {
+      return content;
+    }
+    return content.replace(anchor, upgradeGuide1640Section() + upgradeGuide1630Section() + anchor);
+  });
+
+  // Enrich the Pro updating guide with missing migration context
+  await rewriteDoc(docsRoot, "pro/updating.md", (content) => {
+    let updated = content;
+
+    // Add version numbering note after "Who This Guide is For" section
+    if (!updated.includes("Version Numbering: 3.x")) {
+      const guideForAnchor = "### What's Changing";
+      if (updated.includes(guideForAnchor)) {
+        updated = updated.replace(guideForAnchor, proUpdatingVersionNote() + guideForAnchor);
+      }
+    }
+
+    // Add npm packages explanation before the current setup section
+    if (!updated.includes("Understanding the Two npm Packages")) {
+      const currentSetupAnchor = "### Your Current Setup (GitHub Packages)";
+      if (updated.includes(currentSetupAnchor)) {
+        updated = updated.replace(currentSetupAnchor, proUpdatingNpmPackagesExplanation() + currentSetupAnchor);
+      }
+    }
+
+    // Add JWT dependency note and changed defaults before "Verify Migration"
+    if (!updated.includes("JWT Dependency")) {
+      const verifyAnchor = "### Verify Migration";
+      if (updated.includes(verifyAnchor)) {
+        updated = updated.replace(
+          verifyAnchor,
+          proUpdatingJwtNote() + proUpdatingDefaultsAndRenames() + verifyAnchor
+        );
+      }
+    }
+
+    return updated;
+  });
 }
 
 async function rewriteProLinks(proDocsRoot) {
