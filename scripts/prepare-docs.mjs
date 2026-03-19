@@ -477,7 +477,11 @@ function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
     .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n")
     .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`);
 
-  return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
+  const withCustomEditUrl = updated.startsWith("---")
+    ? updated.replace(/^---\n/, "---\ncustom_edit_url: null\n")
+    : `---\ncustom_edit_url: null\n---\n\n${updated}`;
+
+  return `${withCustomEditUrl}\n`;
 }
 
 async function prepareDocusaurus() {
