@@ -30,6 +30,8 @@
   --site-soft-surface: #f6f8fa;
   --site-inline-code-surface: #f6f8fa;
   --site-inline-code-text: #24292f;
+  --site-panel-surface: #ffffff;
+  --site-panel-shadow: rgba(31, 35, 40, 0.08);
 }
 
 [data-theme='dark'] {
@@ -55,6 +57,8 @@
   --site-soft-surface: #0d1117;
   --site-inline-code-surface: #161b22;
   --site-inline-code-text: #c9d1d9;
+  --site-panel-surface: #161b22;
+  --site-panel-shadow: rgba(1, 4, 9, 0.28);
 }
 
 html,
@@ -66,6 +70,23 @@ body {
 .navbar {
   border-bottom: 1px solid var(--site-border);
   box-shadow: none;
+}
+
+.navbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.48rem;
+}
+
+.navbar__logo {
+  width: 2.35rem;
+  height: 2.35rem;
+}
+
+.navbar__logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .navbar__title {
@@ -106,7 +127,7 @@ body {
 .markdown code {
   background: var(--site-inline-code-surface);
   border: 1px solid var(--site-border);
-  border-radius: 6px;
+  border-radius: 8px;
   font-family: var(--ifm-font-family-monospace);
   color: var(--site-inline-code-text);
 }
@@ -142,4 +163,58 @@ body {
 .button--secondary:hover {
   background: var(--site-soft-surface);
   color: var(--ifm-color-content);
+}
+
+[data-theme='dark'] .button--secondary {
+  background: var(--site-surface);
+  border-color: var(--site-border);
+  color: var(--ifm-color-content);
+}
+
+[data-theme='dark'] .button--secondary:hover {
+  background: #21262d;
+}
+
+@media (max-width: 996px) {
+  .navbar__brand {
+    min-width: 0;
+    max-width: calc(100vw - 5rem);
+    gap: 0.34rem;
+  }
+
+  .navbar__logo {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+
+  .navbar__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .menu {
+    padding: 0.6rem;
+  }
+
+  .pagination-nav__link {
+    border-radius: 9px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --ifm-font-size-base: 15.5px;
+  }
+
+  .button--lg {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .theme-doc-toc-mobile {
+    border-top: 1px solid var(--site-border);
+    border-bottom: 1px solid var(--site-border);
+    background: var(--site-surface);
+  }
 }

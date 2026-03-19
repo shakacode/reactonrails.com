@@ -6,7 +6,7 @@ import {GlobExcludeDefault} from '@docusaurus/utils';
 const config: Config = {
   title: 'React on Rails',
   tagline: 'Integrate React with Rails, including SSR, RSC, and production-grade docs.',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/logo-mark.png',
 
   future: {
     v4: true,
@@ -66,7 +66,9 @@ const config: Config = {
       title: 'React on Rails',
       logo: {
         alt: 'React on Rails Logo',
-        src: 'img/logo.png',
+        src: 'img/logo-mark.png',
+        width: 40,
+        height: 40,
       },
       items: [
         {

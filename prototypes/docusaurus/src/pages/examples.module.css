@@ -50,6 +50,13 @@
   gap: 1rem;
 }
 
+.decisionGrid {
+  margin-bottom: 3rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 .card {
   border: 1px solid var(--site-border);
   border-radius: 10px;
@@ -75,6 +82,7 @@
     padding: 2.4rem 0 2rem;
   }
 
+  .decisionGrid,
   .grid {
     grid-template-columns: 1fr;
   }
