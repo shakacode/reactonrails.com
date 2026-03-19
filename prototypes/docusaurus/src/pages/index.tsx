@@ -93,8 +93,12 @@ const firstRunCommands = [
 
 async function copyToClipboard(value: string) {
   if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(value);
-    return;
+    try {
+      await navigator.clipboard.writeText(value);
+      return;
+    } catch {
+      // Fall back to legacy copy path when Clipboard API is unavailable at runtime.
+    }
   }
 
   if (typeof document !== 'undefined') {
