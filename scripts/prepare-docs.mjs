@@ -467,6 +467,86 @@ async function injectProFriendlyNotice(docsRoot) {
   }
 }
 
+const languageRemapping = {
+  rsc: "text",
+  procfile: "yaml",
+  Procfile: "yaml",
+  "Procfile.dev": "yaml",
+  gitignore: "text",
+  JSON: "json"
+};
+
+function detectCodeLanguage(content) {
+  const lines = content.split("\n");
+  const firstLine = lines[0] || "";
+
+  if (firstLine.startsWith("#!/")) return "bash";
+  if (/^\$ /.test(firstLine)) return "bash";
+  if (/^(yarn |npm |npx |bundle exec |rails |bin\/)/.test(firstLine)) return "bash";
+  if (/^[A-Z_]+=\S+$/.test(firstLine.trim()) && lines.length <= 2) return "bash";
+
+  if (/\b(const |let |var |require\(|module\.exports|import )\b/.test(content)) return "js";
+
+  return "text";
+}
+
+function normalizeCodeFencesInMarkdown(markdown) {
+  const lines = markdown.split("\n");
+  let inBlock = false;
+  let blockOpenIdx = -1;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (!inBlock && /^```\S/.test(line)) {
+      const lang = line.slice(3).trim();
+      if (languageRemapping[lang]) {
+        lines[i] = `\`\`\`${languageRemapping[lang]}`;
+      }
+      inBlock = true;
+      continue;
+    }
+
+    if (!inBlock && /^```\s*$/.test(line)) {
+      blockOpenIdx = i;
+      inBlock = true;
+      continue;
+    }
+
+    if (inBlock && /^```\s*$/.test(line)) {
+      if (blockOpenIdx >= 0) {
+        const blockContent = lines.slice(blockOpenIdx + 1, i).join("\n");
+        lines[blockOpenIdx] = `\`\`\`${detectCodeLanguage(blockContent)}`;
+        blockOpenIdx = -1;
+      }
+      inBlock = false;
+    }
+  }
+
+  return lines.join("\n");
+}
+
+async function normalizeCodeFences(docsRoot) {
+  let filesUpdated = 0;
+
+  await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
+    if (!relativeFile.endsWith(".md") && !relativeFile.endsWith(".mdx")) {
+      return;
+    }
+
+    const original = await fs.readFile(absoluteFile, "utf8");
+    const updated = normalizeCodeFencesInMarkdown(original);
+    if (updated !== original) {
+      await fs.writeFile(absoluteFile, updated, "utf8");
+      filesUpdated += 1;
+    }
+  });
+
+  if (filesUpdated > 0) {
+    console.log(`Normalized code fences in ${filesUpdated} files`);
+  }
+}
+
 function docsHomeMarkdown({ hasArchive }) {
   const archiveSection = hasArchive
     ? `
@@ -558,6 +638,7 @@ async function prepareDocusaurus() {
   await rewriteFlattenedOssLinks(docsRoot);
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
+  await normalizeCodeFences(docsRoot);
   const hasArchive = await archiveLegacyDocs(docsRoot);
   await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch((error) => {
     if (error?.code !== "ENOENT") {

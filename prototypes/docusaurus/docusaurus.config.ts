@@ -148,6 +148,7 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.vsDark,
+      additionalLanguages: ['ruby', 'markup-templating', 'erb', 'diff', 'haml', 'bash'],
     },
   } satisfies Preset.ThemeConfig,
 };
