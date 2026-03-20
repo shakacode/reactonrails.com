@@ -30,6 +30,20 @@ const config: Config = {
     locales: ['en'],
   },
 
+  themes: [
+    [
+      '@easyops-cn/docusaurus-search-local',
+      {
+        hashed: true,
+        indexBlog: false,
+        docsRouteBasePath: '/docs',
+        highlightSearchTermsOnTargetPage: true,
+        searchResultLimits: 8,
+        searchBarShortcutHint: true,
+      },
+    ],
+  ],
+
   presets: [
     [
       'classic',
@@ -83,6 +97,12 @@ const config: Config = {
         },
         {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/pro', label: 'React on Rails Pro', position: 'left'},
+        {
+          href: 'https://www.shakacode.com/contact/',
+          label: 'Get Expert Help',
+          position: 'right',
+          className: 'navbar-cta',
+        },
         {
           href: 'https://github.com/shakacode/react_on_rails',
           label: 'GitHub',
