@@ -210,7 +210,7 @@ function MigrationSection() {
 
 function ConsultationSection() {
   return (
-    <section className={styles.sectionSoft}>
+    <section className={styles.section}>
       <div className="container">
         <div className={styles.consultationBanner}>
           <div className={styles.consultationContent}>
