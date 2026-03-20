@@ -143,3 +143,16 @@ body {
   background: var(--site-soft-surface);
   color: var(--ifm-color-content);
 }
+
+div[class*='announcementBar'] {
+  background: var(--site-soft-surface);
+  border-bottom: 1px solid var(--site-border);
+  font-size: 0.9rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+div[class*='announcementBar'] a {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  text-decoration: underline;
+}

@@ -62,6 +62,12 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
+    announcementBar: {
+      id: 'consultation_cta',
+      content:
+        'Need expert help with React on Rails? <a href="https://meetings.hubspot.com/justingordon/30-minute-consultation">Book a free 30-minute consultation</a> with the ShakaCode team.',
+      isCloseable: true,
+    },
     navbar: {
       title: 'React on Rails',
       logo: {
@@ -122,6 +128,10 @@ const config: Config = {
             {
               label: 'ShakaCode',
               href: 'https://www.shakacode.com',
+            },
+            {
+              label: 'Book a Free Consultation',
+              href: 'https://meetings.hubspot.com/justingordon/30-minute-consultation',
             },
           ],
         },
