@@ -102,6 +102,10 @@ body {
   background: var(--site-soft-surface);
 }
 
+[data-theme='dark'] .menu__link:hover {
+  background: var(--site-surface);
+}
+
 .menu__link--active {
   background: rgba(9, 105, 218, 0.1);
   color: var(--ifm-color-primary-dark);
@@ -174,6 +178,10 @@ body {
 
 .markdown tr:nth-child(2n) {
   background: var(--site-soft-surface);
+}
+
+[data-theme='dark'] .markdown tr:nth-child(2n) {
+  background: var(--site-surface);
 }
 
 /* ── Pagination & misc ────────────────────────────────────── */
