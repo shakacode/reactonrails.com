@@ -156,3 +156,20 @@ div[class*='announcementBar'] a {
   font-weight: 600;
   text-decoration: underline;
 }
+
+/* "Get Expert Help" navbar CTA */
+.navbar-cta {
+  background: var(--ifm-color-primary);
+  color: #ffffff !important;
+  border-radius: 6px;
+  padding: 0.35rem 0.85rem !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+
+.navbar-cta:hover {
+  background: var(--ifm-color-primary-dark);
+  color: #ffffff !important;
+  text-decoration: none;
+}
