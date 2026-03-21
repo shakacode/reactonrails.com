@@ -93,8 +93,12 @@ const firstRunCommands = [
 
 async function copyToClipboard(value: string) {
   if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(value);
-    return;
+    try {
+      await navigator.clipboard.writeText(value);
+      return;
+    } catch {
+      // Fall through to legacy copy path when Clipboard API exists but fails at runtime.
+    }
   }
 
   if (typeof document !== 'undefined') {
@@ -104,10 +108,14 @@ async function copyToClipboard(value: string) {
     textArea.style.position = 'absolute';
     textArea.style.left = '-9999px';
     document.body.appendChild(textArea);
-    textArea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textArea);
-    return;
+    try {
+      textArea.select();
+      const copied = document.execCommand('copy');
+      if (!copied) throw new Error('Fallback copy failed');
+      return;
+    } finally {
+      document.body.removeChild(textArea);
+    }
   }
 
   throw new Error('Clipboard unavailable');
