@@ -173,3 +173,8 @@ div[class*='announcementBar'] a {
   color: #ffffff !important;
   text-decoration: none;
 }
+
+/* Hide the default bottom "Edit this page" link — replaced by prominent top buttons */
+.theme-doc-footer-edit-meta-row {
+  display: none;
+}
