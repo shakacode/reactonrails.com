@@ -111,7 +111,7 @@ const sidebars: SidebarsConfig = {
         'api-reference/redux-store-api',
         'api-reference/ruby-api-pro',
         'api-reference/generator-details',
-        'api-reference/rails_view_rendering_from_inline_javascript',
+        'api-reference/rails-view-rendering-from-inline-javascript',
       ],
     },
     {
@@ -223,7 +223,6 @@ const sidebars: SidebarsConfig = {
       items: [
         'misc/doctrine',
         'misc/style',
-        'misc/code_of_conduct',
         'misc/credits',
         'misc/updating-dependencies',
       ],
