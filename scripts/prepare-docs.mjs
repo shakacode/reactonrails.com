@@ -472,7 +472,7 @@ const languageRemapping = {
   procfile: "yaml",
   Procfile: "yaml",
   "Procfile.dev": "yaml",
-  gitignore: "text",
+  gitignore: "ignore",
   JSON: "json"
 };
 
@@ -485,7 +485,7 @@ function detectCodeLanguage(content) {
   if (/^(yarn |npm |npx |bundle exec |rails |bin\/)/.test(firstLine)) return "bash";
   if (/^[A-Z_]+=\S+$/.test(firstLine.trim()) && lines.length <= 2) return "bash";
 
-  if (/\b(const |let |var |require\(|module\.exports|import )\b/.test(content)) return "js";
+  if (/\b(const |let |var |require\(|module\.exports|import )/.test(content)) return "js";
 
   return "text";
 }
