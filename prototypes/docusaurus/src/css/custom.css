@@ -106,7 +106,7 @@ body {
   background: var(--site-soft-surface);
 }
 
-.menu__link--active {
+.menu__link.menu__link--active {
   background: rgba(9, 105, 218, 0.08);
   color: var(--ifm-color-primary-dark);
   font-weight: 600;
