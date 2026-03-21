@@ -196,6 +196,34 @@
   color: var(--ifm-color-content-secondary);
 }
 
+.consultationBanner {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+}
+
+.consultationContent {
+  max-width: 38rem;
+}
+
+.consultationContent h2 {
+  margin-bottom: 0.55rem;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.18;
+}
+
+.consultationContent p:last-child {
+  margin-bottom: 0;
+  color: var(--ifm-color-content-secondary);
+}
+
+.consultationActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 @media (max-width: 996px) {
   .heroBanner {
     padding: 2.6rem 0 2.2rem;
@@ -215,5 +243,14 @@
 
   .flowSummary {
     min-height: 0;
+  }
+
+  .consultationBanner {
+    grid-template-columns: 1fr;
+  }
+
+  .consultationActions {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }

@@ -1,0 +1,27 @@
+.consultationCallout {
+  margin-top: 2rem;
+  padding: 1.1rem;
+  border: 1px solid var(--site-border);
+  border-radius: 10px;
+  background: var(--site-soft-surface);
+}
+
+.calloutHeading {
+  margin: 0 0 0.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.calloutBody {
+  margin: 0 0 0.6rem;
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
+}
+
+.calloutLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+}

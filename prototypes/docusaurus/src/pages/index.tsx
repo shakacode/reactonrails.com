@@ -208,6 +208,38 @@ function MigrationSection() {
   );
 }
 
+function ConsultationSection() {
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.consultationBanner}>
+          <div className={styles.consultationContent}>
+            <p className={styles.sectionEyebrow}>Expert help</p>
+            <h2>Get free advice from the team behind React on Rails</h2>
+            <p>
+              ShakaCode maintains React on Rails and has helped teams ship production apps with
+              SSR, RSC, and Rails integration. Book a complimentary 30-minute assessment to get
+              hands-on advice about your architecture, performance, or migration path.
+            </p>
+          </div>
+          <div className={styles.consultationActions}>
+            <Link
+              className="button button--primary button--lg"
+              href="https://meetings.hubspot.com/justingordon/30-minute-consultation">
+              Book a complimentary assessment
+            </Link>
+            <Link
+              className="button button--secondary button--lg"
+              href="https://www.shakacode.com">
+              Learn about ShakaCode
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TestimonialsSection() {
   return (
     <section className={styles.sectionInk}>
@@ -243,6 +275,7 @@ export default function Home(): ReactNode {
         <FlowSection />
         <MigrationSection />
         <TestimonialsSection />
+        <ConsultationSection />
       </main>
     </Layout>
   );
