@@ -12,15 +12,15 @@ export default function FooterWrapper(props: Props): ReactNode {
     <>
       <Footer {...props} />
       <aside className={styles.consultationCallout}>
-        <p className={styles.calloutHeading}>Need help with your React on Rails project?</p>
+        <p className={styles.calloutHeading}>Get free expert advice on your React on Rails setup</p>
         <p className={styles.calloutBody}>
-          ShakaCode builds and maintains React on Rails. Book a complimentary 30-minute
-          consultation to discuss your project with the team.
+          ShakaCode builds and maintains React on Rails. Book a complimentary 30-minute call
+          to get hands-on advice about your architecture, performance, or migration path.
         </p>
         <a
           className={styles.calloutLink}
           href="https://meetings.hubspot.com/justingordon/30-minute-consultation">
-          Book a free consultation
+          Book a free call
         </a>
       </aside>
     </>
