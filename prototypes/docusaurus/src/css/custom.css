@@ -74,7 +74,6 @@ body {
 .navbar {
   border-bottom: 1px solid var(--site-border);
   box-shadow: none;
-  font-size: 0.875rem;
 }
 
 .navbar__brand {
@@ -96,7 +95,6 @@ body {
 
 .navbar__title {
   font-weight: 600;
-  font-size: 1rem;
   letter-spacing: 0;
 }
 
@@ -108,7 +106,6 @@ body {
 
 .footer {
   border-top: 1px solid var(--site-border);
-  font-size: 0.875rem;
 }
 
 /* ── Sidebar ──────────────────────────────────────────────── */
@@ -125,7 +122,7 @@ body {
 }
 
 .menu__link--active {
-  background: rgba(9, 105, 218, 0.08);
+  background: rgba(9, 105, 218, 0.1);
   color: var(--ifm-color-primary-dark);
   font-weight: 600;
 }
@@ -136,44 +133,20 @@ body {
 }
 
 [data-theme='dark'] .menu__link--active {
-  background: rgba(47, 129, 247, 0.15);
+  background: rgba(47, 129, 247, 0.18);
   color: #c9d1d9;
 }
 
 /* ── Markdown typography ──────────────────────────────────── */
 
 .markdown h1 {
-  font-size: 2rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
   padding-bottom: 0.3em;
   border-bottom: 1px solid var(--site-border);
 }
 
 .markdown h2 {
-  font-size: 1.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
   padding-bottom: 0.3em;
   border-bottom: 1px solid var(--site-border);
-}
-
-.markdown h3 {
-  font-size: 1.25rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.markdown h4 {
-  font-size: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.markdown p,
-.markdown ul,
-.markdown ol {
-  margin-bottom: 1rem;
 }
 
 .markdown code {
