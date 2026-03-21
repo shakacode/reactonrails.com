@@ -1,4 +1,4 @@
-import {useState, type ReactNode} from 'react';
+import {useEffect, useRef, useState, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
@@ -123,7 +123,17 @@ async function copyToClipboard(value: string) {
 
 function HeroSection() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+  const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const commandText = firstRunCommands.join('\n');
+
+  useEffect(
+    () => () => {
+      if (copyResetTimerRef.current) {
+        clearTimeout(copyResetTimerRef.current);
+      }
+    },
+    []
+  );
 
   const handleCopyFirstRun = async () => {
     try {
@@ -133,7 +143,13 @@ function HeroSection() {
       setCopyState('error');
     }
 
-    window.setTimeout(() => setCopyState('idle'), 1800);
+    if (copyResetTimerRef.current) {
+      clearTimeout(copyResetTimerRef.current);
+    }
+    copyResetTimerRef.current = setTimeout(() => {
+      setCopyState('idle');
+      copyResetTimerRef.current = null;
+    }, 1800);
   };
 
   const copyButtonLabel =
