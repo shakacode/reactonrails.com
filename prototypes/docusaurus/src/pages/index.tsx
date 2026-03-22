@@ -1,4 +1,4 @@
-import type {ReactNode} from 'react';
+import {useEffect, useRef, useState, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
@@ -7,7 +7,6 @@ import styles from './index.module.css';
 
 const personaPaths = [
   {
-    eyebrow: 'Persona A',
     title: 'Starting a new Rails + React app',
     description:
       'Use the CLI-backed happy path, get to a working app quickly, and customize from a clean baseline.',
@@ -15,7 +14,6 @@ const personaPaths = [
     cta: 'Create a new app',
   },
   {
-    eyebrow: 'Persona B',
     title: 'Adding React to an existing Rails app',
     description:
       'Keep the Rails app you already have, install React on Rails, and render components without rebuilding the stack.',
@@ -23,7 +21,6 @@ const personaPaths = [
     cta: 'Install into an existing app',
   },
   {
-    eyebrow: 'Persona C',
     title: 'Already on OSS and need more performance',
     description:
       'See what Pro adds, how the upgrade works, and where higher-throughput SSR or RSC support fits.',
@@ -31,7 +28,6 @@ const personaPaths = [
     cta: 'Compare OSS and Pro',
   },
   {
-    eyebrow: 'Persona D',
     title: 'Evaluating Rails + React options',
     description:
       'Review example apps, migration references, and concrete paths from react-rails or vite_rails.',
@@ -88,7 +84,77 @@ const testimonials = [
   },
 ];
 
+const firstRunCommands = [
+  'npx create-react-on-rails-app@latest my-app',
+  'cd my-app',
+  'bin/rails db:prepare',
+  'bin/dev',
+];
+
+async function copyToClipboard(value: string) {
+  if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
+    try {
+      await navigator.clipboard.writeText(value);
+      return;
+    } catch {
+      // Fall through to legacy copy path when Clipboard API exists but fails at runtime.
+    }
+  }
+
+  if (typeof document !== 'undefined') {
+    const textArea = document.createElement('textarea');
+    textArea.value = value;
+    textArea.setAttribute('readonly', '');
+    textArea.style.position = 'absolute';
+    textArea.style.left = '-9999px';
+    document.body.appendChild(textArea);
+    try {
+      textArea.select();
+      const copied = document.execCommand('copy');
+      if (!copied) throw new Error('Fallback copy failed');
+      return;
+    } finally {
+      document.body.removeChild(textArea);
+    }
+  }
+
+  throw new Error('Clipboard unavailable');
+}
+
 function HeroSection() {
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+  const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const commandText = firstRunCommands.join('\n');
+
+  useEffect(
+    () => () => {
+      if (copyResetTimerRef.current) {
+        clearTimeout(copyResetTimerRef.current);
+      }
+    },
+    []
+  );
+
+  const handleCopyFirstRun = async () => {
+    try {
+      await copyToClipboard(commandText);
+      setCopyState('copied');
+    } catch {
+      setCopyState('error');
+    }
+
+    if (copyResetTimerRef.current) {
+      clearTimeout(copyResetTimerRef.current);
+    }
+    copyResetTimerRef.current = setTimeout(() => {
+      setCopyState('idle');
+      copyResetTimerRef.current = null;
+    }, 1800);
+  };
+
+  const copyButtonLabel =
+    copyState === 'copied' ? 'Copied' : copyState === 'error' ? 'Retry copy' : 'Copy commands';
+
   return (
     <header className={clsx(styles.heroBanner)}>
       <div className={clsx('container', styles.heroLayout)}>
@@ -114,16 +180,20 @@ function HeroSection() {
         <div className={styles.heroPanel}>
           <p className={styles.panelLabel}>Recommended first run</p>
           <ol className={styles.heroSteps}>
-            <li>
-              <code>npx create-react-on-rails-app@latest my-app</code>
-            </li>
-            <li>
-              <code>bin/rails db:prepare</code>
-            </li>
-            <li>
-              <code>bin/dev</code>
-            </li>
+            {firstRunCommands.map((command) => (
+              <li key={command}>
+                <code>{command}</code>
+              </li>
+            ))}
           </ol>
+          <div className={styles.panelActions}>
+            <button
+              type="button"
+              className={clsx('button button--secondary button--sm', styles.copyButton)}
+              onClick={handleCopyFirstRun}>
+              {copyButtonLabel}
+            </button>
+          </div>
           <p className={styles.panelNote}>
             If you are not starting fresh, the docs route you into existing-app install, migration,
             or Pro upgrade paths instead.
@@ -139,13 +209,12 @@ function PersonaSection() {
     <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionEyebrow}>Choose your path</p>
+          <p className={styles.sectionEyebrow}>Choose your situation</p>
           <h2>Docs should start from your situation, not from our internal file layout.</h2>
         </div>
         <div className={styles.personaGrid}>
           {personaPaths.map((persona) => (
             <article className={styles.personaCard} key={persona.title}>
-              <p className={styles.cardEyebrow}>{persona.eyebrow}</p>
               <h3>{persona.title}</h3>
               <p>{persona.description}</p>
               <Link className={styles.cardLink} to={persona.href}>

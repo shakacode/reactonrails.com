@@ -11,8 +11,9 @@
   --ifm-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
   --ifm-font-family-monospace: ui-monospace, SFMono-Regular, SFMono, Menlo, Consolas, "Liberation Mono", monospace;
   --ifm-heading-font-family: var(--ifm-font-family-base);
+  --ifm-navbar-height: 3.5rem;
   --ifm-font-size-base: 16px;
-  --ifm-line-height-base: 1.5;
+  --ifm-line-height-base: 1.45;
   --ifm-font-weight-base: 400;
   --ifm-heading-line-height: 1.25;
   --ifm-code-font-size: 85%;
@@ -86,8 +87,8 @@ body {
 }
 
 .menu__link {
-  border-radius: 6px;
-  font-size: 0.92rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
   line-height: 1.35;
   font-weight: 500;
 }
@@ -113,7 +114,7 @@ body {
 
 .pagination-nav__link {
   border: 1px solid var(--site-border);
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: none;
 }
 

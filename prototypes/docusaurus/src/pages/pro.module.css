@@ -1,10 +1,10 @@
 .main {
-  padding-bottom: 3rem;
+  padding-bottom: 2.6rem;
 }
 
 .hero {
-  padding: 3rem 0 2.4rem;
-  margin-bottom: 1.8rem;
+  padding: 2.5rem 0 2rem;
+  margin-bottom: 1.5rem;
   background: var(--site-soft-surface);
   color: var(--ifm-color-content);
   border-top: 1px solid var(--site-border);
@@ -13,7 +13,7 @@
 
 .kicker,
 .cardEyebrow {
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.55rem;
   text-transform: uppercase;
   letter-spacing: 0.06rem;
   font-size: 0.75rem;
@@ -25,29 +25,29 @@
 }
 
 .actions {
-  margin-top: 1.2rem;
+  margin-top: 1rem;
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.6rem;
+  gap: 0.9rem;
+  margin-bottom: 1.3rem;
 }
 
 .policyCard {
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--site-surface);
-  padding: 1.05rem;
+  padding: 0.95rem;
   box-shadow: none;
 }
 
 .policyCard h2 {
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.35rem;
   font-size: 1.1rem;
 }
 
@@ -61,19 +61,19 @@
 
 .stepList {
   list-style: none;
-  margin: 1rem 0 0;
+  margin: 0.85rem 0 0;
   padding: 0;
 }
 
 .stepList li {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.8rem;
+  gap: 0.7rem;
   align-items: start;
 }
 
 .stepList li + li {
-  margin-top: 0.9rem;
+  margin-top: 0.75rem;
 }
 
 .stepList p {
@@ -82,8 +82,8 @@
 }
 
 .stepBadge {
-  width: 2rem;
-  height: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -96,7 +96,7 @@
 .tableWrap {
   overflow-x: auto;
   border: 1px solid var(--site-border);
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .table {
@@ -106,7 +106,7 @@
 
 .table th,
 .table td {
-  padding: 0.8rem;
+  padding: 0.7rem;
   border-bottom: 1px solid var(--site-border);
   text-align: left;
 }
@@ -116,7 +116,7 @@
 }
 
 .note {
-  margin-top: 1rem;
+  margin-top: 0.8rem;
   color: var(--ifm-color-content-secondary);
 }
 
