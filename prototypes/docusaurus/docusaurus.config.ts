@@ -53,7 +53,7 @@ const config: Config = {
           routeBasePath: 'docs',
           exclude: [...GlobExcludeDefault, '**/planning/**'],
           editUrl: ({docPath}) => {
-            const root = 'https://github.com/shakacode/react_on_rails/tree/master/docs/';
+            const root = 'https://github.com/shakacode/react_on_rails/tree/main/docs/';
             if (docPath === 'README.md') {
               return `${root}README.md`;
             }

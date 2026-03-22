@@ -115,7 +115,7 @@ async function main() {
   if (!(await exists(localDocs))) {
     const repoUrl =
       process.env.REACT_ON_RAILS_REPO_URL ?? "https://github.com/shakacode/react_on_rails.git";
-    const ref = process.env.REACT_ON_RAILS_REF ?? "master";
+    const ref = process.env.REACT_ON_RAILS_REF ?? "main";
     console.log(`Local source repo missing. Cloning ${repoUrl} (${ref})...`);
     ephemeralClone = cloneRepo(repoUrl, ref);
     sourceRepo = ephemeralClone;
