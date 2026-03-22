@@ -210,7 +210,7 @@ function PersonaSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>Choose your situation</p>
-          <h2>Docs should start from your situation, not from our internal file layout.</h2>
+          <h2>Start where you are.</h2>
         </div>
         <div className={styles.personaGrid}>
           {personaPaths.map((persona) => (
