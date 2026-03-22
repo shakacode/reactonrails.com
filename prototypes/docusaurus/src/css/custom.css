@@ -106,7 +106,7 @@ body {
   font-weight: 600;
 }
 
-.menu__list-item-collapsible .menu__link {
+.menu__list-item-collapsible .menu__link:not(.menu__link--active) {
   font-weight: 600;
   color: var(--ifm-color-content);
 }
