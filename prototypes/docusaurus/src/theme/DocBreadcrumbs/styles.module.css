@@ -1,0 +1,31 @@
+.breadcrumbRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.editButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  padding: 0.25rem 0.65rem;
+  border: 1px solid var(--site-border);
+  border-radius: 6px;
+  background: var(--site-soft-surface);
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.editButton:hover {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: #ffffff;
+  text-decoration: none;
+}
