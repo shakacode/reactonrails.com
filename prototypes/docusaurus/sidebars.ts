@@ -166,7 +166,7 @@ const sidebars: SidebarsConfig = {
         {
           type: 'link',
           label: 'Full Changelog (GitHub)',
-          href: 'https://github.com/shakacode/react_on_rails/blob/master/CHANGELOG.md',
+          href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md',
         },
         {
           type: 'category',
