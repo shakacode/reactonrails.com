@@ -21,9 +21,19 @@ function PencilIcon(): ReactNode {
   );
 }
 
+function useDocSafe(): {editUrl: string | undefined} | null {
+  try {
+    const {metadata} = useDoc();
+    return {editUrl: metadata.editUrl};
+  } catch {
+    // useDoc() throws on category index pages where DocProvider is absent
+    return null;
+  }
+}
+
 export default function DocBreadcrumbsWrapper(props: Props): ReactNode {
-  const {metadata} = useDoc();
-  const {editUrl} = metadata;
+  const doc = useDocSafe();
+  const editUrl = doc?.editUrl;
 
   return (
     <div className={styles.breadcrumbRow}>
