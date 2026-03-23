@@ -199,6 +199,10 @@ body {
   background: var(--site-soft-surface);
 }
 
+[data-theme='dark'] .markdown tbody tr:nth-child(2n) {
+  background: #21262d;
+}
+
 /* ── Pagination & misc ────────────────────────────────────── */
 
 .pagination-nav__link {
