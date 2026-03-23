@@ -10,14 +10,14 @@ const personaPaths = [
   {
     title: 'Starting a new Rails + React app',
     description:
-      'Use the CLI-backed happy path, get to a working app quickly, and customize from a clean baseline.',
+      'Use the CLI to scaffold a working app, then customize from a clean baseline.',
     href: '/docs/getting-started/create-react-on-rails-app',
     cta: 'Create a new app',
   },
   {
     title: 'Adding React to an existing Rails app',
     description:
-      'Keep the Rails app you already have, install React on Rails, and render components without rebuilding the stack.',
+      'Install React on Rails into your existing app and render components without rebuilding the stack.',
     href: '/docs/getting-started/installation-into-an-existing-rails-app',
     cta: 'Install into an existing app',
   },
@@ -31,23 +31,23 @@ const personaPaths = [
   {
     title: 'Evaluating Rails + React options',
     description:
-      'Review example apps, migration references, and concrete paths from react-rails or vite_rails.',
+      'Browse example apps and migration paths from react-rails or vite_rails.',
     href: '/examples',
-    cta: 'Evaluate the ecosystem fit',
+    cta: 'See examples',
   },
 ];
 
 const recommendedFlows = [
   {
     title: 'Recommended for new projects',
-    summary: 'Start with one working path before you branch into deeper configuration.',
+    summary: 'One command to a working app. Customize after.',
     command: 'npx create-react-on-rails-app@latest my-app',
     href: '/docs/getting-started/create-react-on-rails-app',
     cta: 'Follow the new-app guide',
   },
   {
     title: 'For mature Rails apps',
-    summary: 'Install React on Rails into an existing codebase, keep your routes, and add components incrementally.',
+    summary: 'Add React on Rails to your existing codebase. Keep your routes, add components incrementally.',
     command: 'bundle exec rails generate react_on_rails:install --typescript',
     href: '/docs/getting-started/installation-into-an-existing-rails-app',
     cta: 'Use the install guide',
@@ -65,13 +65,13 @@ const migrationGuides = [
   {
     title: 'Migrate from react-rails',
     description:
-      'Swap from `react-rails` to React on Rails with a migration checklist grounded in a real sample app.',
+      'Step-by-step checklist for swapping `react-rails` to React on Rails, with a sample app.',
     href: '/docs/migrating/migrating-from-react-rails',
   },
   {
     title: 'Browse sample apps',
     description:
-      'Open repositories that show canonical SSR, migration, and evaluation workflows without marketing detours.',
+      'Working repositories showing SSR, migration, and integration patterns.',
     href: '/examples',
   },
 ];
@@ -174,14 +174,14 @@ function HeroSection() {
             <div className={styles.heroIdentityText}>
               <span className={styles.heroName}>React on Rails</span>
               <p className={clsx(styles.kicker, styles.heroKicker)}>
-                Official documentation for one product with two tiers
+                One product, two tiers: OSS and Pro
               </p>
             </div>
           </div>
           <h1 className={styles.title}>React on Rails keeps Rails conventions and adds modern React.</h1>
           <p className={styles.subtitle}>
-            Start with one recommended path, then branch into SSR, streaming, RSC, migration, or
-            Pro only when you need them.
+            One recommended path to start. Branch into SSR, streaming, RSC, or Pro when you need
+            them.
           </p>
           <div className={styles.buttons}>
             <Link className="button button--primary button--lg" to="/docs">
@@ -213,8 +213,7 @@ function HeroSection() {
             </button>
           </div>
           <p className={styles.panelNote}>
-            If you are not starting fresh, the docs route you into existing-app install, migration,
-            or Pro upgrade paths instead.
+            Not starting fresh? See the install, migration, or Pro upgrade guides below.
           </p>
         </div>
       </div>
@@ -276,8 +275,8 @@ function MigrationSection() {
     <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionEyebrow}>Migration and evaluation</p>
-          <h2>Modern docs need concrete migration routes, not generic reassurance.</h2>
+          <p className={styles.sectionEyebrow}>Migration</p>
+          <h2>Move from another setup</h2>
         </div>
         <div className={styles.migrationGrid}>
           {migrationGuides.map((guide) => (
@@ -302,18 +301,18 @@ function ConsultationSection() {
         <div className={styles.consultationBanner}>
           <div className={styles.consultationContent}>
             <p className={styles.sectionEyebrow}>Expert help</p>
-            <h2>Get free advice from the team behind React on Rails</h2>
+            <h2>Talk to the team behind React on Rails</h2>
             <p>
-              ShakaCode maintains React on Rails and has helped teams ship production apps with
-              SSR, RSC, and Rails integration. Book a complimentary 30-minute assessment to get
-              hands-on advice about your architecture, performance, or migration path.
+              ShakaCode maintains React on Rails and helps teams ship with SSR, RSC, and Rails
+              integration. Book a free 30-minute call for architecture, performance, or migration
+              advice.
             </p>
           </div>
           <div className={styles.consultationActions}>
             <Link
               className="button button--primary button--lg"
               href="https://meetings.hubspot.com/justingordon/30-minute-consultation">
-              Book a complimentary assessment
+              Book a free call
             </Link>
             <Link
               className="button button--secondary button--lg"
@@ -332,8 +331,8 @@ function TestimonialsSection() {
     <section className={styles.sectionInk}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionEyebrow}>Production feedback</p>
-          <h2>React on Rails Pro is an upgrade tier for teams that need more, not a separate ecosystem.</h2>
+          <p className={styles.sectionEyebrow}>In production</p>
+          <h2>Teams shipping with React on Rails</h2>
         </div>
         <div className={styles.quoteGrid}>
           {testimonials.map((entry) => (
