@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 
 import styles from './index.module.css';
@@ -125,6 +126,7 @@ function HeroSection() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
   const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const commandText = firstRunCommands.join('\n');
+  const heroLogoSrc = useBaseUrl('/img/logo-mark.png');
 
   useEffect(
     () => () => {
@@ -159,7 +161,23 @@ function HeroSection() {
     <header className={clsx(styles.heroBanner)}>
       <div className={clsx('container', styles.heroLayout)}>
         <div className={styles.heroContent}>
-          <p className={styles.kicker}>Official documentation for one product with two tiers</p>
+          <div className={styles.heroIdentity}>
+            <div className={styles.heroLogoFrame}>
+              <img
+                className={styles.heroLogo}
+                src={heroLogoSrc}
+                alt="React on Rails logo"
+                width="88"
+                height="88"
+              />
+            </div>
+            <div className={styles.heroIdentityText}>
+              <span className={styles.heroName}>React on Rails</span>
+              <p className={clsx(styles.kicker, styles.heroKicker)}>
+                Official documentation for one product with two tiers
+              </p>
+            </div>
+          </div>
           <h1 className={styles.title}>React on Rails keeps Rails conventions and adds modern React.</h1>
           <p className={styles.subtitle}>
             Start with one recommended path, then branch into SSR, streaming, RSC, migration, or
@@ -239,7 +257,7 @@ function FlowSection() {
         <div className={styles.flowGrid}>
           {recommendedFlows.map((flow) => (
             <article className={styles.flowCard} key={flow.title}>
-              <p className={styles.cardEyebrow}>{flow.title}</p>
+              <h3 className={styles.cardEyebrow}>{flow.title}</h3>
               <p className={styles.flowSummary}>{flow.summary}</p>
               <code className={styles.inlineCode}>{flow.command}</code>
               <Link className={styles.cardLink} to={flow.href}>
@@ -335,9 +353,7 @@ function TestimonialsSection() {
 
 export default function Home(): ReactNode {
   return (
-    <Layout
-      title="React on Rails"
-      description="Official React on Rails documentation, examples, and React on Rails Pro details.">
+    <Layout description="Official React on Rails documentation, examples, and React on Rails Pro details.">
       <HeroSection />
       <main>
         <PersonaSection />
