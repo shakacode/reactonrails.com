@@ -142,8 +142,8 @@ export default function ProPage(): ReactNode {
             </table>
           </div>
           <p className={styles.note}>
-            Need pricing, implementation guidance, or a free-license discussion? Email{' '}
-            <a href="mailto:justin@shakacode.com">justin@shakacode.com</a>.
+            Need pricing, implementation guidance, or a free-license discussion? Visit{' '}
+            <a href="https://pro.reactonrails.com/">pro.reactonrails.com</a>.
           </p>
         </section>
       </main>
