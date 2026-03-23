@@ -174,7 +174,7 @@ function HeroSection() {
             <div className={styles.heroIdentityText}>
               <span className={styles.heroName}>React on Rails</span>
               <p className={clsx(styles.kicker, styles.heroKicker)}>
-                OSS &amp; Pro documentation
+                One product, two tiers: OSS and Pro
               </p>
             </div>
           </div>
