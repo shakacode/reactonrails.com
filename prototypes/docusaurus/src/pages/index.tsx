@@ -24,7 +24,7 @@ const personaPaths = [
   {
     title: 'Already on OSS and need more performance',
     description:
-      'Compare OSS and Pro features, and see when higher-throughput SSR or RSC support is worth the upgrade.',
+      'See what Pro adds, how the upgrade works, and where higher-throughput SSR or RSC support fits.',
     href: '/docs/getting-started/oss-vs-pro',
     cta: 'Compare OSS and Pro',
   },
@@ -54,7 +54,7 @@ const recommendedFlows = [
   },
   {
     title: 'When OSS is no longer enough',
-    summary: 'Pro is an upgrade, not a separate product. Add it when you need more SSR throughput or guided support.',
+    summary: 'Pro is an upgrade tier, not a separate product. Add it when you need more SSR throughput or guided support.',
     command: 'bundle add react_on_rails_pro',
     href: '/docs/pro/upgrading-to-pro',
     cta: 'Review the upgrade path',
@@ -178,7 +178,7 @@ function HeroSection() {
               </p>
             </div>
           </div>
-          <h1 className={styles.title}>Rails conventions. Modern React.</h1>
+          <h1 className={styles.title}>React on Rails keeps Rails conventions and adds modern React.</h1>
           <p className={styles.subtitle}>
             One recommended path to start. Branch into SSR, streaming, RSC, or Pro when you need
             them.
@@ -226,8 +226,8 @@ function PersonaSection() {
     <section className={styles.section}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionEyebrow}>Getting started</p>
-          <h2>Pick your starting point</h2>
+          <p className={styles.sectionEyebrow}>Choose your situation</p>
+          <h2>Start where you are.</h2>
         </div>
         <div className={styles.personaGrid}>
           {personaPaths.map((persona) => (
@@ -250,8 +250,8 @@ function FlowSection() {
     <section className={styles.sectionSoft}>
       <div className="container">
         <div className={styles.sectionHeader}>
-          <p className={styles.sectionEyebrow}>Quick start</p>
-          <h2>Three paths, one command each</h2>
+          <p className={styles.sectionEyebrow}>Recommended flow</p>
+          <h2>Keep the first-run path obvious. Put alternatives behind it, not in front of it.</h2>
         </div>
         <div className={styles.flowGrid}>
           {recommendedFlows.map((flow) => (
