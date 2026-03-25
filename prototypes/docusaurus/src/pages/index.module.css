@@ -6,7 +6,7 @@
 
 .heroLayout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.95fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(22rem, 1fr);
   gap: 0.9rem;
   align-items: end;
 }
