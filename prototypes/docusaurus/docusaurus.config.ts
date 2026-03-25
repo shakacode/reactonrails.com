@@ -6,7 +6,7 @@ import {GlobExcludeDefault} from '@docusaurus/utils';
 // Use Algolia DocSearch when configured, otherwise fall back to local search.
 // Set ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, and ALGOLIA_INDEX_NAME env vars
 // to activate Algolia. Apply at https://docsearch.algolia.com/apply/
-const useAlgolia = Boolean(process.env.ALGOLIA_APP_ID);
+const useAlgolia = Boolean(process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_SEARCH_API_KEY);
 
 const localSearchTheme: NonNullable<Config['themes']>[number] = [
   '@easyops-cn/docusaurus-search-local',
