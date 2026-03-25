@@ -85,12 +85,23 @@ const testimonials = [
   },
 ];
 
-const firstRunCommands = [
-  'npx create-react-on-rails-app@latest my-app',
-  'cd my-app',
-  'bin/rails db:prepare',
-  'bin/dev',
-];
+type Language = 'ts' | 'js';
+type Rendering = 'basic' | 'pro-ssr' | 'rsc';
+
+function buildFirstRunCommands(lang: Language, rendering: Rendering): string[] {
+  const flags: string[] = [];
+  if (lang === 'js') flags.push('--js');
+  if (rendering === 'pro-ssr') flags.push('--ssr');
+  if (rendering === 'rsc') flags.push('--rsc');
+
+  const flagStr = flags.length > 0 ? ' ' + flags.join(' ') : '';
+  return [
+    `npx create-react-on-rails-app@latest my-app${flagStr}`,
+    'cd my-app',
+    'bin/rails db:prepare',
+    'bin/dev',
+  ];
+}
 
 async function copyToClipboard(value: string) {
   if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
@@ -124,8 +135,11 @@ async function copyToClipboard(value: string) {
 
 function HeroSection() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [lang, setLang] = useState<Language>('ts');
+  const [rendering, setRendering] = useState<Rendering>('basic');
   const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const commandText = firstRunCommands.join('\n');
+  const commands = buildFirstRunCommands(lang, rendering);
+  const commandText = commands.join('\n');
   const heroLogoSrc = useBaseUrl('/img/logo-mark.png');
 
   useEffect(
@@ -197,8 +211,54 @@ function HeroSection() {
         </div>
         <div className={styles.heroPanel}>
           <p className={styles.panelLabel}>Recommended first run</p>
+          <div className={styles.toggleRow}>
+            <div className={styles.toggleGroup} role="radiogroup" aria-label="Language">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={lang === 'ts'}
+                className={clsx(styles.toggleButton, lang === 'ts' && styles.toggleActive)}
+                onClick={() => setLang('ts')}>
+                TypeScript
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={lang === 'js'}
+                className={clsx(styles.toggleButton, lang === 'js' && styles.toggleActive)}
+                onClick={() => setLang('js')}>
+                JavaScript
+              </button>
+            </div>
+            <div className={styles.toggleGroup} role="radiogroup" aria-label="Rendering strategy">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={rendering === 'basic'}
+                className={clsx(styles.toggleButton, rendering === 'basic' && styles.toggleActive)}
+                onClick={() => setRendering('basic')}>
+                Basic
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={rendering === 'pro-ssr'}
+                className={clsx(styles.toggleButton, rendering === 'pro-ssr' && styles.toggleActive)}
+                onClick={() => setRendering('pro-ssr')}>
+                Pro SSR
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={rendering === 'rsc'}
+                className={clsx(styles.toggleButton, rendering === 'rsc' && styles.toggleActive)}
+                onClick={() => setRendering('rsc')}>
+                RSC
+              </button>
+            </div>
+          </div>
           <ol className={styles.heroSteps}>
-            {firstRunCommands.map((command) => (
+            {commands.map((command) => (
               <li key={command}>
                 <code>{command}</code>
               </li>
