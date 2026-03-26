@@ -33,6 +33,34 @@ jobs:
       - name: Prepare docs
         run: npm run prepare:docs
 
+      - name: Audit docs
+        id: audit_docs
+        continue-on-error: true
+        run: npm run audit:docs -- --output VALIDATION_REPORT_CI.md --fail-on error
+
+      - name: Upload docs audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-audit-report
+          path: VALIDATION_REPORT_CI.md
+          if-no-files-found: error
+
+      - name: Add docs audit summary
+        if: always()
+        run: |
+          {
+            echo "### Docs Audit"
+            echo ""
+            grep -E '^(Pages scanned|Pages with findings|Pages with errors|Pages with warnings|Pages with info|Errors|Warnings|Info):' VALIDATION_REPORT_CI.md || true
+            echo ""
+            echo "- Artifact: \`docs-audit-report\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Fail on blocking docs audit findings
+        if: steps.audit_docs.outcome == 'failure'
+        run: exit 1
+
       - name: Install site dependencies
         run: npm --prefix prototypes/docusaurus install
 
