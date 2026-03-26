@@ -318,6 +318,7 @@
   .personaGrid,
   .flowGrid,
   .migrationGrid,
+  .upgradeGrid,
   .quoteGrid {
     grid-template-columns: 1fr;
   }
