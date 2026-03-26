@@ -591,7 +591,9 @@ async function prepareDocusaurus() {
   }
 
   await rewriteProLinks(path.join(docsRoot, "pro"));
-  await rewriteFlattenedOssLinks(docsRoot);
+  if (layout === "split") {
+    await rewriteFlattenedOssLinks(docsRoot);
+  }
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
   await normalizeCodeFences(docsRoot);
