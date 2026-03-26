@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState, type ReactNode} from 'react';
+import {useEffect, useRef, useState, type KeyboardEvent, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -85,12 +85,23 @@ const testimonials = [
   },
 ];
 
-const firstRunCommands = [
-  'npx create-react-on-rails-app@latest my-app',
-  'cd my-app',
-  'bin/rails db:prepare',
-  'bin/dev',
-];
+type Language = 'ts' | 'js';
+type Rendering = 'basic' | 'pro-ssr' | 'rsc';
+
+function buildFirstRunCommands(lang: Language, rendering: Rendering): string[] {
+  const flags: string[] = [];
+  if (lang === 'js') flags.push('--js');
+  if (rendering === 'pro-ssr') flags.push('--ssr');
+  if (rendering === 'rsc') flags.push('--rsc');
+
+  const flagStr = flags.length > 0 ? ' ' + flags.join(' ') : '';
+  return [
+    `npx create-react-on-rails-app@latest my-app${flagStr}`,
+    'cd my-app',
+    'bin/rails db:prepare',
+    'bin/dev',
+  ];
+}
 
 async function copyToClipboard(value: string) {
   if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
@@ -124,8 +135,11 @@ async function copyToClipboard(value: string) {
 
 function HeroSection() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [lang, setLang] = useState<Language>('ts');
+  const [rendering, setRendering] = useState<Rendering>('basic');
   const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const commandText = firstRunCommands.join('\n');
+  const commands = buildFirstRunCommands(lang, rendering);
+  const commandText = commands.join('\n');
   const heroLogoSrc = useBaseUrl('/img/logo-mark.png');
 
   useEffect(
@@ -152,6 +166,21 @@ function HeroSection() {
       setCopyState('idle');
       copyResetTimerRef.current = null;
     }, 1800);
+  };
+
+  const handleRadioKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(e.key)) return;
+    e.preventDefault();
+    const group = e.currentTarget.parentElement;
+    if (!group) return;
+    const buttons = Array.from(group.querySelectorAll<HTMLButtonElement>('[role="radio"]'));
+    const idx = buttons.indexOf(e.currentTarget);
+    const next =
+      e.key === 'ArrowRight' || e.key === 'ArrowDown'
+        ? (idx + 1) % buttons.length
+        : (idx - 1 + buttons.length) % buttons.length;
+    buttons[next].click();
+    buttons[next].focus();
   };
 
   const copyButtonLabel =
@@ -197,8 +226,64 @@ function HeroSection() {
         </div>
         <div className={styles.heroPanel}>
           <p className={styles.panelLabel}>Recommended first run</p>
+          <div className={styles.toggleRow}>
+            <div className={styles.toggleGroup} role="radiogroup" aria-label="Language">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={lang === 'ts'}
+                tabIndex={lang === 'ts' ? 0 : -1}
+                className={clsx(styles.toggleButton, lang === 'ts' && styles.toggleActive)}
+                onKeyDown={handleRadioKeyDown}
+                onClick={() => setLang('ts')}>
+                TypeScript
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={lang === 'js'}
+                tabIndex={lang === 'js' ? 0 : -1}
+                className={clsx(styles.toggleButton, lang === 'js' && styles.toggleActive)}
+                onKeyDown={handleRadioKeyDown}
+                onClick={() => setLang('js')}>
+                JavaScript
+              </button>
+            </div>
+            <div className={styles.toggleGroup} role="radiogroup" aria-label="Rendering strategy">
+              <button
+                type="button"
+                role="radio"
+                aria-checked={rendering === 'basic'}
+                tabIndex={rendering === 'basic' ? 0 : -1}
+                className={clsx(styles.toggleButton, rendering === 'basic' && styles.toggleActive)}
+                onKeyDown={handleRadioKeyDown}
+                onClick={() => setRendering('basic')}>
+                Basic
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={rendering === 'pro-ssr'}
+                tabIndex={rendering === 'pro-ssr' ? 0 : -1}
+                className={clsx(styles.toggleButton, rendering === 'pro-ssr' && styles.toggleActive)}
+                onKeyDown={handleRadioKeyDown}
+                onClick={() => setRendering('pro-ssr')}>
+                Pro SSR
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={rendering === 'rsc'}
+                tabIndex={rendering === 'rsc' ? 0 : -1}
+                className={clsx(styles.toggleButton, rendering === 'rsc' && styles.toggleActive)}
+                onKeyDown={handleRadioKeyDown}
+                onClick={() => setRendering('rsc')}>
+                RSC
+              </button>
+            </div>
+          </div>
           <ol className={styles.heroSteps}>
-            {firstRunCommands.map((command) => (
+            {commands.map((command) => (
               <li key={command}>
                 <code>{command}</code>
               </li>

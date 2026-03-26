@@ -6,7 +6,7 @@
 
 .heroLayout {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.95fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(22rem, 1fr);
   gap: 0.9rem;
   align-items: end;
 }
@@ -110,6 +110,50 @@
   display: flex;
   gap: 0.6rem;
   flex-wrap: wrap;
+}
+
+.toggleRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+}
+
+.toggleGroup {
+  display: inline-flex;
+  border: 1px solid var(--site-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.toggleButton {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ifm-color-content-secondary);
+  cursor: pointer;
+  line-height: 1.4;
+  transition: background 0.15s, color 0.15s;
+}
+
+.toggleButton:hover {
+  background: var(--site-soft-surface);
+}
+
+.toggleButton + .toggleButton {
+  border-left: 1px solid var(--site-border);
+}
+
+.toggleActive {
+  background: var(--ifm-color-primary);
+  color: #fff;
+}
+
+.toggleActive:hover {
+  background: var(--ifm-color-primary-dark);
 }
 
 .heroSteps {
