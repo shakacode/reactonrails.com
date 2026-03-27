@@ -1,6 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  detectDocsLayout,
+  docsLayoutPaths,
+  excludeNamesForRootCopy,
+  exists,
+} from "./docs-layout.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,15 +55,6 @@ const sourceDocs = path.join(
   useSubset ? "docs-subset" : "docs"
 );
 
-async function exists(targetPath) {
-  try {
-    await fs.access(targetPath);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 async function ensureExists(targetPath, message) {
   try {
     await fs.access(targetPath);
@@ -66,10 +63,14 @@ async function ensureExists(targetPath, message) {
   }
 }
 
-async function copyDirectoryContents(sourceDir, targetDir) {
+async function copyDirectoryContents(sourceDir, targetDir, options = {}) {
+  const {excludeNames = new Set()} = options;
   await fs.mkdir(targetDir, { recursive: true });
   const entries = await fs.readdir(sourceDir, { withFileTypes: true });
   for (const entry of entries) {
+    if (excludeNames.has(entry.name)) {
+      continue;
+    }
     const sourcePath = path.join(sourceDir, entry.name);
     const targetPath = path.join(targetDir, entry.name);
     if (entry.isDirectory()) {
@@ -563,29 +564,30 @@ function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
 async function prepareDocusaurus() {
   const siteRoot = path.join(workspaceRoot, "prototypes", "docusaurus");
   const docsRoot = path.join(siteRoot, "docs");
-  const ossDocsRoot = path.join(sourceDocs, "oss");
-  const proDocsRoot = path.join(sourceDocs, "pro");
-  const sourceImagesRoot = path.join(sourceDocs, "images");
-  const sourceAssetsRoot = path.join(sourceDocs, "assets");
+  const layout = await detectDocsLayout(sourceDocs);
+  const layoutPaths = docsLayoutPaths(sourceDocs, layout);
+  const excludedRootEntries = excludeNamesForRootCopy(layout);
 
   await ensureExists(
-    ossDocsRoot,
-    `Expected OSS docs at ${ossDocsRoot}. Check upstream docs layout before preparing.`
+    layoutPaths.readmePath,
+    `Expected docs README at ${layoutPaths.readmePath}. Check upstream docs layout before preparing.`
   );
 
   await fs.rm(docsRoot, { recursive: true, force: true });
   await fs.mkdir(docsRoot, { recursive: true });
 
-  await copyDirectoryContents(ossDocsRoot, docsRoot);
+  await copyDirectoryContents(layoutPaths.contentRoot, docsRoot, {
+    excludeNames: excludedRootEntries,
+  });
 
-  if (await exists(proDocsRoot)) {
-    await fs.cp(proDocsRoot, path.join(docsRoot, "pro"), { recursive: true });
+  if (await exists(layoutPaths.proDocsRoot)) {
+    await fs.cp(layoutPaths.proDocsRoot, path.join(docsRoot, "pro"), { recursive: true });
   }
-  if (await exists(sourceImagesRoot)) {
-    await fs.cp(sourceImagesRoot, path.join(docsRoot, "images"), { recursive: true });
+  if (await exists(layoutPaths.imagesRoot)) {
+    await fs.cp(layoutPaths.imagesRoot, path.join(docsRoot, "images"), { recursive: true });
   }
-  if (await exists(sourceAssetsRoot)) {
-    await fs.cp(sourceAssetsRoot, path.join(docsRoot, "assets"), { recursive: true });
+  if (await exists(layoutPaths.assetsRoot)) {
+    await fs.cp(layoutPaths.assetsRoot, path.join(docsRoot, "assets"), { recursive: true });
   }
 
   await rewriteProLinks(path.join(docsRoot, "pro"));
@@ -599,14 +601,14 @@ async function prepareDocusaurus() {
       throw error;
     }
   });
-  const docsHomeSource = await fs.readFile(path.join(sourceDocs, "README.md"), "utf8");
+  const docsHomeSource = await fs.readFile(layoutPaths.readmePath, "utf8");
   await fs.writeFile(
     path.join(docsRoot, "README.md"),
     docsHomeMarkdown(docsHomeSource, { hasArchive }),
     "utf8"
   );
 
-  console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);
+  console.log(`Prepared docusaurus docs from ${sourceDocs} (${layout} layout, pro -> /pro)`);
 }
 
 async function main() {
