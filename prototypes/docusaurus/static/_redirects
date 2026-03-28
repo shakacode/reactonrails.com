@@ -1,3 +1,12 @@
+/docs/guides/file-system-based-automated-bundle-generation.md /docs/core-concepts/auto-bundling-file-system-based-automated-bundle-generation/ 301
+/docs/guides/configuration /docs/configuration/ 301
+/docs/guides/configuration/ /docs/configuration/ 301
+/docs/guides/upgrading-react-on-rails /docs/upgrading/upgrading-react-on-rails/ 301
+/docs/guides/upgrading-react-on-rails/ /docs/upgrading/upgrading-react-on-rails/ 301
+/docs/guides/react-server-components-how-it-works /docs/pro/react-server-components/how-react-server-components-work/ 301
+/docs/guides/react-server-components-how-it-works/ /docs/pro/react-server-components/how-react-server-components-work/ 301
+/docs/guides/troubleshooting /docs/deployment/troubleshooting/ 301
+/docs/guides/troubleshooting/ /docs/deployment/troubleshooting/ 301
 /react-on-rails/docs/* /docs/:splat 301
 /react-on-rails/docs /docs 301
 /react-on-rails-pro/docs/* /docs/:splat 301
