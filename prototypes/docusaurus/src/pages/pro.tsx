@@ -143,7 +143,7 @@ export default function ProPage(): ReactNode {
           </div>
           <p className={styles.note}>
             Need pricing, implementation guidance, or a free-license discussion? Visit{' '}
-            <a href="https://pro.reactonrails.com/">pro.reactonrails.com</a>.
+            <a href="/docs/pro">the Pro docs landing page</a>.
           </p>
         </section>
       </main>

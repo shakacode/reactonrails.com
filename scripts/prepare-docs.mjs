@@ -392,6 +392,10 @@ async function fixKnownDocsIssues(docsRoot) {
     {
       pattern: /https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g,
       replacement: "https://reactonrails.com/docs/pro/"
+    },
+    {
+      pattern: /https:\/\/pro\.reactonrails\.com\/?/g,
+      replacement: "https://reactonrails.com/docs/pro/"
     }
   ]);
 }
@@ -409,7 +413,8 @@ async function rewriteProLinks(proDocsRoot) {
     const updated = original
       .replace(/((?:\.\.\/)+)oss\//g, "$1")
       .replace(/https:\/\/www\.shakacode\.com\/react-on-rails\/docs\//g, "https://reactonrails.com/docs/")
-      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/");
+      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/")
+      .replace(/https:\/\/pro\.reactonrails\.com\/?/g, "https://reactonrails.com/docs/pro/");
     if (updated !== original) {
       await fs.writeFile(absoluteFile, updated, "utf8");
     }
@@ -430,7 +435,8 @@ async function rewriteFlattenedOssLinks(docsRoot) {
       .replace(/\.\.\/\.\.\/images\//g, "../images/")
       .replace(/\.\.\/\.\.\/\.\.\/assets\//g, "../../assets/")
       .replace(/https:\/\/www\.shakacode\.com\/react-on-rails\/docs\//g, "https://reactonrails.com/docs/")
-      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/");
+      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/")
+      .replace(/https:\/\/pro\.reactonrails\.com\/?/g, "https://reactonrails.com/docs/pro/");
     if (updated !== original) {
       await fs.writeFile(absoluteFile, updated, "utf8");
     }
