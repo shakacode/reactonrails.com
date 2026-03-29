@@ -586,24 +586,23 @@ async function prepareSidebars(siteRoot, hasArchive) {
   const upstreamSidebars = path.join(workspaceRoot, "content", "upstream", "sidebars.ts");
   const targetSidebars = path.join(siteRoot, "sidebars.ts");
 
-  if (!(await exists(upstreamSidebars))) {
-    console.warn("Warning: upstream sidebars.ts not found — keeping existing sidebars.ts");
-    return;
+  if (await exists(upstreamSidebars)) {
+    let content = await fs.readFile(upstreamSidebars, "utf8");
+
+    if (hasArchive) {
+      // Insert archive category as the last item in docsSidebar before the closing ];
+      const archiveCategory = archiveSidebarCategory();
+      content = content.replace(
+        /(\n  \],\n\};\n)/,
+        `\n${archiveCategory}\n  ],\n};\n`
+      );
+    }
+
+    await fs.writeFile(targetSidebars, content, "utf8");
+    console.log("Generated sidebars.ts from upstream");
+  } else {
+    console.warn("Warning: upstream sidebars.ts not found — using committed fallback");
   }
-
-  let content = await fs.readFile(upstreamSidebars, "utf8");
-
-  if (hasArchive) {
-    // Insert archive category as the last item in docsSidebar before the closing ];
-    const archiveCategory = archiveSidebarCategory();
-    content = content.replace(
-      /(\n  \],\n\};\n)/,
-      `\n${archiveCategory}\n  ],\n};\n`
-    );
-  }
-
-  await fs.writeFile(targetSidebars, content, "utf8");
-  console.log("Generated sidebars.ts from upstream");
 }
 
 async function prepareDocusaurus() {
