@@ -7,6 +7,7 @@ content/upstream/docs/
 content/upstream/docs-subset/
 content/upstream/sidebars.ts
 prototypes/docusaurus/docs/
+prototypes/docusaurus/sidebars.ts
 
 .DS_Store
 npm-debug.log*
