@@ -21,6 +21,14 @@ const evaluationPaths = [
     href: '/docs/migrating/migrating-from-react-rails',
     cta: 'Use the react-rails guide',
   },
+  {
+    eyebrow: 'Upgrade path',
+    title: 'Move from OSS to Pro',
+    description:
+      'If your current app needs more SSR throughput or RSC support, compare OSS and Pro before adding the Pro package.',
+    href: '/docs/getting-started/oss-vs-pro',
+    cta: 'Compare OSS and Pro',
+  },
 ];
 
 const exampleApps = [

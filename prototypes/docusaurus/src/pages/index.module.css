@@ -217,7 +217,8 @@
 
 .personaGrid,
 .flowGrid,
-.migrationGrid {
+.migrationGrid,
+.upgradeGrid {
   display: grid;
   gap: 0.9rem;
 }
@@ -227,6 +228,10 @@
 }
 
 .migrationGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.upgradeGrid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -357,6 +362,7 @@
   .personaGrid,
   .flowGrid,
   .migrationGrid,
+  .upgradeGrid,
   .quoteGrid {
     grid-template-columns: 1fr;
   }
