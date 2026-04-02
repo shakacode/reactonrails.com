@@ -15,8 +15,10 @@
 /docs/pro/home-pro.md /docs/pro/ 301
 /pro/react-on-rails-pro /docs/pro/ 301
 /pro/react-on-rails-pro/ /docs/pro/ 301
+/pro/react-on-rails-pro.md /docs/pro/ 301
 /pro/home-pro /docs/pro/ 301
 /pro/home-pro/ /docs/pro/ 301
+/pro/home-pro.md /docs/pro/ 301
 /react-on-rails/docs/* /docs/:splat 301
 /react-on-rails/docs /docs 301
 /react-on-rails-pro/docs/* /docs/:splat 301
