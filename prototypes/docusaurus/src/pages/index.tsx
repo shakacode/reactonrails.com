@@ -141,7 +141,7 @@ function HeroSection() {
   const copyResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const commands = buildFirstRunCommands(lang, rendering);
   const commandText = commands.join('\n');
-  const heroLogoSrc = useBaseUrl('/img/logo-mark.png');
+  const heroLogoSrc = useBaseUrl('/img/logo-mark-pro.png');
 
   useEffect(
     () => () => {
@@ -197,8 +197,8 @@ function HeroSection() {
                 className={styles.heroLogo}
                 src={heroLogoSrc}
                 alt="React on Rails logo"
-                width="64"
-                height="64"
+                width="456"
+                height="406"
               />
             </div>
             <div className={styles.heroIdentityText}>
