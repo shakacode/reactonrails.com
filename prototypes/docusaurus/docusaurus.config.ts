@@ -3,6 +3,25 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {GlobExcludeDefault} from '@docusaurus/utils';
 
+// Use Algolia DocSearch when configured, otherwise fall back to local search.
+// Set ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, and ALGOLIA_INDEX_NAME env vars
+// to activate Algolia. Apply at https://docsearch.algolia.com/apply/
+const useAlgolia = Boolean(
+  process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_SEARCH_API_KEY
+);
+
+const localSearchTheme: NonNullable<Config['themes']>[number] = [
+  '@easyops-cn/docusaurus-search-local',
+  {
+    hashed: true,
+    indexBlog: false,
+    docsRouteBasePath: '/docs',
+    highlightSearchTermsOnTargetPage: true,
+    searchResultLimits: 8,
+    searchBarShortcutHint: true,
+  },
+];
+
 const config: Config = {
   title: 'React on Rails',
   tagline: 'Integrate React with Rails, including SSR, RSC, and production-grade docs.',
@@ -30,19 +49,7 @@ const config: Config = {
     locales: ['en'],
   },
 
-  themes: [
-    [
-      '@easyops-cn/docusaurus-search-local',
-      {
-        hashed: true,
-        indexBlog: false,
-        docsRouteBasePath: '/docs',
-        highlightSearchTermsOnTargetPage: true,
-        searchResultLimits: 8,
-        searchBarShortcutHint: true,
-      },
-    ],
-  ],
+  themes: useAlgolia ? [] : [localSearchTheme],
 
   presets: [
     [
@@ -72,6 +79,12 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      {
+        name: 'algolia-site-verification',
+        content: 'B2E2910709F2DC66',
+      },
+    ],
     image: 'img/react-on-rails-social-card.png',
     colorMode: {
       respectPrefersColorScheme: true,
@@ -182,6 +195,14 @@ const config: Config = {
       darkTheme: prismThemes.vsDark,
       additionalLanguages: ['ruby', 'markup-templating', 'erb', 'diff', 'haml', 'bash', 'regex', 'ignore'],
     },
+    ...(useAlgolia && {
+      algolia: {
+        appId: process.env.ALGOLIA_APP_ID!,
+        apiKey: process.env.ALGOLIA_SEARCH_API_KEY!,
+        indexName: process.env.ALGOLIA_INDEX_NAME || 'reactonrails',
+        contextualSearch: true,
+      },
+    }),
   } satisfies Preset.ThemeConfig,
 };
 

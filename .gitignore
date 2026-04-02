@@ -17,3 +17,6 @@ pnpm-debug.log*
 .env
 .env.local
 .env.*.local
+
+.Codex/napkin.md
+.claude/napkin.md
