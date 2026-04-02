@@ -33,7 +33,6 @@
   --site-inline-code-text: #24292f;
   --site-panel-surface: #ffffff;
   --site-panel-shadow: rgba(31, 35, 40, 0.08);
-  --site-content-max-width: var(--ifm-container-width-xl);
 }
 
 [data-theme='dark'] {
@@ -75,13 +74,6 @@ body {
 .navbar {
   border-bottom: 1px solid var(--site-border);
   box-shadow: none;
-}
-
-.navbar__inner {
-  width: 100%;
-  max-width: var(--site-content-max-width);
-  margin: 0 auto;
-  padding: 0 var(--ifm-spacing-horizontal);
 }
 
 .navbar__brand {
@@ -246,13 +238,6 @@ body {
   border-bottom: 1px solid var(--site-border);
   font-size: 0.9rem;
   color: var(--ifm-color-content-secondary);
-}
-
-.theme-announcement-bar [class*='announcementBarContent'] {
-  width: 100%;
-  max-width: var(--site-content-max-width);
-  margin: 0 auto;
-  padding: 0 var(--ifm-spacing-horizontal);
 }
 
 .theme-announcement-bar a {
