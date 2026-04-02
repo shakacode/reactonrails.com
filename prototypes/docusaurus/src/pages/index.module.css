@@ -26,17 +26,18 @@
   flex: 0 0 auto;
   display: grid;
   place-items: center;
-  width: 5.6rem;
-  height: 5.6rem;
+  width: 4.75rem;
+  height: 4.75rem;
   border: 1px solid var(--site-border);
-  border-radius: 28px;
+  border-radius: 24px;
   background: var(--site-panel-surface);
-  box-shadow: 0 22px 46px var(--site-panel-shadow);
+  box-shadow: 0 14px 30px var(--site-panel-shadow);
 }
 
 .heroLogo {
-  width: 4.4rem;
-  height: 4.4rem;
+  display: block;
+  width: 3.4rem;
+  height: 3.4rem;
   object-fit: contain;
 }
 

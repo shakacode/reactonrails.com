@@ -197,8 +197,8 @@ function HeroSection() {
                 className={styles.heroLogo}
                 src={heroLogoSrc}
                 alt="React on Rails logo"
-                width="88"
-                height="88"
+                width="64"
+                height="64"
               />
             </div>
             <div className={styles.heroIdentityText}>

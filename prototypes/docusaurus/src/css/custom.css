@@ -241,21 +241,21 @@ body {
   background: var(--site-soft-surface);
   color: var(--ifm-color-content);
 }
-div[class*='announcementBar'] {
+.theme-announcement-bar {
   background: var(--site-soft-surface);
   border-bottom: 1px solid var(--site-border);
   font-size: 0.9rem;
   color: var(--ifm-color-content-secondary);
 }
 
-div[class*='announcementBarContent'] {
+.theme-announcement-bar [class*='announcementBarContent'] {
   width: 100%;
   max-width: var(--site-content-max-width);
   margin: 0 auto;
   padding: 0 var(--ifm-spacing-horizontal);
 }
 
-div[class*='announcementBar'] a {
+.theme-announcement-bar a {
   color: var(--ifm-color-primary);
   font-weight: 600;
   text-decoration: underline;
