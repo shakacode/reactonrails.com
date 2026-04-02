@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
+import {docsRoutes} from '../constants/docsRoutes';
 import styles from './pro.module.css';
 
 const upgradeSteps = [
@@ -67,13 +68,13 @@ export default function ProPage(): ReactNode {
               license.
             </p>
             <div className={styles.actions}>
-              <Link className="button button--primary button--lg" to="/docs/pro/upgrading-to-pro">
+              <Link className="button button--primary button--lg" to={docsRoutes.proUpgrade}>
                 Review the upgrade guide
               </Link>
               <Link
                 className="button button--secondary button--lg"
-                to="/docs/getting-started/oss-vs-pro">
-                Compare OSS and Pro
+                to={docsRoutes.proOverview}>
+                Open Pro docs overview
               </Link>
               <Link
                 className="button button--secondary button--lg"
