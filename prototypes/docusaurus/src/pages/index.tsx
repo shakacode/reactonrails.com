@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 
+import {docsRoutes} from '../constants/docsRoutes';
 import styles from './index.module.css';
 
 const personaPaths = [
@@ -11,22 +12,22 @@ const personaPaths = [
     title: 'Starting a new Rails + React app',
     description:
       'Use the CLI to scaffold a working app, then customize from a clean baseline.',
-    href: '/docs/getting-started/create-react-on-rails-app',
+    href: docsRoutes.createApp,
     cta: 'Create a new app',
   },
   {
     title: 'Adding React to an existing Rails app',
     description:
       'Install React on Rails into your existing app and render components without rebuilding the stack.',
-    href: '/docs/getting-started/installation-into-an-existing-rails-app',
+    href: docsRoutes.installExistingApp,
     cta: 'Install into an existing app',
   },
   {
     title: 'Already on OSS and need more performance',
     description:
-      'See what Pro adds, how the upgrade works, and where higher-throughput SSR or RSC support fits.',
-    href: '/docs/getting-started/oss-vs-pro',
-    cta: 'Compare OSS and Pro',
+      'See the canonical Pro overview first, then follow the upgrade guidance for your app.',
+    href: docsRoutes.proOverview,
+    cta: 'Open Pro overview',
   },
   {
     title: 'Evaluating Rails + React options',
@@ -42,21 +43,21 @@ const recommendedFlows = [
     title: 'Recommended for new projects',
     summary: 'One command to a working app. Customize after.',
     command: 'npx create-react-on-rails-app@latest my-app',
-    href: '/docs/getting-started/create-react-on-rails-app',
+    href: docsRoutes.createApp,
     cta: 'Follow the new-app guide',
   },
   {
     title: 'For mature Rails apps',
     summary: 'Add React on Rails to your existing codebase. Keep your routes, add components incrementally.',
     command: 'bundle exec rails generate react_on_rails:install --typescript',
-    href: '/docs/getting-started/installation-into-an-existing-rails-app',
+    href: docsRoutes.installExistingApp,
     cta: 'Use the install guide',
   },
   {
     title: 'When OSS is no longer enough',
     summary: 'Pro is an upgrade tier, not a separate product. Add it when you need more SSR throughput or guided support.',
     command: 'bundle add react_on_rails_pro',
-    href: '/docs/pro/upgrading-to-pro',
+    href: docsRoutes.proUpgrade,
     cta: 'Review the upgrade path',
   },
 ];
@@ -66,7 +67,7 @@ const migrationGuides = [
     title: 'Migrate from react-rails',
     description:
       'Step-by-step checklist for swapping `react-rails` to React on Rails, with a sample app.',
-    href: '/docs/migrating/migrating-from-react-rails',
+    href: docsRoutes.migrateFromReactRails,
   },
   {
     title: 'Browse sample apps',
@@ -213,7 +214,7 @@ function HeroSection() {
             them.
           </p>
           <div className={styles.buttons}>
-            <Link className="button button--primary button--lg" to="/docs">
+            <Link className="button button--primary button--lg" to={docsRoutes.docsGuide}>
               Start with the docs
             </Link>
             <Link className="button button--secondary button--lg" to="/examples">
