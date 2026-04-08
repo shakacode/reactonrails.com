@@ -16,7 +16,7 @@
   --ifm-line-height-base: 1.45;
   --ifm-font-weight-base: 400;
   --ifm-heading-line-height: 1.25;
-  --ifm-code-font-size: 85%;
+  --ifm-code-font-size: 90%;
   --ifm-heading-font-weight: 600;
   --ifm-color-content: #24292f;
   --ifm-color-content-secondary: #57606a;
@@ -159,10 +159,9 @@ body {
 }
 
 .markdown pre code {
-  background: none;
   border: none;
   border-radius: 0;
-  padding: 0;
+  padding: var(--ifm-pre-padding);
   color: inherit;
 }
 
