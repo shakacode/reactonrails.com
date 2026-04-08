@@ -4,6 +4,7 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { detectDocsLayout, docsLayoutPaths, exists, subsetPathsForLayout } from "./docs-layout.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,33 +16,6 @@ const buildSubset = args.has("--subset");
 const upstreamRoot = path.join(workspaceRoot, "content", "upstream");
 const fullDocsTarget = path.join(upstreamRoot, "docs");
 const subsetDocsTarget = path.join(upstreamRoot, "docs-subset");
-
-const subsetPaths = [
-  "README.md",
-  "oss/introduction.md",
-  "oss/getting-started/quick-start.md",
-  "oss/getting-started/tutorial.md",
-  "oss/getting-started/installation-into-an-existing-rails-app.md",
-  "oss/core-concepts/how-react-on-rails-works.md",
-  "oss/core-concepts/react-server-rendering.md",
-  "oss/api-reference/view-helpers-api.md",
-  "oss/building-features/react-and-redux.md",
-  "oss/deployment/README.md",
-  "oss/upgrading/upgrading-react-on-rails.md",
-  "pro/react-on-rails-pro.md",
-  "pro/home-pro.md",
-  "pro/node-renderer/basics.md",
-  "pro/react-server-components/tutorial.md"
-];
-
-async function exists(targetPath) {
-  try {
-    await fs.access(targetPath);
-    return true;
-  } catch {
-    return false;
-  }
-}
 
 function cloneRepo(repoUrl, ref) {
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "react-on-rails-docs-"));
@@ -72,12 +46,13 @@ async function walkFiles(dir, callback, relativePrefix = "") {
   }
 }
 
-async function writeSubset(sourceDocsRoot, subsetRoot) {
+async function writeSubset(sourceDocsRoot, subsetRoot, layout) {
   await fs.rm(subsetRoot, { recursive: true, force: true });
   await fs.mkdir(subsetRoot, { recursive: true });
 
   const missing = [];
   let copied = 0;
+  const subsetPaths = subsetPathsForLayout(layout);
 
   for (const relativeFile of subsetPaths) {
     const sourceFile = path.join(sourceDocsRoot, relativeFile);
@@ -126,6 +101,8 @@ async function main() {
   await fs.rm(fullDocsTarget, { recursive: true, force: true });
   await fs.mkdir(path.dirname(fullDocsTarget), { recursive: true });
   await fs.cp(sourceDocsRoot, fullDocsTarget, { recursive: true });
+  const layout = await detectDocsLayout(fullDocsTarget);
+  const layoutPaths = docsLayoutPaths(fullDocsTarget, layout);
 
   // Sync sidebars.ts from upstream (source of truth for sidebar navigation)
   const upstreamSidebars = path.join(sourceDocsRoot, "sidebars.ts");
@@ -139,13 +116,15 @@ async function main() {
 
   let subsetStats = null;
   if (buildSubset) {
-    subsetStats = await writeSubset(fullDocsTarget, subsetDocsTarget);
+    subsetStats = await writeSubset(fullDocsTarget, subsetDocsTarget, layout);
   }
 
   const docsCount = await countFiles(fullDocsTarget);
 
   console.log(`Synced docs to ${fullDocsTarget}`);
   console.log(`File count: ${docsCount}`);
+  console.log(`Detected docs layout: ${layout}`);
+  console.log(`Content root: ${layoutPaths.contentRoot}`);
   if (subsetStats) {
     console.log(`Subset: copied ${subsetStats.copied} docs to ${subsetDocsTarget}`);
     if (subsetStats.missing.length > 0) {

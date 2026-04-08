@@ -1,0 +1,1 @@
+This directory exists to verify layout detection does not treat every `oss/` folder as a split docs root.
