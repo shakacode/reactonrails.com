@@ -5,6 +5,7 @@
 
 content/upstream/docs/
 content/upstream/docs-subset/
+content/upstream/sidebars.ts
 prototypes/docusaurus/docs/
 
 .DS_Store
