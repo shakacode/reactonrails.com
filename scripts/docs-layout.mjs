@@ -28,11 +28,33 @@ export async function exists(targetPath) {
   }
 }
 
+async function hasSplitDocsMarkers(splitRoot) {
+  const splitMarkers = [
+    path.join(splitRoot, "introduction.md"),
+    path.join(splitRoot, "getting-started"),
+    path.join(splitRoot, "core-concepts"),
+  ];
+
+  for (const markerPath of splitMarkers) {
+    if (await exists(markerPath)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function assertValidLayout(layout) {
+  if (layout !== "split" && layout !== "consolidated") {
+    throw new Error(`Unsupported docs layout: ${layout}`);
+  }
+}
+
 export async function detectDocsLayout(docsRoot) {
   const splitRoot = path.join(docsRoot, "oss");
   const readmePath = path.join(docsRoot, "README.md");
 
-  if (await exists(splitRoot)) {
+  if ((await exists(splitRoot)) && (await hasSplitDocsMarkers(splitRoot))) {
     return "split";
   }
 
@@ -44,6 +66,8 @@ export async function detectDocsLayout(docsRoot) {
 }
 
 export function subsetPathsForLayout(layout) {
+  assertValidLayout(layout);
+
   return docsSubsetEntries.map((entry) => {
     if (entry.kind === "root") {
       return entry.relativePath;
@@ -62,6 +86,8 @@ export function subsetPathsForLayout(layout) {
 }
 
 export function docsLayoutPaths(docsRoot, layout) {
+  assertValidLayout(layout);
+
   if (layout === "split") {
     return {
       layout,

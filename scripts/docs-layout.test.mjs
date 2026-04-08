@@ -34,6 +34,12 @@ test("detectDocsLayout returns consolidated for single-tree layout", async () =>
   assert.equal(layoutPaths.proDocsRoot, path.join(docsRoot, "pro"));
 });
 
+test("detectDocsLayout ignores stray oss directories without split markers", async () => {
+  const docsRoot = path.join(fixturesRoot, "consolidated-with-oss");
+  const layout = await detectDocsLayout(docsRoot);
+  assert.equal(layout, "consolidated");
+});
+
 test("subsetPathsForLayout maps OSS docs differently by layout", () => {
   const splitPaths = subsetPathsForLayout("split");
   const consolidatedPaths = subsetPathsForLayout("consolidated");
@@ -44,6 +50,14 @@ test("subsetPathsForLayout maps OSS docs differently by layout", () => {
   assert.ok(!consolidatedPaths.includes("oss/introduction.md"));
   assert.ok(splitPaths.includes("pro/react-on-rails-pro.md"));
   assert.ok(consolidatedPaths.includes("pro/react-on-rails-pro.md"));
+});
+
+test("layout helpers reject unsupported layout values", () => {
+  assert.throws(() => subsetPathsForLayout("hybrid"), /Unsupported docs layout: hybrid/);
+  assert.throws(
+    () => docsLayoutPaths("/tmp/docs", "hybrid"),
+    /Unsupported docs layout: hybrid/
+  );
 });
 
 test("excludeNamesForRootCopy excludes nested assets only for consolidated layout", () => {
