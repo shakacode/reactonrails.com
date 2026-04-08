@@ -25,9 +25,9 @@ const personaPaths = [
   {
     title: 'Already on OSS and need more performance',
     description:
-      'See the canonical Pro overview first, then follow the upgrade guidance for your app.',
-    href: docsRoutes.proOverview,
-    cta: 'Open Pro overview',
+      'Compare OSS and Pro first, then upgrade only when higher-throughput SSR, RSC, or support is worth it.',
+    href: docsRoutes.ossVsPro,
+    cta: 'Compare OSS and Pro',
   },
   {
     title: 'Evaluating Rails + React options',
@@ -55,10 +55,11 @@ const recommendedFlows = [
   },
   {
     title: 'When OSS is no longer enough',
-    summary: 'Pro is an upgrade tier, not a separate product. Add it when you need more SSR throughput or guided support.',
+    summary:
+      'Pro is an upgrade tier, not a separate product. Compare first, then add it when the extra SSR throughput or guided support matters.',
     command: 'bundle add react_on_rails_pro',
     href: docsRoutes.proUpgrade,
-    cta: 'Review the upgrade path',
+    cta: 'Open the upgrade guide',
   },
 ];
 
@@ -220,8 +221,8 @@ function HeroSection() {
             <Link className="button button--secondary button--lg" to="/examples">
               Review examples
             </Link>
-            <Link className="button button--secondary button--lg" to="/pro">
-              Understand Pro
+            <Link className="button button--secondary button--lg" to={docsRoutes.ossVsPro}>
+              Compare OSS and Pro
             </Link>
           </div>
         </div>
@@ -299,7 +300,8 @@ function HeroSection() {
             </button>
           </div>
           <p className={styles.panelNote}>
-            Not starting fresh? See the install, migration, or Pro upgrade guides below.
+            Already on OSS? Start with the comparison guide, then use the upgrade guide if you
+            need Pro.
           </p>
         </div>
       </div>
@@ -350,6 +352,41 @@ function FlowSection() {
               </Link>
             </article>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function UpgradeSection() {
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <p className={styles.sectionEyebrow}>OSS to Pro</p>
+          <h2>Compare first, then upgrade only when the Pro features are the right fit.</h2>
+        </div>
+        <div className={styles.upgradeGrid}>
+          <article className={styles.migrationCard}>
+            <h3>1. Compare OSS and Pro</h3>
+            <p>
+              Start here if you already run the OSS product and want to know whether the upgrade
+              is justified.
+            </p>
+            <Link className={styles.cardLink} to={docsRoutes.ossVsPro}>
+              Open the comparison guide
+            </Link>
+          </article>
+          <article className={styles.migrationCard}>
+            <h3>2. Upgrade to Pro</h3>
+            <p>
+              Once the comparison says Pro is worth it, follow the upgrade guide and add the Pro
+              package.
+            </p>
+            <Link className={styles.cardLink} to={docsRoutes.proUpgrade}>
+              Open the upgrade guide
+            </Link>
+          </article>
         </div>
       </div>
     </section>
@@ -443,6 +480,7 @@ export default function Home(): ReactNode {
       <main>
         <PersonaSection />
         <FlowSection />
+        <UpgradeSection />
         <MigrationSection />
         <TestimonialsSection />
         <ConsultationSection />

@@ -22,6 +22,14 @@ const evaluationPaths = [
     href: docsRoutes.migrateFromReactRails,
     cta: 'Use the react-rails guide',
   },
+  {
+    eyebrow: 'Upgrade path',
+    title: 'Move from OSS to Pro',
+    description:
+      'If your current app needs more SSR throughput or RSC support, compare OSS and Pro before adding the Pro package.',
+    href: docsRoutes.ossVsPro,
+    cta: 'Compare OSS and Pro',
+  },
 ];
 
 const exampleApps = [
