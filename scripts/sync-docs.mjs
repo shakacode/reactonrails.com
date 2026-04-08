@@ -104,6 +104,16 @@ async function main() {
   const layout = await detectDocsLayout(fullDocsTarget);
   const layoutPaths = docsLayoutPaths(fullDocsTarget, layout);
 
+  // Sync sidebars.ts from upstream (source of truth for sidebar navigation)
+  const upstreamSidebars = path.join(sourceDocsRoot, "sidebars.ts");
+  const sidebarTarget = path.join(upstreamRoot, "sidebars.ts");
+  if (await exists(upstreamSidebars)) {
+    await fs.copyFile(upstreamSidebars, sidebarTarget);
+    console.log(`Synced sidebars.ts to ${sidebarTarget}`);
+  } else {
+    console.warn("Warning: docs/sidebars.ts not found in source repo");
+  }
+
   let subsetStats = null;
   if (buildSubset) {
     subsetStats = await writeSubset(fullDocsTarget, subsetDocsTarget, layout);

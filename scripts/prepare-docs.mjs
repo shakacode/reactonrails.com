@@ -561,6 +561,51 @@ function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
 }
 
+function archiveSidebarCategory() {
+  const legacyItems = legacyDocsToArchive.map(
+    (entry) => `            'archive/legacy/${stripMdExtension(entry.source)}',`
+  );
+  return `    {
+      type: 'category',
+      label: 'Historical Reference',
+      link: {type: 'generated-index', title: 'Historical Reference'},
+      items: [
+        'archive/README',
+        {
+          type: 'category',
+          label: 'Legacy Archive',
+          items: [
+            'archive/legacy/README',
+${legacyItems.join("\n")}
+          ],
+        },
+      ],
+    },`;
+}
+
+async function prepareSidebars(siteRoot, hasArchive) {
+  const upstreamSidebars = path.join(workspaceRoot, "content", "upstream", "sidebars.ts");
+  const targetSidebars = path.join(siteRoot, "sidebars.ts");
+
+  if (await exists(upstreamSidebars)) {
+    let content = await fs.readFile(upstreamSidebars, "utf8");
+
+    if (hasArchive) {
+      // Insert archive category as the last item in docsSidebar before the closing ];
+      const archiveCategory = archiveSidebarCategory();
+      content = content.replace(
+        /(\n  \],\n\};\n)/,
+        `\n${archiveCategory}\n  ],\n};\n`
+      );
+    }
+
+    await fs.writeFile(targetSidebars, content, "utf8");
+    console.log("Generated sidebars.ts from upstream");
+  } else {
+    console.warn("Warning: upstream sidebars.ts not found — using committed fallback");
+  }
+}
+
 async function prepareDocusaurus() {
   const siteRoot = path.join(workspaceRoot, "prototypes", "docusaurus");
   const docsRoot = path.join(siteRoot, "docs");
@@ -591,7 +636,9 @@ async function prepareDocusaurus() {
   }
 
   await rewriteProLinks(path.join(docsRoot, "pro"));
-  await rewriteFlattenedOssLinks(docsRoot);
+  if (layout === "split") {
+    await rewriteFlattenedOssLinks(docsRoot);
+  }
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
   await normalizeCodeFences(docsRoot);
@@ -607,6 +654,8 @@ async function prepareDocusaurus() {
     docsHomeMarkdown(docsHomeSource, { hasArchive }),
     "utf8"
   );
+
+  await prepareSidebars(siteRoot, hasArchive);
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (${layout} layout, pro -> /pro)`);
 }

@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
+import {docsRoutes} from '../constants/docsRoutes';
 import styles from './examples.module.css';
 
 const evaluationPaths = [
@@ -10,7 +11,7 @@ const evaluationPaths = [
     title: 'Compare setup approaches',
     description:
       'Start with the docs landing page to choose between new app setup, existing app install, migration, or Pro evaluation.',
-    href: '/docs',
+    href: docsRoutes.docsGuide,
     cta: 'Open the docs guide',
   },
   {
@@ -18,7 +19,7 @@ const evaluationPaths = [
     title: 'Move from react-rails',
     description:
       'Follow a migration sequence validated against a real open-source example app instead of reconstructing it from old guides.',
-    href: '/docs/migrating/migrating-from-react-rails',
+    href: docsRoutes.migrateFromReactRails,
     cta: 'Use the react-rails guide',
   },
 ];
