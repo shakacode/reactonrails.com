@@ -20,12 +20,26 @@ const docsRoot = path.resolve(
 const outputPath = path.resolve(
   argValue("--output") ?? path.join(workspaceRoot, `VALIDATION_REPORT_${dateStamp}.md`)
 );
+const failOn = argValue("--fail-on") ?? "none";
+
+const severityRank = {
+  info: 0,
+  warn: 1,
+  error: 2,
+};
 
 const semverPattern = /\b(\d+)\.(\d+)\.(\d+)\b/g;
 const markdownLinkPattern = /\[[^\]]+\]\(([^)]+)\)/g;
 const legacyTermPattern =
   /\b(webpacker|turbolinks 2|react-hot-loader|asset pipeline|rails 5\.0|react_on_rails\s+1[0-5]\.)\b/gi;
 const react18Pattern = /react 18/gi;
+const placeholderPattern = /\b(blah blah|TODO|TBD|xxx)\b/i;
+const reactOnRailsContextPattern =
+  /\b(react[\s_-]?on[\s_-]?rails(?:[\s_-]?(?:pro|rsc))?|react_on_rails(?:_(?:pro|rsc))?|react-on-rails(?:-(?:pro|rsc))?)\b/i;
+
+if (!["none", "info", "warn", "error"].includes(failOn)) {
+  throw new Error(`Invalid --fail-on value: ${failOn}`);
+}
 
 function compareVersionTuple(a, b) {
   for (let i = 0; i < 3; i += 1) {
@@ -54,31 +68,92 @@ async function walkFiles(dir, callback, relativePrefix = "") {
   }
 }
 
-function lineNumbersForPattern(lines, pattern) {
+function createLineInfo(content) {
+  const lines = content.split(/\r?\n/);
+  const lineInfo = [];
+  let inFence = false;
+  let fenceMarker = null;
+
+  for (const line of lines) {
+    const trimmed = line.trimStart();
+    const fenceMatch = trimmed.match(/^(```+|~~~+)/);
+
+    if (fenceMatch) {
+      const marker = {
+        char: fenceMatch[1][0],
+        length: fenceMatch[1].length,
+      };
+
+      lineInfo.push({text: line, inFence: true});
+
+      if (!inFence) {
+        inFence = true;
+        fenceMarker = marker;
+      } else if (marker.char === fenceMarker?.char && marker.length >= fenceMarker.length) {
+        inFence = false;
+        fenceMarker = null;
+      }
+
+      continue;
+    }
+
+    lineInfo.push({text: line, inFence});
+  }
+
+  return lineInfo;
+}
+
+function stripInlineCode(line) {
+  return line.replace(/`[^`]+`/g, "");
+}
+
+function lineNumbersForPattern(lineInfo, pattern, options = {}) {
+  const {includeFenced = false, transform = (line) => line} = options;
   const result = [];
-  lines.forEach((line, index) => {
-    if (pattern.test(line)) {
+
+  lineInfo.forEach(({text, inFence}, index) => {
+    if (!includeFenced && inFence) {
+      return;
+    }
+
+    const candidate = transform(text);
+    if (pattern.test(candidate)) {
       result.push(index + 1);
     }
     pattern.lastIndex = 0;
   });
+
   return result;
 }
 
-function findVersionsBelowFloor(content, floorTuple) {
+function findVersionsBelowFloor(lineInfo, floorTuple) {
   const versions = [];
-  let match;
-  while ((match = semverPattern.exec(content)) !== null) {
-    const tuple = [Number(match[1]), Number(match[2]), Number(match[3])];
-    if (compareVersionTuple(tuple, floorTuple) < 0) {
-      versions.push(match[0]);
+
+  for (const {text, inFence} of lineInfo) {
+    if (inFence || !reactOnRailsContextPattern.test(text)) {
+      continue;
+    }
+
+    let match;
+    semverPattern.lastIndex = 0;
+    while ((match = semverPattern.exec(text)) !== null) {
+      const tuple = [Number(match[1]), Number(match[2]), Number(match[3])];
+      if (compareVersionTuple(tuple, floorTuple) < 0) {
+        versions.push(match[0]);
+      }
     }
   }
+
   return [...new Set(versions)];
 }
 
-function findSuspiciousLinks(content) {
+function findSuspiciousLinks(lineInfo) {
   const issues = [];
+  const content = lineInfo
+    .filter(({inFence}) => !inFence)
+    .map(({text}) => text)
+    .join("\n");
+
   let match;
   while ((match = markdownLinkPattern.exec(content)) !== null) {
     const target = match[1].trim();
@@ -94,97 +169,158 @@ function findSuspiciousLinks(content) {
     if (target.includes("www.shakacode.com/react-on-rails-pro/docs/")) {
       issues.push(`Legacy Pro docs domain link (${target}).`);
     }
+    if (target.includes("pro.reactonrails.com")) {
+      issues.push(`Dead pro subdomain link (${target}).`);
+    }
   }
+
   return [...new Set(issues)];
 }
 
-function evaluatePage(relativePath, content) {
-  const lines = content.split(/\r?\n/);
-  const comments = [];
+function addFinding(findings, severity, message) {
+  findings.push({severity, message});
+}
 
-  const firstContentLine = lines.find((line) => line.trim().length > 0) ?? "";
+function evaluatePage(relativePath, content) {
+  const lineInfo = createLineInfo(content);
+  const findings = [];
+  const firstContentLine = lineInfo.find(({text}) => text.trim().length > 0)?.text ?? "";
+  const isReleaseNotes = relativePath.includes("release-notes/");
+
   if (!firstContentLine.startsWith("# ")) {
-    comments.push("Missing top-level `#` heading; normalize to a single H1.");
+    addFinding(findings, "warn", "Missing top-level `#` heading; normalize to a single H1.");
   }
 
-  const isReleaseNotes = relativePath.includes("release-notes/");
-  const lowVersions = isReleaseNotes ? [] : findVersionsBelowFloor(content, [16, 4, 0]);
+  const lowVersions = isReleaseNotes ? [] : findVersionsBelowFloor(lineInfo, [16, 4, 0]);
   if (lowVersions.length > 0) {
-    comments.push(
-      `Mentions versions below 16.4.0 (${lowVersions.slice(0, 4).join(", ")}); verify these are intentionally historical.`
+    addFinding(
+      findings,
+      "info",
+      `Mentions React on Rails versions below 16.4.0 (${lowVersions.slice(0, 4).join(", ")}); verify these are intentionally historical.`
     );
   }
 
-  const suspiciousLinks = findSuspiciousLinks(content);
+  const suspiciousLinks = findSuspiciousLinks(lineInfo);
   for (const issue of suspiciousLinks) {
-    comments.push(issue);
+    addFinding(findings, "error", issue);
   }
 
-  const legacyMentions = (content.match(legacyTermPattern) ?? []).length;
+  const proseContent = lineInfo
+    .filter(({inFence}) => !inFence)
+    .map(({text}) => text)
+    .join("\n");
+  const legacyMentions = (proseContent.match(legacyTermPattern) ?? []).length;
   if (legacyMentions >= 3) {
-    comments.push("Heavy legacy terminology detected; consider archiving or adding a legacy warning.");
+    addFinding(
+      findings,
+      "info",
+      "Heavy legacy terminology detected; consider archiving or adding a legacy warning."
+    );
   }
 
-  const react18Mentions = lineNumbersForPattern(lines, react18Pattern);
+  const react18Mentions = lineNumbersForPattern(lineInfo, react18Pattern);
   if (react18Mentions.length > 0 && !isReleaseNotes) {
-    comments.push(
+    addFinding(
+      findings,
+      "warn",
       `Mentions React 18 on line(s) ${react18Mentions.slice(0, 5).join(", ")}; confirm whether this should now say React 19.`
     );
   }
 
-  const placeholderLines = lineNumbersForPattern(lines, /\b(blah blah|TODO|TBD|xxx)\b/i);
+  const placeholderLines = lineNumbersForPattern(lineInfo, placeholderPattern, {
+    transform: stripInlineCode,
+  });
   if (placeholderLines.length > 0) {
-    comments.push(`Placeholder text found on line(s) ${placeholderLines.join(", ")}.`);
+    addFinding(
+      findings,
+      "error",
+      `Placeholder text found on line(s) ${placeholderLines.join(", ")}.`
+    );
   }
 
-  if (lines.length > 450 && !relativePath.includes("release-notes/")) {
-    comments.push("Long page (>450 lines); consider splitting for navigability.");
-  }
-
-  if (comments.length === 0) {
-    comments.push("No blocking issues detected.");
+  if (lineInfo.length > 450 && !isReleaseNotes) {
+    addFinding(findings, "info", "Long page (>450 lines); consider splitting for navigability.");
   }
 
   return {
     relativePath: relativePath.split(path.sep).join("/"),
     route: safeRoute(relativePath.split(path.sep).join("/")),
-    comments,
-    hasFindings: comments[0] !== "No blocking issues detected."
+    findings,
+  };
+}
+
+function findingSummary(pages) {
+  const findings = pages.flatMap((page) => page.findings);
+  const counts = {
+    error: findings.filter((finding) => finding.severity === "error").length,
+    warn: findings.filter((finding) => finding.severity === "warn").length,
+    info: findings.filter((finding) => finding.severity === "info").length,
+  };
+
+  return {
+    counts,
+    pageCounts: {
+      withFindings: pages.filter((page) => page.findings.length > 0).length,
+      withErrors: pages.filter((page) => page.findings.some((finding) => finding.severity === "error")).length,
+      withWarnings: pages.filter((page) => page.findings.some((finding) => finding.severity === "warn")).length,
+      withInfo: pages.filter((page) => page.findings.some((finding) => finding.severity === "info")).length,
+    },
   };
 }
 
 function buildReport(pages) {
   const total = pages.length;
-  const flagged = pages.filter((page) => page.hasFindings).length;
-  const clean = total - flagged;
+  const clean = total - pages.filter((page) => page.findings.length > 0).length;
   const generatedAt = new Date().toISOString();
   const relativeDocsRoot = path.relative(workspaceRoot, docsRoot).split(path.sep).join("/") || ".";
+  const summary = findingSummary(pages);
 
-  const summary = [
-    `# Docs Validation Report`,
-    ``,
+  const header = [
+    "# Docs Validation Report",
+    "",
     `Generated: ${generatedAt}`,
     `Docs root: \`${relativeDocsRoot}\``,
     `Pages scanned: ${total}`,
-    `Pages with findings: ${flagged}`,
+    `Pages with findings: ${summary.pageCounts.withFindings}`,
     `Pages clean: ${clean}`,
-    ``,
-    `## Page-by-page comments`,
-    ``
+    `Pages with errors: ${summary.pageCounts.withErrors}`,
+    `Pages with warnings: ${summary.pageCounts.withWarnings}`,
+    `Pages with info: ${summary.pageCounts.withInfo}`,
+    `Errors: ${summary.counts.error}`,
+    `Warnings: ${summary.counts.warn}`,
+    `Info: ${summary.counts.info}`,
+    "",
+    "## Page-by-page comments",
+    "",
   ];
 
   const body = pages
     .map((page) => {
       const lines = [`### ${page.relativePath}`, `Route: \`${page.route}\``];
-      for (const comment of page.comments) {
-        lines.push(`- ${comment}`);
+      if (page.findings.length === 0) {
+        lines.push("- `[ok]` No findings detected.");
+      } else {
+        for (const finding of page.findings) {
+          lines.push(`- \`[${finding.severity}]\` ${finding.message}`);
+        }
       }
       lines.push("");
       return lines.join("\n");
     })
     .join("\n");
 
-  return `${summary.join("\n")}\n${body}`;
+  return `${header.join("\n")}\n${body}`;
+}
+
+function shouldFailAudit(pages) {
+  if (failOn === "none") {
+    return false;
+  }
+
+  const threshold = severityRank[failOn];
+  return pages.some((page) =>
+    page.findings.some((finding) => severityRank[finding.severity] >= threshold)
+  );
 }
 
 async function main() {
@@ -201,10 +337,23 @@ async function main() {
   pages.sort((a, b) => a.relativePath.localeCompare(b.relativePath));
 
   const report = buildReport(pages);
+  const summary = findingSummary(pages);
   await fs.writeFile(outputPath, report, "utf8");
+
   console.log(`Wrote docs report: ${outputPath}`);
   console.log(`Pages scanned: ${pages.length}`);
-  console.log(`Pages with findings: ${pages.filter((page) => page.hasFindings).length}`);
+  console.log(`Pages with findings: ${summary.pageCounts.withFindings}`);
+  console.log(`Pages with errors: ${summary.pageCounts.withErrors}`);
+  console.log(`Pages with warnings: ${summary.pageCounts.withWarnings}`);
+  console.log(`Pages with info: ${summary.pageCounts.withInfo}`);
+  console.log(`Errors: ${summary.counts.error}`);
+  console.log(`Warnings: ${summary.counts.warn}`);
+  console.log(`Info: ${summary.counts.info}`);
+
+  if (shouldFailAudit(pages)) {
+    console.error(`Failing docs audit because ${failOn}+ findings were detected.`);
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error) => {
