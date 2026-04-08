@@ -309,7 +309,7 @@ function buildReport(pages) {
     })
     .join("\n");
 
-  return `${header.join("\n")}${body}`;
+  return `${header.join("\n")}\n${body}`;
 }
 
 function shouldFailAudit(pages) {
