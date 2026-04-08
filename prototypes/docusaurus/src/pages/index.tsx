@@ -152,6 +152,44 @@ function ReactIcon({className}: {className?: string}) {
   );
 }
 
+const trustedByCompanies = [
+  {name: 'Popmenu', logo: '/img/logos/popmenu_logo.png', href: 'https://popmenu.com'},
+  {name: 'Printivity', logo: '/img/logos/printivity_logo.png', href: 'https://www.printivity.com'},
+  {name: 'Datacenters.com', logo: '/img/logos/datacenters_logo.png', href: 'https://www.datacenters.com'},
+  {name: 'HVMN', logo: '/img/logos/hvmn_logo.png', href: 'https://hvmn.com'},
+  {name: 'Jilt', logo: '/img/logos/jilt_logo.png', href: 'https://jilt.com'},
+];
+
+function TrustedBySection() {
+  return (
+    <section className={styles.trustedBy}>
+      <div className="container">
+        <p className={styles.trustedByLabel}>Trusted in production by</p>
+        <div className={styles.logoBar}>
+          {trustedByCompanies.map((company) => (
+            <a
+              key={company.name}
+              href={company.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.logoItem}
+              title={company.name}>
+              <img src={useBaseUrl(company.logo)} alt={company.name} loading="lazy" />
+            </a>
+          ))}
+        </div>
+        <a
+          href="https://github.com/sponsors/shakacode"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.sponsorLink}>
+          Become a sponsor →
+        </a>
+      </div>
+    </section>
+  );
+}
+
 function HeroSection() {
   const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
   const [lang, setLang] = useState<Language>('ts');
@@ -504,6 +542,7 @@ export default function Home(): ReactNode {
     <Layout description="Official React on Rails documentation, examples, and React on Rails Pro details.">
       <HeroSection />
       <main>
+        <TrustedBySection />
         <PersonaSection />
         <FlowSection />
         <UpgradeSection />
