@@ -474,6 +474,14 @@ async function injectProFriendlyNotice(docsRoot) {
   }
 }
 
+const githubAlertToDocusaurus = {
+  NOTE: "note",
+  TIP: "tip",
+  IMPORTANT: "info",
+  WARNING: "warning",
+  CAUTION: "danger",
+};
+
 const languageRemapping = {
   rsc: "text",
   procfile: "yaml",
@@ -495,6 +503,75 @@ function detectCodeLanguage(content) {
   if (/\b(const |let |var |require\(|module\.exports|import )/.test(content)) return "js";
 
   return "text";
+}
+
+function convertGitHubAlertsInMarkdown(markdown) {
+  const alertPattern = /^(\s*)>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](.*)$/;
+  const lines = markdown.split("\n");
+  const result = [];
+  let i = 0;
+  let fence = null;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const normalizedLine = line.replace(/^\s*(?:>\s*)+/, "");
+
+    if (!fence) {
+      const openingFence = normalizedLine.match(/^\s*(`{3,}|~{3,})/);
+      if (openingFence) {
+        fence = {
+          marker: openingFence[1][0],
+          length: openingFence[1].length,
+        };
+        result.push(line);
+        i++;
+        continue;
+      }
+    } else {
+      result.push(line);
+      const closingFence = normalizedLine.match(/^\s*(`{3,}|~{3,})\s*$/);
+      if (
+        closingFence &&
+        closingFence[1][0] === fence.marker &&
+        closingFence[1].length >= fence.length
+      ) {
+        fence = null;
+      }
+      i++;
+      continue;
+    }
+
+    const alertMatch = line.match(alertPattern);
+    if (alertMatch) {
+      const indent = alertMatch[1];
+      const admonitionType = githubAlertToDocusaurus[alertMatch[2]];
+      const trailing = alertMatch[3].trim();
+      const contentLines = [];
+
+      // Handle inline content after the alert type (e.g., "> [!WARNING] > **Title**")
+      if (trailing) {
+        contentLines.push(trailing.replace(/^>\s*/, ""));
+      }
+
+      i++;
+
+      while (i < lines.length && lines[i].startsWith(`${indent}>`)) {
+        contentLines.push(lines[i].replace(new RegExp(`^${indent}>\\s?`), ""));
+        i++;
+      }
+
+      result.push(`${indent}:::${admonitionType}`);
+      for (const line of contentLines) {
+        result.push(line ? `${indent}${line}` : "");
+      }
+      result.push(`${indent}:::`);
+    } else {
+      result.push(line);
+      i++;
+    }
+  }
+
+  return result.join("\n");
 }
 
 function normalizeCodeFencesInMarkdown(markdown) {
@@ -531,6 +608,27 @@ function normalizeCodeFencesInMarkdown(markdown) {
   }
 
   return lines.join("\n");
+}
+
+async function convertGitHubAlerts(docsRoot) {
+  let filesUpdated = 0;
+
+  await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
+    if (!relativeFile.endsWith(".md") && !relativeFile.endsWith(".mdx")) {
+      return;
+    }
+
+    const original = await fs.readFile(absoluteFile, "utf8");
+    const updated = convertGitHubAlertsInMarkdown(original);
+    if (updated !== original) {
+      await fs.writeFile(absoluteFile, updated, "utf8");
+      filesUpdated += 1;
+    }
+  });
+
+  if (filesUpdated > 0) {
+    console.log(`Converted GitHub alerts to Docusaurus admonitions in ${filesUpdated} files`);
+  }
 }
 
 async function normalizeCodeFences(docsRoot) {
@@ -660,6 +758,7 @@ async function prepareDocusaurus() {
     docsHomeMarkdown(docsHomeSource, { hasArchive }),
     "utf8"
   );
+  await convertGitHubAlerts(docsRoot);
 
   await prepareSidebars(siteRoot, hasArchive);
 
