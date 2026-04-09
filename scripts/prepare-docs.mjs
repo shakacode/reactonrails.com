@@ -510,9 +510,37 @@ function convertGitHubAlertsInMarkdown(markdown) {
   const lines = markdown.split("\n");
   const result = [];
   let i = 0;
+  let fence = null;
 
   while (i < lines.length) {
-    const alertMatch = lines[i].match(alertPattern);
+    const line = lines[i];
+
+    if (!fence) {
+      const openingFence = line.match(/^\s*(`{3,}|~{3,})/);
+      if (openingFence) {
+        fence = {
+          marker: openingFence[1][0],
+          length: openingFence[1].length,
+        };
+        result.push(line);
+        i++;
+        continue;
+      }
+    } else {
+      result.push(line);
+      const closingFence = line.match(/^\s*(`{3,}|~{3,})\s*$/);
+      if (
+        closingFence &&
+        closingFence[1][0] === fence.marker &&
+        closingFence[1].length >= fence.length
+      ) {
+        fence = null;
+      }
+      i++;
+      continue;
+    }
+
+    const alertMatch = line.match(alertPattern);
     if (alertMatch) {
       const indent = alertMatch[1];
       const admonitionType = githubAlertToDocusaurus[alertMatch[2]];
@@ -537,7 +565,7 @@ function convertGitHubAlertsInMarkdown(markdown) {
       }
       result.push(`${indent}:::`);
     } else {
-      result.push(lines[i]);
+      result.push(line);
       i++;
     }
   }
@@ -718,7 +746,6 @@ async function prepareDocusaurus() {
   await fixKnownDocsIssues(docsRoot);
   await normalizeCodeFences(docsRoot);
   const hasArchive = await archiveLegacyDocs(docsRoot);
-  await convertGitHubAlerts(docsRoot);
   await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch((error) => {
     if (error?.code !== "ENOENT") {
       throw error;
@@ -730,6 +757,7 @@ async function prepareDocusaurus() {
     docsHomeMarkdown(docsHomeSource, { hasArchive }),
     "utf8"
   );
+  await convertGitHubAlerts(docsRoot);
 
   await prepareSidebars(siteRoot, hasArchive);
 
