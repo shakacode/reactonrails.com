@@ -514,9 +514,10 @@ function convertGitHubAlertsInMarkdown(markdown) {
 
   while (i < lines.length) {
     const line = lines[i];
+    const normalizedLine = line.replace(/^\s*(?:>\s*)+/, "");
 
     if (!fence) {
-      const openingFence = line.match(/^\s*(`{3,}|~{3,})/);
+      const openingFence = normalizedLine.match(/^\s*(`{3,}|~{3,})/);
       if (openingFence) {
         fence = {
           marker: openingFence[1][0],
@@ -528,7 +529,7 @@ function convertGitHubAlertsInMarkdown(markdown) {
       }
     } else {
       result.push(line);
-      const closingFence = line.match(/^\s*(`{3,}|~{3,})\s*$/);
+      const closingFence = normalizedLine.match(/^\s*(`{3,}|~{3,})\s*$/);
       if (
         closingFence &&
         closingFence[1][0] === fence.marker &&
