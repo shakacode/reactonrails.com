@@ -20,3 +20,4 @@ pnpm-debug.log*
 
 .Codex/napkin.md
 .claude/napkin.md
+.gstack/
