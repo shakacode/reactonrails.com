@@ -448,7 +448,7 @@ function ConsultationSection() {
               />
               <div>
                 <p className={styles.sectionEyebrow}>Built by ShakaCode</p>
-                <h2>Built by ShakaCode.</h2>
+                <h2>Talk to the maintainers.</h2>
               </div>
             </div>
             <p>
