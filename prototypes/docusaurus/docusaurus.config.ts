@@ -143,7 +143,7 @@ const config: Config = {
             {label: 'Create a New App', to: '/docs/getting-started/create-react-on-rails-app'},
             {
               label: 'Install into Existing Rails App',
-              to: '/docs/getting-started/installation-into-an-existing-rails-app',
+              to: '/docs/getting-started/existing-rails-app',
             },
             {label: 'Quick Start', to: '/docs/getting-started/quick-start'},
             {label: 'Compare OSS and Pro', to: '/docs/getting-started/oss-vs-pro'},
