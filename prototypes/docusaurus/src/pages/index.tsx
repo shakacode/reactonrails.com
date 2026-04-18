@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useBaseUrl, {useBaseUrlUtils} from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
+import ThemedImage from '@theme/ThemedImage';
 
 import {docsRoutes} from '../constants/docsRoutes';
 import styles from './index.module.css';
@@ -155,7 +156,7 @@ function ReactIcon({className}: {className?: string}) {
 const trustedByCompanies = [
   {name: 'Academia.edu', logo: '/img/logos/academia_logo.svg', href: 'https://www.academia.edu', invertDark: true},
   {name: 'ACTIVE Network', logo: '/img/logos/active_network_logo.png', href: 'https://www.activenetwork.com'},
-  {name: 'AirRobe', logo: '/img/logos/airrobe_logo.svg', href: 'https://airrobe.com'},
+  {name: 'AirRobe', logo: '/img/logos/airrobe_logo.svg', href: 'https://airrobe.com', invertDark: true},
   {name: 'Airtasker', logo: '/img/logos/airtasker_logo.png', href: 'https://www.airtasker.com'},
   {name: 'Attuned Education Partners', logo: '/img/logos/attuned_logo.png', href: 'https://attunedpartners.com', invertDark: true},
   {name: 'City Falcon', logo: '/img/logos/city_falcon_logo.png', href: 'https://www.cityfalcon.com', invertDark: true},
@@ -166,12 +167,12 @@ const trustedByCompanies = [
   {name: 'Estately', logo: '/img/logos/estately_logo.png', href: 'https://www.estately.com', invertDark: true},
   {name: 'Heal.me', logo: '/img/logos/healme_logo.png', href: 'https://heal.me'},
   {name: 'Jewlr', logo: '/img/logos/jewlr_logo.svg', href: 'https://www.jewlr.com', invertDark: true},
-  {name: 'Popmenu', logo: '/img/logos/popmenu_logo.png', href: 'https://popmenu.com', invertDark: true},
+  {name: 'Popmenu', logo: '/img/logos/popmenu_logo.png', href: 'https://popmenu.com'},
   {name: 'Printivity', logo: '/img/logos/printivity_logo.png', href: 'https://www.printivity.com', invertDark: true},
-  {name: 'Sample Focus', logo: '/img/logos/sample_focus_logo.png', href: 'https://samplefocus.com'},
+  {name: 'Sample Focus', logo: '/img/logos/sample_focus_logo.png', href: 'https://samplefocus.com', darkenLight: true},
   {name: 'Simply Business', logo: '/img/logos/simply_business_logo.svg', href: 'https://www.simplybusiness.co.uk', invertDark: true},
-  {name: 'The Information', logo: '/img/logos/the_information_logo.svg', href: 'https://www.theinformation.com'},
-  {name: 'User Interviews', logo: '/img/logos/user_interviews_logo.svg', href: 'https://www.userinterviews.com'},
+  {name: 'The Information', logo: '/img/logos/the_information_logo.svg', href: 'https://www.theinformation.com', invertDark: true},
+  {name: 'User Interviews', logo: '/img/logos/user_interviews_logo.svg', darkLogo: '/img/logos/user_interviews_logo_dark.svg', href: 'https://www.userinterviews.com'},
 ];
 
 function TrustedBySection() {
@@ -187,13 +188,27 @@ function TrustedBySection() {
               href={company.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={clsx(styles.logoItem, company.invertDark && styles.invertDark)}
+              className={clsx(
+                styles.logoItem,
+                company.invertDark && styles.invertDark,
+                company.darkenLight && styles.darkenLight,
+              )}
               title={company.name}>
-              <img
-                src={withBaseUrl(company.logo)}
-                alt={company.name}
-                loading="lazy"
-              />
+              {company.darkLogo ? (
+                <ThemedImage
+                  sources={{
+                    light: withBaseUrl(company.logo),
+                    dark: withBaseUrl(company.darkLogo),
+                  }}
+                  alt={company.name}
+                />
+              ) : (
+                <img
+                  src={withBaseUrl(company.logo)}
+                  alt={company.name}
+                  loading="lazy"
+                />
+              )}
             </a>
           ))}
         </div>
