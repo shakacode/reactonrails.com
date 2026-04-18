@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState, type KeyboardEvent, type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import useBaseUrl, {useBaseUrlUtils} from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 
 import {docsRoutes} from '../constants/docsRoutes';
@@ -153,14 +153,29 @@ function ReactIcon({className}: {className?: string}) {
 }
 
 const trustedByCompanies = [
-  {name: 'Popmenu', logo: '/img/logos/popmenu_logo.png', href: 'https://popmenu.com'},
-  {name: 'Printivity', logo: '/img/logos/printivity_logo.png', href: 'https://www.printivity.com'},
-  {name: 'Datacenters.com', logo: '/img/logos/datacenters_logo.png', href: 'https://www.datacenters.com'},
-  {name: 'HVMN', logo: '/img/logos/hvmn_logo.png', href: 'https://hvmn.com'},
-  {name: 'Jilt', logo: '/img/logos/jilt_logo.png', href: 'https://jilt.com'},
+  {name: 'Academia.edu', logo: '/img/logos/academia_logo.svg', href: 'https://www.academia.edu', invertDark: true},
+  {name: 'ACTIVE Network', logo: '/img/logos/active_network_logo.png', href: 'https://www.activenetwork.com'},
+  {name: 'AirRobe', logo: '/img/logos/airrobe_logo.svg', href: 'https://airrobe.com'},
+  {name: 'Airtasker', logo: '/img/logos/airtasker_logo.png', href: 'https://www.airtasker.com'},
+  {name: 'Attuned Education Partners', logo: '/img/logos/attuned_logo.png', href: 'https://attunedpartners.com', invertDark: true},
+  {name: 'City Falcon', logo: '/img/logos/city_falcon_logo.png', href: 'https://www.cityfalcon.com', invertDark: true},
+  {name: 'ClientCircle', logo: '/img/logos/clientcircle_logo.svg', href: 'https://clientcircle.com'},
+  {name: 'Curbside Provisions', logo: '/img/logos/curbside_logo.png', href: 'https://curbsideprovisions.com'},
+  {name: 'Direct Dental', logo: '/img/logos/direct_dental_logo.png', href: 'https://directdental.com'},
+  {name: 'Ejbla', logo: '/img/logos/ejbla_logo.png', href: 'https://ejbla.com', invertDark: true},
+  {name: 'Estately', logo: '/img/logos/estately_logo.png', href: 'https://www.estately.com', invertDark: true},
+  {name: 'Heal.me', logo: '/img/logos/healme_logo.png', href: 'https://heal.me'},
+  {name: 'Jewlr', logo: '/img/logos/jewlr_logo.svg', href: 'https://www.jewlr.com', invertDark: true},
+  {name: 'Popmenu', logo: '/img/logos/popmenu_logo.png', href: 'https://popmenu.com', invertDark: true},
+  {name: 'Printivity', logo: '/img/logos/printivity_logo.png', href: 'https://www.printivity.com', invertDark: true},
+  {name: 'Sample Focus', logo: '/img/logos/sample_focus_logo.png', href: 'https://samplefocus.com'},
+  {name: 'Simply Business', logo: '/img/logos/simply_business_logo.svg', href: 'https://www.simplybusiness.co.uk', invertDark: true},
+  {name: 'The Information', logo: '/img/logos/the_information_logo.svg', href: 'https://www.theinformation.com'},
+  {name: 'User Interviews', logo: '/img/logos/user_interviews_logo.svg', href: 'https://www.userinterviews.com'},
 ];
 
 function TrustedBySection() {
+  const {withBaseUrl} = useBaseUrlUtils();
   return (
     <section className={styles.trustedBy}>
       <div className="container">
@@ -172,19 +187,16 @@ function TrustedBySection() {
               href={company.href}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.logoItem}
+              className={clsx(styles.logoItem, company.invertDark && styles.invertDark)}
               title={company.name}>
-              <img src={useBaseUrl(company.logo)} alt={company.name} loading="lazy" />
+              <img
+                src={withBaseUrl(company.logo)}
+                alt={company.name}
+                loading="lazy"
+              />
             </a>
           ))}
         </div>
-        <a
-          href="https://github.com/sponsors/shakacode"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.sponsorLink}>
-          Become a sponsor →
-        </a>
       </div>
     </section>
   );
