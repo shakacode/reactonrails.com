@@ -39,6 +39,11 @@
   margin-bottom: 0.85rem;
 }
 
+.sectionLead {
+  margin: 0.45rem 0 0;
+  color: var(--ifm-color-content-secondary);
+}
+
 .sectionHeader h2 {
   margin-bottom: 0;
 }
@@ -53,7 +58,7 @@
 .decisionGrid {
   margin-bottom: 3rem;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -68,6 +73,30 @@
 .card h3 {
   margin-bottom: 0.45rem;
   line-height: 1.12;
+}
+
+.repoMeta {
+  margin: 0 0 0.55rem;
+  font-size: 0.88rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.85rem 0 0.2rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.45rem;
+  border-radius: 999px;
+  background: var(--site-soft-surface);
+  border: 1px solid var(--site-border);
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .cardLink {
