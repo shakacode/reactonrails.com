@@ -41,10 +41,10 @@ const catalogSections = [
     items: [
       {
         title: 'SSR + HMR tutorial demo',
-        repo: 'react_on_rails_demo_ssr_hmr',
+        repo: 'react-on-rails-demo-ssr-hmr',
         description:
           'Maintained Rails + React + SSR + HMR tutorial repo. This is the reference behind the tutorial and Webpack customization guidance.',
-        href: 'https://github.com/shakacode/react_on_rails_demo_ssr_hmr',
+        href: 'https://github.com/shakacode/react-on-rails-demo-ssr-hmr',
         tags: ['OSS', 'SSR', 'HMR'],
       },
       {
@@ -65,18 +65,18 @@ const catalogSections = [
     items: [
       {
         title: 'react-rails migration example',
-        repo: 'react-on-rails-migration-example',
+        repo: 'react-on-rails-example-migration',
         description:
           'Focused migration reference showing the shape of moving from react-rails into React on Rails.',
-        href: 'https://github.com/shakacode/react-on-rails-migration-example',
+        href: 'https://github.com/shakacode/react-on-rails-example-migration',
         tags: ['OSS', 'Migration'],
       },
       {
         title: 'Open Flights migration example',
-        repo: 'react-on-rails-open-flights-example',
+        repo: 'react-on-rails-example-open-flights',
         description:
           'Larger migration reference that shows React on Rails replacing react-rails in a more realistic app.',
-        href: 'https://github.com/shakacode/react-on-rails-open-flights-example',
+        href: 'https://github.com/shakacode/react-on-rails-example-open-flights',
         tags: ['OSS', 'Migration', 'App'],
       },
     ],
@@ -89,19 +89,27 @@ const catalogSections = [
     items: [
       {
         title: 'Hacker News RSC demo',
-        repo: 'react-on-rails-hn-rsc-demo',
+        repo: 'react-on-rails-demo-hacker-news-rsc',
         description:
           'Compact public demo of React on Rails Pro + React Server Components on a familiar read-heavy UI.',
-        href: 'https://github.com/shakacode/react-on-rails-hn-rsc-demo',
+        href: 'https://github.com/shakacode/react-on-rails-demo-hacker-news-rsc',
         tags: ['Pro', 'RSC', 'Demo'],
       },
       {
         title: 'Marketplace RSC performance demo',
-        repo: 'react-server-components-marketplace-demo',
+        repo: 'react-on-rails-demo-marketplace-rsc',
         description:
           'Public performance-oriented RSC demo showing the shape of the user-visible improvement on a marketplace-style surface.',
-        href: 'https://github.com/shakacode/react-server-components-marketplace-demo',
+        href: 'https://github.com/shakacode/react-on-rails-demo-marketplace-rsc',
         tags: ['Pro', 'RSC', 'Performance'],
+      },
+      {
+        title: 'Gumroad-style comparison demo',
+        repo: 'react-on-rails-demo-gumroad-rsc',
+        description:
+          'Benchmark-oriented comparison between an Inertia-style surface and a React on Rails Pro + RSC surface on the same product domain. ShakaCode-built demo, not an official Gumroad integration.',
+        href: 'https://github.com/shakacode/react-on-rails-demo-gumroad-rsc',
+        tags: ['Pro', 'RSC', 'Benchmark'],
       },
     ],
   },
