@@ -687,9 +687,82 @@ ${legacyItems.join("\n")}
     },`;
 }
 
+function subsetSidebarsContent() {
+  return `import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
+
+const sidebars: SidebarsConfig = {
+  docsSidebar: [
+    'introduction',
+    {
+      type: 'category',
+      label: 'Getting Started',
+      link: {type: 'generated-index', title: 'Getting Started'},
+      items: [
+        'getting-started/quick-start',
+        'getting-started/tutorial',
+        'getting-started/examples-and-references',
+        'getting-started/installation-into-an-existing-rails-app',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Core Concepts',
+      link: {type: 'generated-index', title: 'Core Concepts'},
+      items: [
+        'core-concepts/how-react-on-rails-works',
+        'core-concepts/react-server-rendering',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Building Features',
+      link: {type: 'generated-index', title: 'Building Features'},
+      items: ['building-features/react-and-redux'],
+    },
+    {
+      type: 'category',
+      label: 'Deployment',
+      link: {type: 'generated-index', title: 'Deployment'},
+      items: ['deployment/README'],
+    },
+    {
+      type: 'category',
+      label: 'API Reference',
+      link: {type: 'generated-index', title: 'API Reference'},
+      items: ['api-reference/view-helpers-api'],
+    },
+    {
+      type: 'category',
+      label: 'Upgrading',
+      link: {type: 'generated-index', title: 'Upgrading'},
+      items: ['upgrading/upgrading-react-on-rails'],
+    },
+    {
+      type: 'category',
+      label: 'React on Rails Pro',
+      link: {type: 'generated-index', title: 'React on Rails Pro'},
+      items: [
+        'pro/react-on-rails-pro',
+        'pro/home-pro',
+        'pro/react-server-components/tutorial',
+      ],
+    },
+  ],
+};
+
+export default sidebars;
+`;
+}
+
 async function prepareSidebars(siteRoot, hasArchive) {
   const upstreamSidebars = path.join(workspaceRoot, "content", "upstream", "sidebars.ts");
   const targetSidebars = path.join(siteRoot, "sidebars.ts");
+
+  if (useSubset) {
+    await fs.writeFile(targetSidebars, subsetSidebarsContent(), "utf8");
+    console.log("Generated subset sidebars.ts");
+    return;
+  }
 
   if (await exists(upstreamSidebars)) {
     let content = await fs.readFile(upstreamSidebars, "utf8");

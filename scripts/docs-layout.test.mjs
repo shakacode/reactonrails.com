@@ -45,9 +45,13 @@ test("subsetPathsForLayout maps OSS docs differently by layout", () => {
   const consolidatedPaths = subsetPathsForLayout("consolidated");
 
   assert.ok(splitPaths.includes("oss/introduction.md"));
+  assert.ok(splitPaths.includes("oss/getting-started/examples-and-references.md"));
   assert.ok(!splitPaths.includes("introduction.md"));
+  assert.ok(!splitPaths.includes("getting-started/examples-and-references.md"));
   assert.ok(consolidatedPaths.includes("introduction.md"));
+  assert.ok(consolidatedPaths.includes("getting-started/examples-and-references.md"));
   assert.ok(!consolidatedPaths.includes("oss/introduction.md"));
+  assert.ok(!consolidatedPaths.includes("oss/getting-started/examples-and-references.md"));
   assert.ok(splitPaths.includes("pro/react-on-rails-pro.md"));
   assert.ok(consolidatedPaths.includes("pro/react-on-rails-pro.md"));
 });

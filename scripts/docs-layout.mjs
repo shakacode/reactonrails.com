@@ -6,6 +6,7 @@ export const docsSubsetEntries = [
   {kind: "oss", relativePath: "introduction.md"},
   {kind: "oss", relativePath: "getting-started/quick-start.md"},
   {kind: "oss", relativePath: "getting-started/tutorial.md"},
+  {kind: "oss", relativePath: "getting-started/examples-and-references.md"},
   {kind: "oss", relativePath: "getting-started/installation-into-an-existing-rails-app.md"},
   {kind: "oss", relativePath: "core-concepts/how-react-on-rails-works.md"},
   {kind: "oss", relativePath: "core-concepts/react-server-rendering.md"},

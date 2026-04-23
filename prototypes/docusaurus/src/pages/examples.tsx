@@ -204,7 +204,7 @@ export default function ExamplesPage(): ReactNode {
             <h2>Use the docs for taxonomy and this page for curation.</h2>
             <p className={styles.sectionLead}>
               The canonical docs page for repo taxonomy lives in{' '}
-              <Link to="/docs/getting-started/examples-and-references">
+              <Link to={docsRoutes.examplesAndReferences}>
                 Examples and migration references
               </Link>
               . This page is the marketing-forward catalog of the public repos we want people to
