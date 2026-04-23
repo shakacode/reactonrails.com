@@ -1,6 +1,7 @@
 export const docsRoutes = {
   docsGuide: '/docs/',
   createApp: '/docs/getting-started/create-react-on-rails-app',
+  examplesAndReferences: '/docs/getting-started/examples-and-references',
   installExistingApp: '/docs/getting-started/existing-rails-app',
   ossVsPro: '/docs/getting-started/oss-vs-pro',
   proOverview: '/docs/pro',
