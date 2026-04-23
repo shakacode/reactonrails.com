@@ -743,7 +743,7 @@ const sidebars: SidebarsConfig = {
       link: {type: 'generated-index', title: 'React on Rails Pro'},
       items: [
         'pro/react-on-rails-pro',
-        'pro/home-pro',
+        'pro/node-renderer/basics',
         'pro/react-server-components/tutorial',
       ],
     },
