@@ -31,6 +31,26 @@
   flex-wrap: wrap;
 }
 
+.licenseHighlight {
+  max-width: 48rem;
+  margin-top: 1rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(9, 105, 218, 0.3);
+  border-left: 4px solid var(--ifm-color-primary);
+  border-radius: 8px;
+  background: var(--site-surface);
+}
+
+.licenseHighlight strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--ifm-color-primary-dark);
+}
+
+.licenseHighlight span {
+  color: var(--ifm-color-content);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

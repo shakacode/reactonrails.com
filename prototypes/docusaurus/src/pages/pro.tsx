@@ -64,9 +64,16 @@ export default function ProPage(): ReactNode {
             <h1>React on Rails Pro</h1>
             <p>
               Pro extends React on Rails for teams that need higher SSR throughput, RSC-oriented
-              rendering features, and guided production support. You can evaluate Pro without a
-              license.
+              rendering features, and guided production support. The friendly license model lets
+              you evaluate Pro without a token before you need a production license.
             </p>
+            <div className={styles.licenseHighlight}>
+              <strong>Friendly license model</strong>
+              <span>
+                No token is required for development, test, CI/CD, or staging. Production
+                deployments require a paid license.
+              </span>
+            </div>
             <div className={styles.actions}>
               <Link className="button button--primary button--lg" to={docsRoutes.proUpgrade}>
                 Review the upgrade guide
@@ -78,8 +85,8 @@ export default function ProPage(): ReactNode {
               </Link>
               <Link
                 className="button button--secondary button--lg"
-                href="https://www.shakacode.com/react-on-rails-pro/">
-                Contact ShakaCode
+                href="https://pro.reactonrails.com/">
+                Pro pricing / sign up
               </Link>
             </div>
           </div>
@@ -104,17 +111,22 @@ export default function ProPage(): ReactNode {
             </article>
 
             <article className={styles.policyCard}>
-              <p className={styles.cardEyebrow}>Friendly evaluation policy</p>
-              <h2>Evaluate first, sort licensing second.</h2>
-              <p>You can try React on Rails Pro without a license while evaluating.</p>
+              <p className={styles.cardEyebrow}>Friendly license model</p>
+              <h2>Evaluate without a token.</h2>
+              <p>
+                Try Pro freely in development, test, CI/CD, and staging. If no license is
+                configured, Pro keeps running in unlicensed mode and logs license status instead of
+                blocking your app.
+              </p>
+              <p>
+                Production deployments require a paid license. Visit{' '}
+                <a href="https://pro.reactonrails.com/">Pro pricing and sign up</a> for current
+                options.
+              </p>
               <p>
                 If your organization is budget-constrained, email{' '}
                 <a href="mailto:justin@shakacode.com">justin@shakacode.com</a>. We can grant free
                 licenses in qualifying cases.
-              </p>
-              <p className={styles.note}>
-                The goal is to make the upgrade path clear and low-friction, not to force a second
-                docs silo.
               </p>
             </article>
           </div>
@@ -144,6 +156,7 @@ export default function ProPage(): ReactNode {
           </div>
           <p className={styles.note}>
             Need pricing, implementation guidance, or a free-license discussion? Visit{' '}
+            <a href="https://pro.reactonrails.com/">Pro pricing and sign up</a> or{' '}
             <a href="/docs/pro">the Pro docs landing page</a>.
           </p>
         </section>
