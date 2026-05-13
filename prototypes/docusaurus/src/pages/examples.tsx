@@ -5,13 +5,20 @@ import Layout from '@theme/Layout';
 import {docsRoutes} from '../constants/docsRoutes';
 import styles from './examples.module.css';
 
-const evaluationPaths = [
+type EvaluationPath = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  cta: string;
+} & ({to: string; href?: never} | {href: string; to?: never});
+
+const evaluationPaths: EvaluationPath[] = [
   {
     eyebrow: 'Evaluator path',
     title: 'Compare setup approaches',
     description:
       'Start with the docs landing page to choose between new app setup, existing app install, migration, or Pro evaluation.',
-    href: docsRoutes.docsGuide,
+    to: docsRoutes.docsGuide,
     cta: 'Open the docs guide',
   },
   {
@@ -19,7 +26,7 @@ const evaluationPaths = [
     title: 'Move from react-rails',
     description:
       'Follow a migration sequence validated against a real open-source example app instead of reconstructing it from old guides.',
-    href: docsRoutes.migrateFromReactRails,
+    to: docsRoutes.migrateFromReactRails,
     cta: 'Use the react-rails guide',
   },
   {
@@ -27,7 +34,7 @@ const evaluationPaths = [
     title: 'Move from OSS to Pro',
     description:
       'If your current app needs more SSR throughput or RSC support, compare OSS and Pro before adding the Pro package.',
-    href: docsRoutes.ossVsPro,
+    to: docsRoutes.ossVsPro,
     cta: 'Compare OSS and Pro',
   },
   {
@@ -93,7 +100,10 @@ export default function ExamplesPage(): ReactNode {
                 <p className={styles.cardEyebrow}>{path.eyebrow}</p>
                 <h3>{path.title}</h3>
                 <p>{path.description}</p>
-                <Link className={styles.cardLink} to={path.href}>
+                <Link
+                  className={styles.cardLink}
+                  {...('href' in path ? {href: path.href} : {to: path.to})}
+                >
                   {path.cta}
                 </Link>
               </article>
