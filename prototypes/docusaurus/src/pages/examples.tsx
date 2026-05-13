@@ -30,6 +30,14 @@ const evaluationPaths = [
     href: docsRoutes.ossVsPro,
     cta: 'Compare OSS and Pro',
   },
+  {
+    eyebrow: 'RSC proof path',
+    title: 'Inspect the RSC performance demo',
+    description:
+      'Open the LocalHub benchmark dashboard with Lighthouse reports, bundle-size evidence, and SSR/client/RSC comparisons.',
+    href: 'https://rsc.reactonrails.com/search-performance',
+    cta: 'Open RSC benchmark',
+  },
 ];
 
 const exampleApps = [
@@ -50,6 +58,12 @@ const exampleApps = [
     description:
       'Official Vite Rails sample app used to document migration preflight and dependency lockfile issues.',
     href: 'https://github.com/ElMassimo/vite_ruby/tree/main/examples/rails',
+  },
+  {
+    title: 'react-on-rails-demo-marketplace-rsc',
+    description:
+      'Public React on Rails Pro + RSC marketplace demo behind the LocalHub Lighthouse and bundle-size comparisons.',
+    href: 'https://github.com/shakacode/react-on-rails-demo-marketplace-rsc',
   },
 ];
 
@@ -90,7 +104,7 @@ export default function ExamplesPage(): ReactNode {
         <section className="container">
           <div className={styles.sectionHeader}>
             <p className={styles.sectionEyebrow}>Reference repos</p>
-            <h2>Open-source apps that map to the docs.</h2>
+            <h2>Public apps and demos that map to the docs.</h2>
           </div>
           <div className={styles.grid}>
             {exampleApps.map((app) => (

@@ -48,6 +48,11 @@ const featureRows = [
     pro: 'Included',
   },
   {
+    feature: 'Public RSC demo with Lighthouse and bundle evidence',
+    oss: 'View-only',
+    pro: 'Included implementation patterns',
+  },
+  {
     feature: 'Support access with ShakaCode maintainers',
     oss: 'Community channels',
     pro: 'Sponsor support plans',
@@ -75,6 +80,11 @@ export default function ProPage(): ReactNode {
                 className="button button--secondary button--lg"
                 to={docsRoutes.proOverview}>
                 Open Pro docs overview
+              </Link>
+              <Link
+                className="button button--secondary button--lg"
+                href="https://rsc.reactonrails.com/search-performance">
+                View RSC performance demo
               </Link>
               <Link
                 className="button button--secondary button--lg"
@@ -144,7 +154,9 @@ export default function ProPage(): ReactNode {
           </div>
           <p className={styles.note}>
             Need pricing, implementation guidance, or a free-license discussion? Visit{' '}
-            <a href="/docs/pro">the Pro docs landing page</a>.
+            <a href="/docs/pro">the Pro docs landing page</a>. Want proof first?
+            Open the{' '}
+            <a href="https://rsc.reactonrails.com/search-performance">RSC performance dashboard</a>.
           </p>
         </section>
       </main>
