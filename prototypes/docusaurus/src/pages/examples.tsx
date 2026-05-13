@@ -41,7 +41,7 @@ const evaluationPaths: EvaluationPath[] = [
     eyebrow: 'RSC proof path',
     title: 'Inspect the RSC performance demo',
     description:
-      'Open the LocalHub benchmark dashboard with Lighthouse reports, bundle-size evidence, and SSR/client/RSC comparisons.',
+      'Open the benchmark dashboard for LocalHub, the sample marketplace app, with Lighthouse reports, bundle-size evidence, and SSR/client/RSC comparisons.',
     href: 'https://rsc.reactonrails.com/search-performance',
     cta: 'Open RSC benchmark',
   },
@@ -69,7 +69,7 @@ const exampleApps = [
   {
     title: 'react-on-rails-demo-marketplace-rsc',
     description:
-      'Public React on Rails Pro + RSC marketplace demo behind the LocalHub Lighthouse and bundle-size comparisons.',
+      'Public React on Rails Pro + RSC marketplace demo behind the LocalHub sample app Lighthouse and bundle-size comparisons.',
     href: 'https://github.com/shakacode/react-on-rails-demo-marketplace-rsc',
   },
 ];
