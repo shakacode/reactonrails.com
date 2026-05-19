@@ -5,13 +5,20 @@ import Layout from '@theme/Layout';
 import {docsRoutes} from '../constants/docsRoutes';
 import styles from './examples.module.css';
 
-const evaluationPaths = [
+type EvaluationPath = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  cta: string;
+} & ({to: string; href?: never} | {href: string; to?: never});
+
+const evaluationPaths: EvaluationPath[] = [
   {
     eyebrow: 'Evaluator path',
     title: 'Compare setup approaches',
     description:
       'Start with the docs landing page to choose between new app setup, existing app install, migration, or Pro evaluation.',
-    href: docsRoutes.docsGuide,
+    to: docsRoutes.docsGuide,
     cta: 'Open the docs guide',
   },
   {
@@ -19,7 +26,7 @@ const evaluationPaths = [
     title: 'Move from react-rails',
     description:
       'Follow a migration sequence validated against a real open-source example app instead of reconstructing it from old guides.',
-    href: docsRoutes.migrateFromReactRails,
+    to: docsRoutes.migrateFromReactRails,
     cta: 'Use the react-rails guide',
   },
   {
@@ -27,8 +34,16 @@ const evaluationPaths = [
     title: 'Move from OSS to Pro',
     description:
       'If your current app needs more SSR throughput or RSC support, compare OSS and Pro, then evaluate Pro without a token before production licensing.',
-    href: docsRoutes.ossVsPro,
+    to: docsRoutes.ossVsPro,
     cta: 'Compare OSS and Pro',
+  },
+  {
+    eyebrow: 'RSC proof path',
+    title: 'Inspect the RSC performance demo',
+    description:
+      'Open the benchmark dashboard for LocalHub, the sample marketplace app, with Lighthouse reports, bundle-size evidence, and SSR/client/RSC comparisons.',
+    href: 'https://rsc.reactonrails.com/search-performance',
+    cta: 'Open RSC benchmark',
   },
 ];
 
@@ -50,6 +65,12 @@ const exampleApps = [
     description:
       'Official Vite Rails sample app used to document migration preflight and dependency lockfile issues.',
     href: 'https://github.com/ElMassimo/vite_ruby/tree/main/examples/rails',
+  },
+  {
+    title: 'react-on-rails-demo-marketplace-rsc',
+    description:
+      'Public React on Rails Pro + RSC marketplace demo behind the LocalHub sample app Lighthouse and bundle-size comparisons.',
+    href: 'https://github.com/shakacode/react-on-rails-demo-marketplace-rsc',
   },
 ];
 
@@ -79,7 +100,10 @@ export default function ExamplesPage(): ReactNode {
                 <p className={styles.cardEyebrow}>{path.eyebrow}</p>
                 <h3>{path.title}</h3>
                 <p>{path.description}</p>
-                <Link className={styles.cardLink} to={path.href}>
+                <Link
+                  className={styles.cardLink}
+                  {...('href' in path ? {href: path.href} : {to: path.to})}
+                >
                   {path.cta}
                 </Link>
               </article>
@@ -90,7 +114,7 @@ export default function ExamplesPage(): ReactNode {
         <section className="container">
           <div className={styles.sectionHeader}>
             <p className={styles.sectionEyebrow}>Reference repos</p>
-            <h2>Open-source apps that map to the docs.</h2>
+            <h2>Public apps and demos that map to the docs.</h2>
           </div>
           <div className={styles.grid}>
             {exampleApps.map((app) => (
