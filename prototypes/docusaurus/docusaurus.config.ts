@@ -180,6 +180,10 @@ const config: Config = {
               to: '/pro',
             },
             {
+              label: 'Pro Pricing & Sign Up',
+              href: 'https://pro.reactonrails.com/',
+            },
+            {
               label: 'GitHub',
               href: 'https://github.com/shakacode/react_on_rails',
             },
