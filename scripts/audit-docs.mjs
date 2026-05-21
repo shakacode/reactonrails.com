@@ -169,9 +169,6 @@ function findSuspiciousLinks(lineInfo) {
     if (target.includes("www.shakacode.com/react-on-rails-pro/docs/")) {
       issues.push(`Legacy Pro docs domain link (${target}).`);
     }
-    if (target.includes("pro.reactonrails.com")) {
-      issues.push(`Dead pro subdomain link (${target}).`);
-    }
   }
 
   return [...new Set(issues)];

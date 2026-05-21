@@ -26,7 +26,7 @@ const personaPaths = [
   {
     title: 'Already on OSS and need more performance',
     description:
-      'Compare OSS and Pro first, then upgrade only when higher-throughput SSR, RSC, or support is worth it.',
+      'Compare OSS and Pro first, then evaluate Pro without a token before buying a production license.',
     href: docsRoutes.ossVsPro,
     cta: 'Compare OSS and Pro',
   },
@@ -57,7 +57,7 @@ const recommendedFlows = [
   {
     title: 'When OSS is no longer enough',
     summary:
-      'Pro is an upgrade tier, not a separate product. Compare first, then add it when the extra SSR throughput or guided support matters.',
+      'Pro is an upgrade tier, not a separate product. Evaluate it in development, test, CI/CD, and staging before you need a production license.',
     command: 'bundle add react_on_rails_pro',
     href: docsRoutes.proUpgrade,
     cta: 'Open the upgrade guide',
@@ -379,7 +379,7 @@ function HeroSection() {
           </div>
           <p className={styles.panelNote}>
             Already on OSS? Start with the comparison guide, then use the upgrade guide if you
-            need Pro.
+            need Pro. No token is required for non-production evaluation.
           </p>
         </div>
       </div>
@@ -444,6 +444,11 @@ function UpgradeSection() {
           <p className={styles.sectionEyebrow}>OSS to Pro</p>
           <h2>Upgrade when you're ready.</h2>
         </div>
+        <div className={styles.licenseStrip}>
+          <strong>Friendly license model:</strong> evaluate Pro without a token in development,
+          test, CI/CD, and staging. Production deployments require a paid license.
+          <Link href="https://pro.reactonrails.com/">See pricing and sign up</Link>
+        </div>
         <div className={styles.upgradeGrid}>
           <article className={styles.migrationCard}>
             <h3>1. Compare OSS and Pro</h3>
@@ -459,10 +464,20 @@ function UpgradeSection() {
             <h3>2. Upgrade to Pro</h3>
             <p>
               Once the comparison says Pro is worth it, follow the upgrade guide and add the Pro
-              package.
+              package. The friendly license model keeps non-production evaluation token-free.
             </p>
             <Link className={styles.cardLink} to={docsRoutes.proUpgrade}>
               Open the upgrade guide
+            </Link>
+          </article>
+          <article className={styles.migrationCard}>
+            <h3>3. Get a production license</h3>
+            <p>
+              Development, test, CI/CD, and staging can run without a token. Production deployments
+              require a paid license.
+            </p>
+            <Link className={styles.cardLink} href="https://pro.reactonrails.com/">
+              Pro pricing and sign up
             </Link>
           </article>
         </div>

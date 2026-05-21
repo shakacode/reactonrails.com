@@ -33,7 +33,7 @@ const evaluationPaths: EvaluationPath[] = [
     eyebrow: 'Upgrade path',
     title: 'Move from OSS to Pro',
     description:
-      'If your current app needs more SSR throughput or RSC support, compare OSS and Pro before adding the Pro package.',
+      'If your current app needs more SSR throughput or RSC support, compare OSS and Pro, then evaluate Pro without a token before production licensing.',
     to: docsRoutes.ossVsPro,
     cta: 'Compare OSS and Pro',
   },

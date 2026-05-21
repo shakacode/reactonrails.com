@@ -269,6 +269,10 @@ async function archiveLegacyDocs(docsRoot) {
   return true;
 }
 
+export function fixProNodeRendererMdx(content) {
+  return content.replace("Direct render: <50ms", "Direct render: &lt;50ms");
+}
+
 async function fixKnownDocsIssues(docsRoot) {
   await rewriteDocsByPattern(docsRoot, [
     {
@@ -358,6 +362,8 @@ async function fixKnownDocsIssues(docsRoot) {
     content.replace("using React 18's `renderToPipeableStream`", "using React 19's `renderToPipeableStream`")
   );
 
+  await rewriteDoc(docsRoot, "pro/node-renderer.md", fixProNodeRendererMdx);
+
   await rewriteDoc(docsRoot, "api-reference/view-helpers-api.md", (content) =>
     content.replace("using React 18+ streaming", "using React 19+ streaming")
   );
@@ -394,14 +400,10 @@ async function fixKnownDocsIssues(docsRoot) {
       pattern: /https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g,
       replacement: "https://reactonrails.com/docs/pro/"
     },
-    {
-      pattern: /https:\/\/pro\.reactonrails\.com\/?/g,
-      replacement: "https://reactonrails.com/docs/pro/"
-    }
   ]);
 }
 
-async function rewriteProLinks(proDocsRoot) {
+export async function rewriteProLinks(proDocsRoot) {
   if (!(await exists(proDocsRoot))) {
     return;
   }
@@ -414,15 +416,14 @@ async function rewriteProLinks(proDocsRoot) {
     const updated = original
       .replace(/((?:\.\.\/)+)oss\//g, "$1")
       .replace(/https:\/\/www\.shakacode\.com\/react-on-rails\/docs\//g, "https://reactonrails.com/docs/")
-      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/")
-      .replace(/https:\/\/pro\.reactonrails\.com\/?/g, "https://reactonrails.com/docs/pro/");
+      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/");
     if (updated !== original) {
       await fs.writeFile(absoluteFile, updated, "utf8");
     }
   });
 }
 
-async function rewriteFlattenedOssLinks(docsRoot) {
+export async function rewriteFlattenedOssLinks(docsRoot) {
   await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
     if (!relativeFile.endsWith(".md") && !relativeFile.endsWith(".mdx")) {
       return;
@@ -436,15 +437,14 @@ async function rewriteFlattenedOssLinks(docsRoot) {
       .replace(/\.\.\/\.\.\/images\//g, "../images/")
       .replace(/\.\.\/\.\.\/\.\.\/assets\//g, "../../assets/")
       .replace(/https:\/\/www\.shakacode\.com\/react-on-rails\/docs\//g, "https://reactonrails.com/docs/")
-      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/")
-      .replace(/https:\/\/pro\.reactonrails\.com\/?/g, "https://reactonrails.com/docs/pro/");
+      .replace(/https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g, "https://reactonrails.com/docs/pro/");
     if (updated !== original) {
       await fs.writeFile(absoluteFile, updated, "utf8");
     }
   });
 }
 
-async function injectProFriendlyNotice(docsRoot) {
+export async function injectProFriendlyNotice(docsRoot) {
   const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
   if (!(await exists(proIntroPath))) {
     return;
@@ -464,8 +464,8 @@ async function injectProFriendlyNotice(docsRoot) {
     }
   }
 
-  if (!updated.includes("Friendly evaluation policy")) {
-    const notice = `> **Friendly evaluation policy**\n> You can evaluate React on Rails Pro without a license.\n> If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com). We can provide free licenses in qualifying cases.\n\n`;
+  if (!/Friendly license model/i.test(updated)) {
+    const notice = `> **Friendly license model**\n> Try React on Rails Pro freely in development, test, CI/CD, and staging. No token is required to evaluate. If no license is configured, Pro keeps running in unlicensed mode and logs license status instead of blocking your app. Production deployments require a paid license; see [Pro pricing and sign up](https://pro.reactonrails.com/).\n\n`;
     updated = updated.replace(/^# React on Rails Pro\s*\n+/m, `# React on Rails Pro\n\n${notice}`);
   }
 
@@ -652,14 +652,20 @@ async function normalizeCodeFences(docsRoot) {
   }
 }
 
-function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
+export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
   const archiveBlock = hasArchive ? "- [Historical Reference](./archive/README.md)\n" : "";
+  const friendlyLicenseSection = `## Friendly License Model
+
+- Try React on Rails Pro freely in development, test, CI/CD, and staging. No token is required to evaluate.
+- Production deployments require a paid license. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
+`;
 
   const updated = sourceMarkdown
     .trim()
     .replaceAll("(./oss/", "(./")
     .replace("](https://reactonrails.com/examples)", "](/examples)")
     .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n")
+    .replace(/## Friendly evaluation policy\n\n[\s\S]*?(?=\n## )/, `${friendlyLicenseSection}\n`)
     .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`);
 
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
@@ -778,7 +784,9 @@ async function main() {
   await prepareDocusaurus();
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}
