@@ -169,7 +169,7 @@ const sidebars: SidebarsConfig = {
         'pro/release-notes/index',
         {
           type: 'link',
-          label: 'Full Changelog',
+          label: 'Full GitHub Changelog',
           href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md',
         },
         {

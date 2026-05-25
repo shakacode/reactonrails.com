@@ -10,6 +10,7 @@ import {
   injectProFriendlyNotice,
   rewriteFlattenedOssLinks,
   rewriteProLinks,
+  siteSidebarSource,
 } from "./prepare-docs.mjs";
 
 async function withTempDir(callback) {
@@ -84,6 +85,25 @@ test("docs homepage uses current friendly license model copy", () => {
   assert.match(updated, /development, test, CI\/CD, and staging/);
   assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
+});
+
+test("site sidebar labels the external changelog as the GitHub changelog", () => {
+  const source = `const sidebars = {
+  docsSidebar: [
+    {
+      type: 'link',
+      label: 'Full Changelog',
+      href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md',
+    },
+  ],
+};
+`;
+
+  const updated = siteSidebarSource(source, { hasArchive: false });
+
+  assert.match(updated, /label: 'Full GitHub Changelog'/);
+  assert.doesNotMatch(updated, /label: 'Full Changelog'/);
+  assert.match(updated, /CHANGELOG\.md/);
 });
 
 test("Pro node renderer table comparisons are escaped for MDX", () => {

@@ -693,6 +693,24 @@ ${legacyItems.join("\n")}
     },`;
 }
 
+export function siteSidebarSource(source, { hasArchive }) {
+  let content = source.replace(
+    /label: 'Full Changelog',\n(\s*)href: 'https:\/\/github\.com\/shakacode\/react_on_rails\/blob\/main\/CHANGELOG\.md'/,
+    "label: 'Full GitHub Changelog',\n$1href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md'"
+  );
+
+  if (hasArchive) {
+    // Insert archive category as the last item in docsSidebar before the closing ];
+    const archiveCategory = archiveSidebarCategory();
+    content = content.replace(
+      /(\n  \],\n\};\n)/,
+      `\n${archiveCategory}\n  ],\n};\n`
+    );
+  }
+
+  return content;
+}
+
 async function prepareSidebars(siteRoot, hasArchive) {
   const upstreamSidebars = path.join(workspaceRoot, "content", "upstream", "sidebars.ts");
   const targetSidebars = path.join(siteRoot, "sidebars.ts");
@@ -700,14 +718,7 @@ async function prepareSidebars(siteRoot, hasArchive) {
   if (await exists(upstreamSidebars)) {
     let content = await fs.readFile(upstreamSidebars, "utf8");
 
-    if (hasArchive) {
-      // Insert archive category as the last item in docsSidebar before the closing ];
-      const archiveCategory = archiveSidebarCategory();
-      content = content.replace(
-        /(\n  \],\n\};\n)/,
-        `\n${archiveCategory}\n  ],\n};\n`
-      );
-    }
+    content = siteSidebarSource(content, { hasArchive });
 
     await fs.writeFile(targetSidebars, content, "utf8");
     console.log("Generated sidebars.ts from upstream");
