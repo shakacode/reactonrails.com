@@ -163,6 +163,10 @@ const config: Config = {
               href: 'https://github.com/shakacode/react_on_rails/discussions',
             },
             {
+              label: 'Changelog',
+              href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md',
+            },
+            {
               label: 'ShakaCode',
               href: 'https://www.shakacode.com',
             },
