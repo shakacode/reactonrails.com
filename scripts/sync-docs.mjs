@@ -114,6 +114,17 @@ async function main() {
     console.warn("Warning: docs/sidebars.ts not found in source repo");
   }
 
+  // Bring CHANGELOG.md from the source repo root into the upstream tree so the
+  // upstream `docs/oss/upgrading/changelog.md` symlink (`../../../CHANGELOG.md`)
+  // resolves once it's been copied into `content/upstream/docs/`.
+  const sourceChangelog = path.join(sourceRepo, "CHANGELOG.md");
+  if (await exists(sourceChangelog)) {
+    await fs.copyFile(sourceChangelog, path.join(upstreamRoot, "CHANGELOG.md"));
+    console.log(`Synced CHANGELOG.md to ${path.join(upstreamRoot, "CHANGELOG.md")}`);
+  } else {
+    console.warn("Warning: CHANGELOG.md not found in source repo");
+  }
+
   let subsetStats = null;
   if (buildSubset) {
     subsetStats = await writeSubset(fullDocsTarget, subsetDocsTarget, layout);

@@ -167,11 +167,7 @@ const sidebars: SidebarsConfig = {
         'pro/updating',
         'pro/major-performance-breakthroughs-upgrade-guide',
         'pro/release-notes/index',
-        {
-          type: 'link',
-          label: 'Full GitHub Changelog',
-          href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md',
-        },
+        { type: 'doc', id: 'upgrading/changelog', label: 'Changelog' },
         {
           type: 'category',
           label: 'Migration Guides',
@@ -196,6 +192,7 @@ const sidebars: SidebarsConfig = {
         'pro/upgrading-to-pro',
         'pro/streaming-ssr',
         'pro/node-renderer',
+        'pro/rolling-deploy-adapters',
         'pro/fragment-caching',
         'pro/js-memory-leaks',
         'pro/profiling-server-side-rendering-code',

@@ -164,7 +164,7 @@ const config: Config = {
             },
             {
               label: 'Changelog',
-              href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md',
+              to: '/docs/upgrading/changelog',
             },
             {
               label: 'ShakaCode',
