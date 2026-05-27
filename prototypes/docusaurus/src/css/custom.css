@@ -69,6 +69,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* ── Navbar ───────────────────────────────────────────────── */
 
 .navbar {
@@ -237,6 +243,7 @@ body {
   border-bottom: 1px solid var(--site-border);
   font-size: 0.9rem;
   color: var(--ifm-color-content-secondary);
+  white-space: normal;
 }
 
 .theme-announcement-bar a {
