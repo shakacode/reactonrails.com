@@ -671,6 +671,45 @@ export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
 }
 
+export function changelogMarkdown(sourceMarkdown) {
+  const trimmed = sourceMarkdown.replace(/^﻿/, "").trimStart();
+  // Drop the upstream `# Change Log` (or `# Changelog`) H1; the Docusaurus
+  // page title is supplied by frontmatter. Preserves the rest of the document.
+  const withoutH1 = trimmed.replace(/^#\s+Change\s*log[^\n]*\n+/i, "");
+  // Rewrite relative links that were valid in the source repo layout but
+  // would break inside the published page at /docs/upgrading/changelog.
+  //   docs/oss/<path>.md  → /docs/<path>  (matches the split-layout flatten)
+  //   ./README.md         → upstream README on GitHub
+  //   react_on_rails/spec/dummy → upstream sample app on GitHub
+  const withRewrittenLinks = withoutH1
+    .replace(/\(docs\/oss\/([^)\s]+?)\.md(#[^)]+)?\)/g, "(/docs/$1$2)")
+    .replace(
+      /\]\(\.\/README\.md\)/g,
+      "](https://github.com/shakacode/react_on_rails/blob/main/README.md)"
+    )
+    .replace(
+      /\]\(react_on_rails\/spec\/dummy\)/g,
+      "](https://github.com/shakacode/react_on_rails/tree/main/spec/dummy)"
+    );
+  // `mdx.format: md` opts this page out of MDX so historical entries that
+  // mention raw tags like `<script async>` or `<head>` render as CommonMark
+  // text instead of being parsed as JSX (which would fail the build).
+  const frontmatter = [
+    "---",
+    "id: changelog",
+    "title: Changelog",
+    "description: Release-by-release changelog for React on Rails (open source) and React on Rails Pro.",
+    "sidebar_label: Changelog",
+    "slug: /upgrading/changelog",
+    "mdx:",
+    "  format: md",
+    "custom_edit_url: https://github.com/shakacode/react_on_rails/edit/main/CHANGELOG.md",
+    "---",
+    ""
+  ].join("\n");
+  return `${frontmatter}\n${withRewrittenLinks.trimEnd()}\n`;
+}
+
 function archiveSidebarCategory() {
   const legacyItems = legacyDocsToArchive.map(
     (entry) => `            'archive/legacy/${stripMdExtension(entry.source)}',`
@@ -693,6 +732,45 @@ ${legacyItems.join("\n")}
     },`;
 }
 
+export function siteSidebarSource(source, { hasArchive }) {
+  let content = source.replace(
+    /\{\s*type: 'link',\s*label: 'Full Changelog',\s*href: 'https:\/\/github\.com\/shakacode\/react_on_rails\/blob\/main\/CHANGELOG\.md',?\s*\},?/,
+    "{ type: 'doc', id: 'upgrading/changelog', label: 'Changelog' },"
+  );
+
+  if (hasArchive) {
+    // Insert archive category as the last item in docsSidebar before the closing ];
+    const archiveCategory = archiveSidebarCategory();
+    content = content.replace(
+      /(\n  \],\n\};\n)/,
+      `\n${archiveCategory}\n  ],\n};\n`
+    );
+  }
+
+  return content;
+}
+
+async function prepareChangelog(docsRoot) {
+  const targetPath = path.join(docsRoot, "upgrading", "changelog.md");
+  const upstreamChangelog = path.join(workspaceRoot, "content", "upstream", "CHANGELOG.md");
+
+  if (!(await exists(upstreamChangelog))) {
+    console.warn(
+      `Warning: ${upstreamChangelog} not found — skipping changelog publish. Run \`npm run sync:docs\` to fetch it.`
+    );
+    return;
+  }
+
+  const source = await fs.readFile(upstreamChangelog, "utf8");
+  const rendered = changelogMarkdown(source);
+
+  // Overwrite the dangling symlink that was copied from the upstream tree.
+  await fs.rm(targetPath, { force: true });
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  await fs.writeFile(targetPath, rendered, "utf8");
+  console.log(`Generated ${path.relative(workspaceRoot, targetPath)} from upstream CHANGELOG.md`);
+}
+
 async function prepareSidebars(siteRoot, hasArchive) {
   const upstreamSidebars = path.join(workspaceRoot, "content", "upstream", "sidebars.ts");
   const targetSidebars = path.join(siteRoot, "sidebars.ts");
@@ -700,14 +778,7 @@ async function prepareSidebars(siteRoot, hasArchive) {
   if (await exists(upstreamSidebars)) {
     let content = await fs.readFile(upstreamSidebars, "utf8");
 
-    if (hasArchive) {
-      // Insert archive category as the last item in docsSidebar before the closing ];
-      const archiveCategory = archiveSidebarCategory();
-      content = content.replace(
-        /(\n  \],\n\};\n)/,
-        `\n${archiveCategory}\n  ],\n};\n`
-      );
-    }
+    content = siteSidebarSource(content, { hasArchive });
 
     await fs.writeFile(targetSidebars, content, "utf8");
     console.log("Generated sidebars.ts from upstream");
@@ -753,11 +824,7 @@ async function prepareDocusaurus() {
   await fixKnownDocsIssues(docsRoot);
   await normalizeCodeFences(docsRoot);
   const hasArchive = await archiveLegacyDocs(docsRoot);
-  await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch((error) => {
-    if (error?.code !== "ENOENT") {
-      throw error;
-    }
-  });
+  await prepareChangelog(docsRoot);
   const docsHomeSource = await fs.readFile(layoutPaths.readmePath, "utf8");
   await fs.writeFile(
     path.join(docsRoot, "README.md"),

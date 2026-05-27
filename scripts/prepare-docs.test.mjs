@@ -5,11 +5,13 @@ import path from "node:path";
 import test from "node:test";
 
 import {
+  changelogMarkdown,
   docsHomeMarkdown,
   fixProNodeRendererMdx,
   injectProFriendlyNotice,
   rewriteFlattenedOssLinks,
   rewriteProLinks,
+  siteSidebarSource,
 } from "./prepare-docs.mjs";
 
 async function withTempDir(callback) {
@@ -84,6 +86,82 @@ test("docs homepage uses current friendly license model copy", () => {
   assert.match(updated, /development, test, CI\/CD, and staging/);
   assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
+});
+
+test("site sidebar replaces the external changelog link with an internal doc reference", () => {
+  const source = `const sidebars = {
+  docsSidebar: [
+    {
+      type: 'link',
+      label: 'Full Changelog',
+      href: 'https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md',
+    },
+  ],
+};
+`;
+
+  const updated = siteSidebarSource(source, { hasArchive: false });
+
+  assert.match(updated, /type: 'doc'/);
+  assert.match(updated, /id: 'upgrading\/changelog'/);
+  assert.match(updated, /label: 'Changelog'/);
+  assert.doesNotMatch(updated, /label: 'Full Changelog'/);
+  assert.doesNotMatch(updated, /github\.com\/shakacode\/react_on_rails\/blob\/main\/CHANGELOG\.md/);
+});
+
+test("changelog markdown injects frontmatter, opts out of MDX, and drops the upstream H1", () => {
+  const source = `# Change Log
+
+All notable changes...
+
+## [Unreleased]
+- Something new. [PR 1](https://example.com/pr/1)
+`;
+
+  const updated = changelogMarkdown(source);
+
+  assert.match(updated, /^---\nid: changelog\n/);
+  assert.match(updated, /title: Changelog/);
+  assert.match(updated, /slug: \/upgrading\/changelog/);
+  assert.match(updated, /mdx:\n {2}format: md/);
+  assert.match(updated, /custom_edit_url: https:\/\/github\.com\/shakacode\/react_on_rails\/edit\/main\/CHANGELOG\.md/);
+  assert.doesNotMatch(updated, /^# Change Log/m);
+  assert.match(updated, /## \[Unreleased\]/);
+  assert.match(updated, /All notable changes\.\.\./);
+});
+
+test("changelog markdown rewrites source-repo-relative links", () => {
+  const source = `# Change Log
+
+- See [Pro config](docs/oss/configuration/configuration-pro.md) and [release notes](docs/oss/upgrading/release-notes/16.0.0.md#breaking-changes).
+- See the [README.md](./README.md).
+- [react_on_rails/spec/dummy](react_on_rails/spec/dummy) is a sample app.
+- External [PR 1](https://github.com/shakacode/react_on_rails/pull/1) is untouched.
+`;
+
+  const updated = changelogMarkdown(source);
+
+  assert.match(updated, /\]\(\/docs\/configuration\/configuration-pro\)/);
+  assert.match(updated, /\]\(\/docs\/upgrading\/release-notes\/16\.0\.0#breaking-changes\)/);
+  assert.match(updated, /\]\(https:\/\/github\.com\/shakacode\/react_on_rails\/blob\/main\/README\.md\)/);
+  assert.match(updated, /\]\(https:\/\/github\.com\/shakacode\/react_on_rails\/tree\/main\/spec\/dummy\)/);
+  assert.match(updated, /\]\(https:\/\/github\.com\/shakacode\/react_on_rails\/pull\/1\)/);
+  assert.doesNotMatch(updated, /docs\/oss\//);
+  assert.doesNotMatch(updated, /\]\(\.\/README\.md\)/);
+});
+
+test("changelog markdown is idempotent on a body without the upstream H1", () => {
+  const source = `Just some preface text.
+
+## [1.0.0]
+- First entry.
+`;
+
+  const updated = changelogMarkdown(source);
+
+  assert.match(updated, /title: Changelog/);
+  assert.match(updated, /Just some preface text\./);
+  assert.match(updated, /## \[1\.0\.0\]/);
 });
 
 test("Pro node renderer table comparisons are escaped for MDX", () => {
