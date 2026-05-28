@@ -158,7 +158,7 @@ body {
 .markdown h4 {
   margin-top: 1.35rem;
   margin-bottom: 0.55rem;
-  font-size: 1.02rem;
+  font-size: 1.12rem;
   font-weight: 700;
   line-height: 1.35;
   color: var(--ifm-color-content);
@@ -167,7 +167,7 @@ body {
 .markdown h5 {
   margin-top: 1.1rem;
   margin-bottom: 0.45rem;
-  font-size: 0.94rem;
+  font-size: 1.02rem;
   font-weight: 700;
   line-height: 1.35;
   color: var(--ifm-color-content);
