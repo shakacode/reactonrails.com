@@ -155,11 +155,29 @@ body {
   border-bottom: 1px solid var(--site-border);
 }
 
+.markdown h4 {
+  margin-top: 1.35rem;
+  margin-bottom: 0.55rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ifm-color-content);
+}
+
+.markdown h5 {
+  margin-top: 1.1rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.94rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--ifm-color-content);
+}
+
 .markdown code {
   background: var(--site-inline-code-surface);
-  border: 1px solid var(--site-border);
-  border-radius: 6px;
-  padding: 0.2em 0.4em;
+  border: 0;
+  border-radius: 4px;
+  padding: 0.12em 0.28em;
   font-family: var(--ifm-font-family-monospace);
   color: var(--site-inline-code-text);
 }
