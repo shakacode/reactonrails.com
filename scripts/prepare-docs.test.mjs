@@ -88,6 +88,24 @@ test("docs homepage uses current friendly license model copy", () => {
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
 });
 
+test("docs homepage links every package reference", () => {
+  const sourceMarkdown = `# React on Rails
+
+## Need more help?
+`;
+
+  const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
+
+  assert.match(updated, /## Package References/);
+  assert.match(updated, /\[react-on-rails\]\(https:\/\/www\.npmjs\.com\/package\/react-on-rails\)/);
+  assert.match(updated, /\[react-on-rails-pro\]\(https:\/\/www\.npmjs\.com\/package\/react-on-rails-pro\)/);
+  assert.match(updated, /\[react-on-rails-pro-node-renderer\]\(https:\/\/www\.npmjs\.com\/package\/react-on-rails-pro-node-renderer\)/);
+  assert.match(updated, /\[react-on-rails-rsc\]\(https:\/\/www\.npmjs\.com\/package\/react-on-rails-rsc\)/);
+  assert.match(updated, /\[create-react-on-rails-app\]\(https:\/\/www\.npmjs\.com\/package\/create-react-on-rails-app\)/);
+  assert.match(updated, /\[react_on_rails\]\(https:\/\/rubygems\.org\/gems\/react_on_rails\)/);
+  assert.match(updated, /\[react_on_rails_pro\]\(https:\/\/rubygems\.org\/gems\/react_on_rails_pro\)/);
+});
+
 test("site sidebar replaces the external changelog link with an internal doc reference", () => {
   const source = `const sidebars = {
   docsSidebar: [

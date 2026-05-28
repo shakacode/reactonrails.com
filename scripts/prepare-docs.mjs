@@ -652,6 +652,81 @@ async function normalizeCodeFences(docsRoot) {
   }
 }
 
+const packageReferences = {
+  npmPackages: [
+    {
+      name: "react-on-rails",
+      url: "https://www.npmjs.com/package/react-on-rails",
+      description: "JavaScript runtime and helpers for the open source gem."
+    },
+    {
+      name: "react-on-rails-pro",
+      url: "https://www.npmjs.com/package/react-on-rails-pro",
+      description: "Pro client package for higher-throughput SSR and related integrations."
+    },
+    {
+      name: "react-on-rails-pro-node-renderer",
+      url: "https://www.npmjs.com/package/react-on-rails-pro-node-renderer",
+      description: "Dedicated Node.js renderer used by React on Rails Pro."
+    },
+    {
+      name: "react-on-rails-rsc",
+      url: "https://www.npmjs.com/package/react-on-rails-rsc",
+      description: "React Server Components support package."
+    },
+    {
+      name: "create-react-on-rails-app",
+      url: "https://www.npmjs.com/package/create-react-on-rails-app",
+      description: "CLI for scaffolding a new Rails and React app."
+    },
+  ],
+  rubyGems: [
+    {
+      name: "react_on_rails",
+      url: "https://rubygems.org/gems/react_on_rails",
+      description: "Rails integration gem for React on Rails open source."
+    },
+    {
+      name: "react_on_rails_pro",
+      url: "https://rubygems.org/gems/react_on_rails_pro",
+      description: "Pro Rails gem for SSR, RSC, streaming, and Node Renderer integration."
+    },
+  ],
+};
+
+function packageReferencesMarkdown() {
+  const npmPackages = packageReferences.npmPackages
+    .map((entry) => `- [${entry.name}](${entry.url}) - ${entry.description}`)
+    .join("\n");
+  const rubyGems = packageReferences.rubyGems
+    .map((entry) => `- [${entry.name}](${entry.url}) - ${entry.description}`)
+    .join("\n");
+
+  return `## Package References
+
+### npm packages
+
+${npmPackages}
+
+### Ruby gems
+
+${rubyGems}
+`;
+}
+
+function injectPackageReferences(markdown) {
+  if (/^## Package References$/m.test(markdown)) {
+    return markdown;
+  }
+
+  const section = packageReferencesMarkdown();
+  if (markdown.includes("\n## Need more help?")) {
+    return markdown.replace("\n## Need more help?", `\n${section}\n## Need more help?`);
+  }
+
+  return `${markdown.trimEnd()}\n\n${section}`;
+}
+
 export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
   const archiveBlock = hasArchive ? "- [Historical Reference](./archive/README.md)\n" : "";
   const friendlyLicenseSection = `## Friendly License Model
@@ -660,13 +735,13 @@ export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
 - Production deployments require a paid license. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
 `;
 
-  const updated = sourceMarkdown
+  const updated = injectPackageReferences(sourceMarkdown
     .trim()
     .replaceAll("(./oss/", "(./")
     .replace("](https://reactonrails.com/examples)", "](/examples)")
     .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n")
     .replace(/## Friendly evaluation policy\n\n[\s\S]*?(?=\n## )/, `${friendlyLicenseSection}\n`)
-    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`);
+    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`));
 
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
 }
