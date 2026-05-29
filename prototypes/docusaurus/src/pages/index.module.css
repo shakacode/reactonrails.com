@@ -110,15 +110,31 @@
 
 .quickStartGrid,
 .valueGrid,
-.migrationGrid {
+.migrationGrid,
+.demoGrid {
   display: grid;
   gap: 0.9rem;
   min-width: 0;
 }
 
 .quickStartGrid,
-.valueGrid {
+.valueGrid,
+.demoGrid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sectionHeaderRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.browseAll {
+  flex-shrink: 0;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .migrationGrid {
@@ -328,6 +344,7 @@
   .quickStartGrid,
   .valueGrid,
   .migrationGrid,
+  .demoGrid,
   .quoteGrid,
   .featureLayout {
     grid-template-columns: 1fr;

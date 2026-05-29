@@ -10,22 +10,13 @@
 }
 
 .kicker,
-.sectionEyebrow,
-.cardEyebrow {
+.sectionEyebrow {
   margin: 0 0 0.55rem;
   text-transform: uppercase;
   letter-spacing: 0.06rem;
   font-size: 0.75rem;
   font-weight: 700;
-}
-
-.kicker,
-.sectionEyebrow {
   color: var(--ifm-color-primary-dark);
-}
-
-.cardEyebrow {
-  color: var(--ifm-color-content-secondary);
 }
 
 .lead {
@@ -50,39 +41,11 @@
   gap: 0.9rem;
 }
 
-.decisionGrid {
-  margin-bottom: 3rem;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.card {
-  border: 1px solid var(--site-border);
-  border-radius: 8px;
-  background: var(--site-surface);
-  padding: 0.95rem;
-  box-shadow: none;
-}
-
-.card h3 {
-  margin-bottom: 0.45rem;
-  line-height: 1.12;
-}
-
-.cardLink {
-  display: inline-flex;
-  align-items: center;
-  margin-top: 0;
-  font-weight: 700;
-}
-
 @media (max-width: 996px) {
   .hero {
     padding: 2.1rem 0 1.7rem;
   }
 
-  .decisionGrid,
   .grid {
     grid-template-columns: 1fr;
   }
