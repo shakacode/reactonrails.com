@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -652,70 +653,54 @@ async function normalizeCodeFences(docsRoot) {
   }
 }
 
-const packageReferences = {
-  npmPackages: [
-    {
-      name: "react-on-rails",
-      url: "https://www.npmjs.com/package/react-on-rails",
-      description: "JavaScript runtime and helpers for the open source gem."
-    },
-    {
-      name: "react-on-rails-pro",
-      url: "https://www.npmjs.com/package/react-on-rails-pro",
-      description: "Pro client package for higher-throughput SSR and related integrations."
-    },
-    {
-      name: "react-on-rails-pro-node-renderer",
-      url: "https://www.npmjs.com/package/react-on-rails-pro-node-renderer",
-      description: "Dedicated Node.js renderer used by React on Rails Pro."
-    },
-    {
-      name: "react-on-rails-rsc",
-      url: "https://www.npmjs.com/package/react-on-rails-rsc",
-      description: "React Server Components support package."
-    },
-    {
-      name: "create-react-on-rails-app",
-      url: "https://www.npmjs.com/package/create-react-on-rails-app",
-      description: "CLI for scaffolding a new Rails and React app."
-    },
-  ],
-  rubyGems: [
-    {
-      name: "react_on_rails",
-      url: "https://rubygems.org/gems/react_on_rails",
-      description: "Rails integration gem for React on Rails open source."
-    },
-    {
-      name: "react_on_rails_pro",
-      url: "https://rubygems.org/gems/react_on_rails_pro",
-      description: "Pro Rails gem for SSR, RSC, streaming, and Node Renderer integration."
-    },
-  ],
+// Registry-specific URL and shields.io badge builders. The bare `?label=` keeps
+// the badge as a colored version pill only; the Registry table column carries
+// the npm/RubyGems distinction so the two never repeat.
+const registryConfig = {
+  npm: {
+    label: "npm",
+    pageUrl: (name) => `https://www.npmjs.com/package/${name}`,
+    badgeUrl: (name) => `https://img.shields.io/npm/v/${name}?label=`
+  },
+  rubygems: {
+    label: "RubyGems",
+    pageUrl: (name) => `https://rubygems.org/gems/${name}`,
+    badgeUrl: (name) => `https://img.shields.io/gem/v/${name}?label=`
+  }
 };
 
+// Single source of truth for the package list, shared with the landing page
+// (src/pages/index.tsx reads the same file). Versions are not stored here; they
+// render live from the registries via the shields.io badges above.
+const packageReferences = JSON.parse(
+  readFileSync(
+    path.join(workspaceRoot, "prototypes", "docusaurus", "src", "data", "packages.json"),
+    "utf8"
+  )
+);
+
 function packageReferencesMarkdown() {
-  const npmPackages = packageReferences.npmPackages
-    .map((entry) => `- [${entry.name}](${entry.url}) - ${entry.description}`)
+  const rows = packageReferences
+    .map((entry) => {
+      const registry = registryConfig[entry.registry];
+      const pageUrl = registry.pageUrl(entry.name);
+      const badgeUrl = registry.badgeUrl(entry.name);
+      return `| [\`${entry.name}\`](${pageUrl}) | [![${entry.name} version](${badgeUrl})](${pageUrl}) | ${registry.label} | ${entry.description} |`;
+    })
     .join("\n");
-  const rubyGems = packageReferences.rubyGems
-    .map((entry) => `- [${entry.name}](${entry.url}) - ${entry.description}`)
-    .join("\n");
 
-  return `## Package References
+  return `## Packages
 
-### npm packages
+React on Rails ships as a Ruby gem with companion npm packages. Versions are pulled live from each registry.
 
-${npmPackages}
-
-### Ruby gems
-
-${rubyGems}
+| Package | Version | Registry | Description |
+| --- | --- | --- | --- |
+${rows}
 `;
 }
 
 function injectPackageReferences(markdown) {
-  if (/^## Package References$/m.test(markdown)) {
+  if (/^## Packages$/m.test(markdown)) {
     return markdown;
   }
 

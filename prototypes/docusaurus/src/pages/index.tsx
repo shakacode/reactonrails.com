@@ -6,7 +6,26 @@ import Layout from '@theme/Layout';
 import ThemedImage from '@theme/ThemedImage';
 
 import {docsRoutes} from '../constants/docsRoutes';
+import packages from '../data/packages.json';
 import styles from './index.module.css';
+
+// Registry-specific URL + shields.io badge builders, mirroring the docs-home
+// transform in scripts/prepare-docs.mjs. Both read the same packages.json.
+const registryMeta: Record<
+  string,
+  {label: string; page: (name: string) => string; badge: (name: string) => string}
+> = {
+  npm: {
+    label: 'npm',
+    page: (name) => `https://www.npmjs.com/package/${name}`,
+    badge: (name) => `https://img.shields.io/npm/v/${name}?label=`,
+  },
+  rubygems: {
+    label: 'RubyGems',
+    page: (name) => `https://rubygems.org/gems/${name}`,
+    badge: (name) => `https://img.shields.io/gem/v/${name}?label=`,
+  },
+};
 
 const quickStartCards = [
   {
@@ -201,6 +220,62 @@ function QuickStartSection() {
   );
 }
 
+function PackagesSection() {
+  return (
+    <section className={styles.section}>
+      <div className="container">
+        <div className={styles.sectionHeader}>
+          <p className={styles.sectionEyebrow}>Packages</p>
+          <h2>Gems and npm packages</h2>
+        </div>
+        <p className={styles.packagesIntro}>
+          React on Rails ships as a Ruby gem with companion npm packages. Versions update live from
+          each registry.
+        </p>
+        <div className={styles.packageTableWrap}>
+          <table className={styles.packageTable}>
+            <thead>
+              <tr>
+                <th>Package</th>
+                <th>Version</th>
+                <th>Registry</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {packages.map((pkg) => {
+                const meta = registryMeta[pkg.registry];
+                const page = meta.page(pkg.name);
+                return (
+                  <tr key={pkg.name}>
+                    <td>
+                      <a href={page} target="_blank" rel="noopener noreferrer">
+                        <code>{pkg.name}</code>
+                      </a>
+                    </td>
+                    <td>
+                      <a href={page} target="_blank" rel="noopener noreferrer">
+                        <img
+                          className={styles.versionBadge}
+                          src={meta.badge(pkg.name)}
+                          alt={`${pkg.name} version`}
+                          loading="lazy"
+                        />
+                      </a>
+                    </td>
+                    <td>{meta.label}</td>
+                    <td>{pkg.description}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProSection() {
   const proLogoSrc = useBaseUrl('/img/logo-mark-pro.svg');
 
@@ -355,6 +430,7 @@ export default function Home(): ReactNode {
       <HeroSection />
       <main>
         <QuickStartSection />
+        <PackagesSection />
         <ProSection />
         <ValueSection />
         <TrustedBySection />

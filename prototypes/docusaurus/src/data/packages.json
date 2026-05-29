@@ -1,0 +1,37 @@
+[
+  {
+    "name": "react_on_rails",
+    "registry": "rubygems",
+    "description": "Rails integration gem for React on Rails open source."
+  },
+  {
+    "name": "react-on-rails",
+    "registry": "npm",
+    "description": "JavaScript runtime and helpers for the open source gem."
+  },
+  {
+    "name": "react_on_rails_pro",
+    "registry": "rubygems",
+    "description": "Pro Rails gem for SSR, RSC, streaming, and Node Renderer integration."
+  },
+  {
+    "name": "react-on-rails-pro",
+    "registry": "npm",
+    "description": "Pro client package for higher-throughput SSR and related integrations."
+  },
+  {
+    "name": "react-on-rails-pro-node-renderer",
+    "registry": "npm",
+    "description": "Dedicated Node.js renderer used by React on Rails Pro."
+  },
+  {
+    "name": "react-on-rails-rsc",
+    "registry": "npm",
+    "description": "React Server Components support package."
+  },
+  {
+    "name": "create-react-on-rails-app",
+    "registry": "npm",
+    "description": "CLI for scaffolding a new Rails and React app."
+  }
+]
