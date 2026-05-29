@@ -6,6 +6,8 @@ import Layout from '@theme/Layout';
 import ThemedImage from '@theme/ThemedImage';
 
 import {docsRoutes} from '../constants/docsRoutes';
+import {featuredDemos} from '../constants/demos';
+import DemoCard from '../components/DemoCard';
 import styles from './index.module.css';
 
 const quickStartCards = [
@@ -201,6 +203,29 @@ function QuickStartSection() {
   );
 }
 
+function LiveDemosSection() {
+  return (
+    <section className={styles.sectionSoft}>
+      <div className="container">
+        <div className={styles.sectionHeaderRow}>
+          <div className={styles.sectionHeader}>
+            <p className={styles.sectionEyebrow}>Live demos</p>
+            <h2>See it running</h2>
+          </div>
+          <Link className={styles.browseAll} to="/examples">
+            Browse all demos →
+          </Link>
+        </div>
+        <div className={styles.demoGrid}>
+          {featuredDemos.map((demo) => (
+            <DemoCard demo={demo} key={demo.id} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProSection() {
   const proLogoSrc = useBaseUrl('/img/logo-mark-pro.svg');
 
@@ -355,6 +380,7 @@ export default function Home(): ReactNode {
       <HeroSection />
       <main>
         <QuickStartSection />
+        <LiveDemosSection />
         <ProSection />
         <ValueSection />
         <TrustedBySection />
