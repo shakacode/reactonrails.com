@@ -9,27 +9,37 @@ const proFeatures = [
   {
     title: 'React Server Components',
     description:
-      'Render and stream React Server Components from Rails to ship interactive UI with dramatically less client JavaScript.',
+      'Render React Server Components from Rails and stream their payload to the browser, shipping interactive UI with dramatically less client JavaScript.',
   },
   {
-    title: 'Streaming SSR',
+    title: 'Streaming SSR with Suspense',
     description:
-      'Progressively stream server-rendered HTML so the first paint does not wait on the slowest part of the page.',
+      'stream_react_component flushes server-rendered HTML as each Suspense boundary resolves, so first paint never waits on the slowest data on the page.',
   },
   {
-    title: 'Fragment caching',
+    title: 'Concurrent component rendering',
     description:
-      'Cache rendered React output on server-rendering paths to cut repeat render cost on your hottest pages.',
+      'async_react_component renders multiple components in parallel through the Node renderer instead of one after another, cutting response time on component-heavy pages.',
+  },
+  {
+    title: 'Immediate hydration',
+    description:
+      'Components hydrate the instant their HTML streams in rather than waiting for the whole page to load, so the page becomes interactive sooner. Enabled automatically on Pro.',
+  },
+  {
+    title: 'Streaming-aware caching',
+    description:
+      'Fragment-cache rendered output — including streamed components — and add prerender caching so cache hits skip props, serialization, and JS execution entirely.',
   },
   {
     title: 'Dedicated Node renderer',
     description:
-      'Run server rendering in a concurrent Node.js process for higher SSR throughput than single-threaded ExecJS.',
+      'A concurrent Fastify-based Node.js renderer pool delivers higher SSR throughput than single-threaded ExecJS, and powers RSC, streaming, and parallel rendering.',
   },
   {
     title: 'Code splitting + bundle caching',
     description:
-      'Loadable-component code splitting with SSR-aware bundle caching for large client bundles.',
+      'Loadable-component code splitting with SSR-aware bundle caching keeps large client bundles fast to build and ship.',
   },
 ];
 
@@ -87,10 +97,10 @@ export default function ProPage(): ReactNode {
             <p className={styles.kicker}>An additive layer on open-source React on Rails</p>
             <h1>React on Rails Pro</h1>
             <p>
-              Pro builds on the open-source gem with React Server Components, streaming SSR, fragment
-              caching, and a dedicated Node renderer. The gem and npm package are public — install
-              them and start building today. A license is only required when you deploy to
-              production.
+              Pro builds on the open-source gem with React Server Components, streaming SSR,
+              concurrent and cached rendering, and a dedicated Node renderer. The gem and npm
+              package are public — install them and start building today. A license is only required
+              when you deploy to production.
             </p>
             <code className={styles.install}>bundle add react_on_rails_pro</code>
             <div className={styles.licenseHighlight}>
