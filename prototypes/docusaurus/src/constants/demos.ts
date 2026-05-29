@@ -16,25 +16,9 @@ export type Demo = {
   featured?: boolean;
 };
 
+// Live demos lead so the homepage "See it running" section features apps that
+// are actually deployed; coming-soon demos follow and still appear on /examples.
 export const demos: Demo[] = [
-  {
-    id: 'hacker-news',
-    name: 'Hacker News',
-    tagline:
-      'A Hacker News reader built on React on Rails Pro with React 19 and React Server Components.',
-    repoUrl: 'https://github.com/shakacode/react-on-rails-demo-hacker-news-rsc',
-    category: 'flagship',
-    featured: true,
-  },
-  {
-    id: 'gumroad',
-    name: 'Gumroad',
-    tagline:
-      'A Gumroad-style creator dashboard comparing Inertia and React on Rails Pro with React 19 and RSC.',
-    repoUrl: 'https://github.com/shakacode/react-on-rails-demo-gumroad-rsc',
-    category: 'flagship',
-    featured: true,
-  },
   {
     id: 'marketplace',
     name: 'Marketplace',
@@ -52,6 +36,7 @@ export const demos: Demo[] = [
     repoUrl: 'https://github.com/shakacode/react-on-rails-starter-tanstack',
     demoUrl: 'https://start.reactonrails.com',
     category: 'starter',
+    featured: true,
   },
   {
     id: 'legacy-tutorial',
@@ -61,6 +46,23 @@ export const demos: Demo[] = [
     repoUrl: 'https://github.com/shakacode/react-webpack-rails-tutorial',
     demoUrl: 'https://www.reactrails.com',
     category: 'legacy',
+    featured: true,
+  },
+  {
+    id: 'hacker-news',
+    name: 'Hacker News',
+    tagline:
+      'A Hacker News reader built on React on Rails Pro with React 19 and React Server Components.',
+    repoUrl: 'https://github.com/shakacode/react-on-rails-demo-hacker-news-rsc',
+    category: 'flagship',
+  },
+  {
+    id: 'gumroad',
+    name: 'Gumroad',
+    tagline:
+      'A Gumroad-style creator dashboard comparing Inertia and React on Rails Pro with React 19 and RSC.',
+    repoUrl: 'https://github.com/shakacode/react-on-rails-demo-gumroad-rsc',
+    category: 'flagship',
   },
 ];
 
