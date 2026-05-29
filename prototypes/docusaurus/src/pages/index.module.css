@@ -172,54 +172,6 @@
   font-weight: 700;
 }
 
-.packagesIntro {
-  max-width: 44rem;
-  margin-bottom: 1rem;
-  color: var(--ifm-color-content-secondary);
-}
-
-.packageTableWrap {
-  overflow-x: auto;
-  border: 1px solid var(--site-border);
-  border-radius: 8px;
-}
-
-.packageTable {
-  display: table;
-  width: 100%;
-  margin: 0;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-.packageTable th,
-.packageTable td {
-  padding: 0.7rem 0.85rem;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid var(--site-border);
-}
-
-.packageTable thead th {
-  background: var(--site-soft-surface);
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.packageTable tbody tr:last-child td {
-  border-bottom: none;
-}
-
-.packageTable code {
-  font-size: 0.9em;
-  white-space: nowrap;
-}
-
-.versionBadge {
-  display: block;
-  height: 20px;
-}
-
 .featureLayout {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);

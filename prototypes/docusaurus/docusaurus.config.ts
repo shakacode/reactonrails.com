@@ -2,6 +2,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {GlobExcludeDefault} from '@docusaurus/utils';
+import packages from './src/data/packages.json';
 
 // Use Algolia DocSearch when configured, otherwise fall back to local search.
 // Set ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, and ALGOLIA_INDEX_NAME env vars
@@ -21,6 +22,25 @@ const localSearchTheme: NonNullable<Config['themes']>[number] = [
     searchBarShortcutHint: true,
   },
 ];
+
+// Slender version-badge reference for the site footer. Reads the shared
+// packages.json (same source as the docs-home Packages table) and renders one
+// linked, live shields.io badge per package, labeled with both the package name
+// and its registry (e.g. "react_on_rails (gem) 16.6.0").
+const packageFooterItems = packages.map((pkg) => {
+  const isGem = pkg.registry === 'rubygems';
+  const registryShort = isGem ? 'gem' : 'npm';
+  const page = isGem
+    ? `https://rubygems.org/gems/${pkg.name}`
+    : `https://www.npmjs.com/package/${pkg.name}`;
+  const label = encodeURIComponent(`${pkg.name} (${registryShort})`);
+  const badge = isGem
+    ? `https://img.shields.io/gem/v/${pkg.name}?label=${label}`
+    : `https://img.shields.io/npm/v/${pkg.name}?label=${label}`;
+  return {
+    html: `<a href="${page}" target="_blank" rel="noopener noreferrer" class="footer__package-badge"><img src="${badge}" alt="${pkg.name} ${registryShort} version" loading="lazy" /></a>`,
+  };
+});
 
 const config: Config = {
   title: 'React on Rails',
@@ -196,6 +216,10 @@ const config: Config = {
               href: 'https://github.com/sponsors/shakacode',
             },
           ],
+        },
+        {
+          title: 'Packages',
+          items: packageFooterItems,
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} ShakaCode. Built with Docusaurus.`,

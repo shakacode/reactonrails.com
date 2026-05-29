@@ -327,3 +327,14 @@ body {
     background: var(--site-surface);
   }
 }
+
+/* Footer "Packages" column: slim, evenly spaced version badges. */
+.footer__package-badge {
+  display: inline-block;
+  line-height: 0;
+}
+
+.footer__package-badge img {
+  height: 20px;
+  vertical-align: middle;
+}
