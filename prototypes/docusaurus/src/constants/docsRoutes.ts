@@ -4,6 +4,7 @@ export const docsRoutes = {
   installExistingApp: '/docs/getting-started/existing-rails-app',
   ossVsPro: '/docs/getting-started/oss-vs-pro',
   proOverview: '/docs/pro',
+  proInstall: '/docs/pro/installation',
   proUpgrade: '/docs/pro/upgrading-to-pro',
   migrateFromReactRails: '/docs/migrating/migrating-from-react-rails',
 } as const;

@@ -126,13 +126,15 @@
 }
 
 .cardGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.9rem;
   margin: 1rem 0 1.3rem;
 }
 
 .featureCard {
+  flex: 0 1 calc((100% - 1.8rem) / 3);
   border: 1px solid var(--site-border);
   border-radius: 8px;
   background: var(--site-surface);
@@ -170,7 +172,7 @@
     grid-template-columns: 1fr;
   }
 
-  .cardGrid {
-    grid-template-columns: 1fr;
+  .featureCard {
+    flex-basis: 100%;
   }
 }

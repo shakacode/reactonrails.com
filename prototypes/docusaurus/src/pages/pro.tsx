@@ -102,7 +102,7 @@ export default function ProPage(): ReactNode {
               </span>
             </div>
             <div className={styles.actions}>
-              <Link className="button button--primary button--lg" to={docsRoutes.proUpgrade}>
+              <Link className="button button--primary button--lg" to={docsRoutes.proInstall}>
                 Start building with Pro
               </Link>
               <Link
