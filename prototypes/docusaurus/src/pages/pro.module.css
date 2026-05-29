@@ -24,6 +24,18 @@
   color: var(--ifm-color-primary-dark);
 }
 
+.install {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  background: var(--site-surface);
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.9rem;
+  color: var(--ifm-color-content);
+}
+
 .actions {
   margin-top: 1rem;
   display: flex;
@@ -113,26 +125,34 @@
   font-weight: 700;
 }
 
-.tableWrap {
-  overflow-x: auto;
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0 1.3rem;
+}
+
+.featureCard {
   border: 1px solid var(--site-border);
   border-radius: 8px;
+  background: var(--site-surface);
+  padding: 0.95rem;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
+.featureCard h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.02rem;
 }
 
-.table th,
-.table td {
-  padding: 0.7rem;
-  border-bottom: 1px solid var(--site-border);
-  text-align: left;
+.featureCard p {
+  margin: 0;
+  color: var(--ifm-color-content-secondary);
 }
 
-.table th {
-  background: var(--site-soft-surface);
+.cardLink {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-weight: 600;
 }
 
 .note {
@@ -147,6 +167,10 @@
   }
 
   .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardGrid {
     grid-template-columns: 1fr;
   }
 }

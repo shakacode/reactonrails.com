@@ -5,57 +5,76 @@ import Layout from '@theme/Layout';
 import {docsRoutes} from '../constants/docsRoutes';
 import styles from './pro.module.css';
 
-const upgradeSteps = [
+const proFeatures = [
   {
-    step: '1',
-    title: 'Compare OSS and Pro',
+    title: 'React Server Components',
     description:
-      'Decide whether you need higher-throughput SSR, deeper RSC support, or maintainer-backed help.',
+      'Render and stream React Server Components from Rails to ship interactive UI with dramatically less client JavaScript.',
   },
   {
-    step: '2',
-    title: 'Follow the upgrade guide',
+    title: 'Streaming SSR',
     description:
-      'Add the Pro gem and package changes without switching to a different product story or docs tree.',
+      'Progressively stream server-rendered HTML so the first paint does not wait on the slowest part of the page.',
   },
   {
-    step: '3',
-    title: 'Validate on the paths that matter',
+    title: 'Fragment caching',
     description:
-      'Turn on the Pro features you actually need, then validate production rendering and performance behavior.',
+      'Cache rendered React output on server-rendering paths to cut repeat render cost on your hottest pages.',
+  },
+  {
+    title: 'Dedicated Node renderer',
+    description:
+      'Run server rendering in a concurrent Node.js process for higher SSR throughput than single-threaded ExecJS.',
+  },
+  {
+    title: 'Code splitting + bundle caching',
+    description:
+      'Loadable-component code splitting with SSR-aware bundle caching for large client bundles.',
   },
 ];
 
-const featureRows = [
+const proofLinks = [
   {
-    feature: 'Open-source Rails + React integration',
-    oss: 'Included',
-    pro: 'Included',
+    title: 'Live RSC performance demo',
+    description:
+      'LocalHub, a sample marketplace built on Pro + RSC, with Lighthouse reports and bundle-size evidence you can inspect.',
+    href: 'https://rsc.reactonrails.com/search-performance',
+    cta: 'Open the demo dashboard',
   },
   {
-    feature: 'Node-based server rendering stack',
-    oss: 'No',
-    pro: 'Included',
+    title: 'Marketplace demo + performance guide',
+    description:
+      'The full public source for the LocalHub demo, including the performance guide that walks through the RSC results.',
+    href: 'https://github.com/shakacode/react-on-rails-demo-marketplace-rsc',
+    cta: 'Open the repository',
   },
   {
-    feature: 'Fragment caching helpers for SSR paths',
-    oss: 'No',
-    pro: 'Included',
+    title: 'Pro example app',
+    description:
+      'A real Rails app in the repo that exercises the Node renderer, caching, and SSR workflows end to end.',
+    href: 'https://github.com/shakacode/react_on_rails/blob/main/react_on_rails_pro/spec/dummy/README.md',
+    cta: 'Inspect the example app',
+  },
+];
+
+const upgradeSteps = [
+  {
+    step: '1',
+    title: 'Add the gem and package',
+    description:
+      'Run bundle add react_on_rails_pro and add the npm package. Both are public on RubyGems and npm — no token or account required to start.',
   },
   {
-    feature: 'React Server Components performance guides',
-    oss: 'Docs only',
-    pro: 'Included',
+    step: '2',
+    title: 'Turn on the features you need',
+    description:
+      'Enable RSC, streaming SSR, fragment caching, or the Node renderer on the paths where they actually help.',
   },
   {
-    feature: 'Public RSC demo with Lighthouse and bundle evidence',
-    oss: 'View-only',
-    pro: 'Included implementation patterns',
-  },
-  {
-    feature: 'Support access with ShakaCode maintainers',
-    oss: 'Community channels',
-    pro: 'Sponsor support plans',
+    step: '3',
+    title: 'Validate, then license for production',
+    description:
+      'Confirm production rendering and performance on the paths that matter, then add a license when you deploy.',
   },
 ];
 
@@ -65,40 +84,71 @@ export default function ProPage(): ReactNode {
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className="container">
-            <p className={styles.kicker}>Performance tier, not separate product</p>
+            <p className={styles.kicker}>An additive layer on open-source React on Rails</p>
             <h1>React on Rails Pro</h1>
             <p>
-              Pro extends React on Rails for teams that need higher SSR throughput, RSC-oriented
-              rendering features, and guided production support. The friendly license model lets
-              you evaluate Pro without a token before you need a production license.
+              Pro builds on the open-source gem with React Server Components, streaming SSR, fragment
+              caching, and a dedicated Node renderer. The gem and npm package are public — install
+              them and start building today. A license is only required when you deploy to
+              production.
             </p>
+            <code className={styles.install}>bundle add react_on_rails_pro</code>
             <div className={styles.licenseHighlight}>
-              <strong>Friendly license model</strong>
+              <strong>Free to build with</strong>
               <span>
-                No token is required for development, test, CI/CD, or staging. Production
-                deployments require a paid license.
+                No token needed for development, test, CI/CD, or staging. With no license configured,
+                Pro keeps running and logs its license status instead of ever blocking your app.
+                Production deployments need a paid license, which includes maintainer support.
               </span>
             </div>
             <div className={styles.actions}>
               <Link className="button button--primary button--lg" to={docsRoutes.proUpgrade}>
-                Review the upgrade guide
-              </Link>
-              <Link
-                className="button button--secondary button--lg"
-                to={docsRoutes.proOverview}>
-                Open Pro docs overview
+                Start building with Pro
               </Link>
               <Link
                 className="button button--secondary button--lg"
                 href="https://rsc.reactonrails.com/search-performance">
-                View RSC performance demo
+                See the live RSC demo
               </Link>
-              <Link
-                className="button button--secondary button--lg"
-                href="https://pro.reactonrails.com/">
-                Pro pricing / sign up
+              <Link className="button button--secondary button--lg" to={docsRoutes.proOverview}>
+                Pro docs overview
               </Link>
             </div>
+          </div>
+        </section>
+
+        <section className="container">
+          <h2>What Pro adds</h2>
+          <p className={styles.note}>
+            Everything below comes from the open-source stack plus the public Pro gem. There is no
+            paywall — a license covers production use and support, not access.
+          </p>
+          <div className={styles.cardGrid}>
+            {proFeatures.map((feature) => (
+              <article className={styles.featureCard} key={feature.title}>
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="container">
+          <h2>See everything before you commit</h2>
+          <p className={styles.note}>
+            The docs, demos, and example apps are all open. Inspect the real performance evidence and
+            source before you talk to us about a license.
+          </p>
+          <div className={styles.cardGrid}>
+            {proofLinks.map((proof) => (
+              <article className={styles.featureCard} key={proof.title}>
+                <h3>{proof.title}</h3>
+                <p>{proof.description}</p>
+                <Link className={styles.cardLink} href={proof.href}>
+                  {proof.cta}
+                </Link>
+              </article>
+            ))}
           </div>
         </section>
 
@@ -106,7 +156,7 @@ export default function ProPage(): ReactNode {
           <div className={styles.grid}>
             <article className={styles.policyCard}>
               <p className={styles.cardEyebrow}>Upgrade path</p>
-              <h2>Three steps from OSS to Pro</h2>
+              <h2>Three steps to build with Pro</h2>
               <ol className={styles.stepList}>
                 {upgradeSteps.map((step) => (
                   <li key={step.step}>
@@ -122,53 +172,30 @@ export default function ProPage(): ReactNode {
 
             <article className={styles.policyCard}>
               <p className={styles.cardEyebrow}>Friendly license model</p>
-              <h2>Evaluate without a token.</h2>
+              <h2>Build now. License when you ship.</h2>
               <p>
-                Try Pro freely in development, test, CI/CD, and staging. If no license is
-                configured, Pro keeps running in unlicensed mode and logs license status instead of
-                blocking your app.
+                Try every Pro feature freely in development, test, CI/CD, and staging. With no license
+                configured, Pro keeps running in unlicensed mode and logs its status — it never blocks
+                your app.
               </p>
               <p>
-                Production deployments require a paid license. Visit{' '}
+                Production deployments require a paid license, which includes support from the
+                ShakaCode maintainers. Visit{' '}
                 <a href="https://pro.reactonrails.com/">Pro pricing and sign up</a> for current
                 options.
               </p>
               <p>
-                If your organization is budget-constrained, email{' '}
-                <a href="mailto:justin@shakacode.com">justin@shakacode.com</a>. We can grant free
-                licenses in qualifying cases.
+                Budget-constrained? Email{' '}
+                <a href="mailto:justin@shakacode.com">justin@shakacode.com</a> — we grant free or
+                low-cost licenses in qualifying cases. Licenses from larger companies fund continued
+                React on Rails development.
               </p>
             </article>
           </div>
-        </section>
-
-        <section className="container">
-          <h2>Feature Comparison</h2>
-          <div className={styles.tableWrap}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Capability</th>
-                  <th>Open Source</th>
-                  <th>Pro</th>
-                </tr>
-              </thead>
-              <tbody>
-                {featureRows.map((row) => (
-                  <tr key={row.feature}>
-                    <td>{row.feature}</td>
-                    <td>{row.oss}</td>
-                    <td>{row.pro}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
           <p className={styles.note}>
-            Need pricing, implementation guidance, or a free-license discussion? Visit{' '}
+            Questions about pricing, implementation, or a free license? Visit{' '}
             <a href="https://pro.reactonrails.com/">Pro pricing and sign up</a> or{' '}
-            <a href="/docs/pro">the Pro docs landing page</a>. Want proof first?
-            Open the{' '}
+            <a href="/docs/pro">the Pro docs landing page</a>. Want proof first? Open the{' '}
             <a href="https://rsc.reactonrails.com/search-performance">RSC performance dashboard</a>.
           </p>
         </section>
