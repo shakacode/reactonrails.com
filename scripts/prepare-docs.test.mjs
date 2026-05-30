@@ -88,6 +88,42 @@ test("docs homepage uses current friendly license model copy", () => {
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
 });
 
+test("docs homepage renders a package table with linked names and live version badges", () => {
+  const sourceMarkdown = `# React on Rails
+
+## Need more help?
+`;
+
+  const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
+
+  // Heading + table scaffold
+  assert.match(updated, /## Packages/);
+  assert.match(updated, /\| Package \| Version \| Registry \| Description \|/);
+
+  // Every package: name links to its registry page, version renders as a live
+  // shields.io badge, and the registry column labels the source.
+  assert.match(
+    updated,
+    /\| \[`react_on_rails`\]\(https:\/\/rubygems\.org\/gems\/react_on_rails\) \| \[!\[react_on_rails version\]\(https:\/\/img\.shields\.io\/gem\/v\/react_on_rails\?label=\)\]\(https:\/\/rubygems\.org\/gems\/react_on_rails\) \| RubyGems \|/
+  );
+  assert.match(
+    updated,
+    /\| \[`react-on-rails`\]\(https:\/\/www\.npmjs\.com\/package\/react-on-rails\) \| \[!\[react-on-rails version\]\(https:\/\/img\.shields\.io\/npm\/v\/react-on-rails\?label=\)\]\(https:\/\/www\.npmjs\.com\/package\/react-on-rails\) \| npm \|/
+  );
+
+  // Remaining packages each appear with a registry page link and a version badge.
+  for (const name of [
+    "react_on_rails_pro",
+    "react-on-rails-pro",
+    "react-on-rails-pro-node-renderer",
+    "react-on-rails-rsc",
+    "create-react-on-rails-app",
+  ]) {
+    assert.match(updated, new RegExp(`\\[\`${name}\`\\]`));
+    assert.match(updated, new RegExp(`img\\.shields\\.io/(npm|gem)/v/${name}\\?label=`));
+  }
+});
+
 test("site sidebar replaces the external changelog link with an internal doc reference", () => {
   const source = `const sidebars = {
   docsSidebar: [

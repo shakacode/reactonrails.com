@@ -2,6 +2,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {GlobExcludeDefault} from '@docusaurus/utils';
+import packages from './src/data/packages.json';
 
 // Use Algolia DocSearch when configured, otherwise fall back to local search.
 // Set ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, and ALGOLIA_INDEX_NAME env vars
@@ -21,6 +22,24 @@ const localSearchTheme: NonNullable<Config['themes']>[number] = [
     searchBarShortcutHint: true,
   },
 ];
+
+// Slender version reference for the site footer. Reads the shared packages.json
+// (same source as the docs-home Packages table) and renders one row per package:
+// the package name + registry on the left, a live shields.io version pill on the
+// right. CSS aligns the pills into a neat column (see custom.css).
+const packageFooterItems = packages.map((pkg) => {
+  const isGem = pkg.registry === 'rubygems';
+  const registryShort = isGem ? 'gem' : 'npm';
+  const page = isGem
+    ? `https://rubygems.org/gems/${pkg.name}`
+    : `https://www.npmjs.com/package/${pkg.name}`;
+  const badge = isGem
+    ? `https://img.shields.io/gem/v/${pkg.name}?style=flat-square&label=`
+    : `https://img.shields.io/npm/v/${pkg.name}?style=flat-square&label=`;
+  return {
+    html: `<a class="footer__package" href="${page}" target="_blank" rel="noopener noreferrer"><span class="footer__package-name">${pkg.name} <span class="footer__package-registry">(${registryShort})</span></span><img class="footer__package-version" src="${badge}" alt="${pkg.name} ${registryShort} version" loading="lazy" /></a>`,
+  };
+});
 
 const config: Config = {
   title: 'React on Rails',
@@ -196,6 +215,10 @@ const config: Config = {
               href: 'https://github.com/sponsors/shakacode',
             },
           ],
+        },
+        {
+          title: 'Packages',
+          items: packageFooterItems,
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} ShakaCode. Built with Docusaurus.`,

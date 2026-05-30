@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -652,6 +653,65 @@ async function normalizeCodeFences(docsRoot) {
   }
 }
 
+// Registry-specific URL and shields.io badge builders. The bare `?label=` keeps
+// the badge as a colored version pill only; the Registry table column carries
+// the npm/RubyGems distinction so the two never repeat.
+const registryConfig = {
+  npm: {
+    label: "npm",
+    pageUrl: (name) => `https://www.npmjs.com/package/${name}`,
+    badgeUrl: (name) => `https://img.shields.io/npm/v/${name}?label=`
+  },
+  rubygems: {
+    label: "RubyGems",
+    pageUrl: (name) => `https://rubygems.org/gems/${name}`,
+    badgeUrl: (name) => `https://img.shields.io/gem/v/${name}?label=`
+  }
+};
+
+// Single source of truth for the package list, shared with the landing page
+// (src/pages/index.tsx reads the same file). Versions are not stored here; they
+// render live from the registries via the shields.io badges above.
+const packageReferences = JSON.parse(
+  readFileSync(
+    path.join(workspaceRoot, "prototypes", "docusaurus", "src", "data", "packages.json"),
+    "utf8"
+  )
+);
+
+function packageReferencesMarkdown() {
+  const rows = packageReferences
+    .map((entry) => {
+      const registry = registryConfig[entry.registry];
+      const pageUrl = registry.pageUrl(entry.name);
+      const badgeUrl = registry.badgeUrl(entry.name);
+      return `| [\`${entry.name}\`](${pageUrl}) | [![${entry.name} version](${badgeUrl})](${pageUrl}) | ${registry.label} | ${entry.description} |`;
+    })
+    .join("\n");
+
+  return `## Packages
+
+React on Rails ships as a Ruby gem with companion npm packages. Versions are pulled live from each registry.
+
+| Package | Version | Registry | Description |
+| --- | --- | --- | --- |
+${rows}
+`;
+}
+
+function injectPackageReferences(markdown) {
+  if (/^## Packages$/m.test(markdown)) {
+    return markdown;
+  }
+
+  const section = packageReferencesMarkdown();
+  if (markdown.includes("\n## Need more help?")) {
+    return markdown.replace("\n## Need more help?", `\n${section}\n## Need more help?`);
+  }
+
+  return `${markdown.trimEnd()}\n\n${section}`;
+}
+
 export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
   const archiveBlock = hasArchive ? "- [Historical Reference](./archive/README.md)\n" : "";
   const friendlyLicenseSection = `## Friendly License Model
@@ -660,13 +720,13 @@ export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
 - Production deployments require a paid license. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
 `;
 
-  const updated = sourceMarkdown
+  const updated = injectPackageReferences(sourceMarkdown
     .trim()
     .replaceAll("(./oss/", "(./")
     .replace("](https://reactonrails.com/examples)", "](/examples)")
     .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n")
     .replace(/## Friendly evaluation policy\n\n[\s\S]*?(?=\n## )/, `${friendlyLicenseSection}\n`)
-    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`);
+    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`));
 
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
 }
