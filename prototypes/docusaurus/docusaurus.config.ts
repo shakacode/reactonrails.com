@@ -23,22 +23,21 @@ const localSearchTheme: NonNullable<Config['themes']>[number] = [
   },
 ];
 
-// Slender version-badge reference for the site footer. Reads the shared
-// packages.json (same source as the docs-home Packages table) and renders one
-// linked, live shields.io badge per package, labeled with both the package name
-// and its registry (e.g. "react_on_rails (gem) 16.6.0").
+// Slender version reference for the site footer. Reads the shared packages.json
+// (same source as the docs-home Packages table) and renders one row per package:
+// the package name + registry on the left, a live shields.io version pill on the
+// right. CSS aligns the pills into a neat column (see custom.css).
 const packageFooterItems = packages.map((pkg) => {
   const isGem = pkg.registry === 'rubygems';
   const registryShort = isGem ? 'gem' : 'npm';
   const page = isGem
     ? `https://rubygems.org/gems/${pkg.name}`
     : `https://www.npmjs.com/package/${pkg.name}`;
-  const label = encodeURIComponent(`${pkg.name} (${registryShort})`);
   const badge = isGem
-    ? `https://img.shields.io/gem/v/${pkg.name}?label=${label}`
-    : `https://img.shields.io/npm/v/${pkg.name}?label=${label}`;
+    ? `https://img.shields.io/gem/v/${pkg.name}?style=flat-square&label=`
+    : `https://img.shields.io/npm/v/${pkg.name}?style=flat-square&label=`;
   return {
-    html: `<a href="${page}" target="_blank" rel="noopener noreferrer" class="footer__package-badge"><img src="${badge}" alt="${pkg.name} ${registryShort} version" loading="lazy" /></a>`,
+    html: `<a class="footer__package" href="${page}" target="_blank" rel="noopener noreferrer"><span class="footer__package-name">${pkg.name} <span class="footer__package-registry">(${registryShort})</span></span><img class="footer__package-version" src="${badge}" alt="${pkg.name} ${registryShort} version" loading="lazy" /></a>`,
   };
 });
 

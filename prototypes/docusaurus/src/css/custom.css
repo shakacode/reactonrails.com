@@ -328,13 +328,45 @@ body {
   }
 }
 
-/* Footer "Packages" column: slim, evenly spaced version badges. */
-.footer__package-badge {
-  display: inline-block;
-  line-height: 0;
+/* Size the Packages column to its content (instead of an equal 1/4 share) so the
+   longest package name plus its version pill never clips, and every pill aligns
+   to the same right edge. :has() targets only the column holding our badges. */
+.footer__col:has(.footer__package) {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: none;
 }
 
-.footer__package-badge img {
-  height: 20px;
-  vertical-align: middle;
+/* Footer "Packages" column: package name on the left, a live version pill on
+   the right. justify-content lines the pills up into a tidy column. */
+.footer__package {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 0.12rem 0;
+  white-space: nowrap;
+  color: var(--ifm-footer-link-color);
+}
+
+.footer__package:hover {
+  text-decoration: none;
+}
+
+.footer__package:hover .footer__package-name {
+  text-decoration: underline;
+}
+
+.footer__package-name {
+  font-size: 0.82rem;
+  font-family: var(--ifm-font-family-monospace);
+}
+
+.footer__package-registry {
+  color: var(--ifm-color-content-secondary);
+}
+
+.footer__package-version {
+  height: 18px;
+  flex: none;
 }
