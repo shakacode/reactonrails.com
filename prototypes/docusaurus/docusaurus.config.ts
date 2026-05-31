@@ -58,6 +58,7 @@ const config: Config = {
 
   onBrokenLinks: 'warn',
   markdown: {
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: 'warn',
     },
@@ -68,7 +69,7 @@ const config: Config = {
     locales: ['en'],
   },
 
-  themes: useAlgolia ? [] : [localSearchTheme],
+  themes: [...(useAlgolia ? [] : [localSearchTheme]), '@docusaurus/theme-mermaid'],
 
   presets: [
     [
