@@ -10,31 +10,37 @@ const proFeatures = [
     title: 'React Server Components',
     description:
       'Render React Server Components from Rails and stream their payload to the browser, shipping interactive UI with dramatically less client JavaScript.',
+    href: docsRoutes.proReactServerComponents,
   },
   {
     title: 'Streaming SSR with immediate hydration',
     description:
       'stream_react_component flushes server-rendered HTML as each Suspense boundary resolves, and every piece hydrates the moment it streams in — first paint never waits on the slowest data, and the page turns interactive sooner.',
+    href: docsRoutes.proStreamingSsr,
   },
   {
     title: 'Concurrent component rendering',
     description:
       'async_react_component renders multiple components in parallel through the Node renderer instead of one after another, cutting response time on component-heavy pages.',
+    href: docsRoutes.proAsyncRendering,
   },
   {
     title: 'Streaming-aware caching',
     description:
       'Fragment-cache rendered output — including streamed components — and add prerender caching so cache hits skip props, serialization, and JS execution entirely.',
+    href: docsRoutes.proFragmentCaching,
   },
   {
     title: 'Dedicated Node renderer',
     description:
       'A concurrent Fastify-based Node.js renderer pool delivers higher SSR throughput than single-threaded ExecJS, and powers RSC, streaming, and parallel rendering.',
+    href: docsRoutes.proNodeRenderer,
   },
   {
     title: 'Code splitting + bundle caching',
     description:
       'Loadable-component code splitting with SSR-aware bundle caching keeps large client bundles fast to build and ship.',
+    href: docsRoutes.codeSplitting,
   },
 ];
 
@@ -116,10 +122,14 @@ export default function ProPage(): ReactNode {
           </p>
           <div className={styles.cardGrid}>
             {proFeatures.map((feature) => (
-              <article className={styles.featureCard} key={feature.title}>
+              <Link
+                className={`${styles.featureCard} ${styles.featureCardLink}`}
+                key={feature.title}
+                to={feature.href}
+              >
                 <h3>{feature.title}</h3>
                 <p>{feature.description}</p>
-              </article>
+              </Link>
             ))}
           </div>
         </section>
