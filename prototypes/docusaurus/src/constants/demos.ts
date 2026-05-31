@@ -54,7 +54,9 @@ export const demos: Demo[] = [
     tagline:
       'A Hacker News reader built on React on Rails Pro with React 19 and React Server Components.',
     repoUrl: 'https://github.com/shakacode/react-on-rails-demo-hacker-news-rsc',
+    demoUrl: 'https://hn.reactonrails.com',
     category: 'flagship',
+    featured: true,
   },
   {
     id: 'gumroad',
