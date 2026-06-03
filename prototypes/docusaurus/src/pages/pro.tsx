@@ -1,6 +1,7 @@
 import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
+import {PageMetadata} from '@docusaurus/theme-common';
 
 import {docsRoutes} from '../constants/docsRoutes';
 import styles from './pro.module.css';
@@ -85,6 +86,7 @@ const upgradeSteps = [
 export default function ProPage(): ReactNode {
   return (
     <Layout title="React on Rails Pro" description="React on Rails Pro features and upgrade path">
+      <PageMetadata image="img/react-on-rails-pro-social-card.png" />
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className="container">
