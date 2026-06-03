@@ -141,7 +141,7 @@ function TrustedBySection() {
 }
 
 function HeroSection() {
-  const heroLogoSrc = useBaseUrl('/img/logo-mark.png');
+  const heroLogoSrc = useBaseUrl('/img/icon-tile.svg');
 
   return (
     <header className={styles.heroBanner}>
@@ -227,7 +227,7 @@ function LiveDemosSection() {
 }
 
 function ProSection() {
-  const proLogoSrc = useBaseUrl('/img/logo-mark-pro.svg');
+  const proLogoSrc = useBaseUrl('/img/icon-tile.svg');
 
   return (
     <section className={styles.sectionFeature}>

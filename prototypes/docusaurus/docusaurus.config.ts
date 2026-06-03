@@ -44,7 +44,7 @@ const packageFooterItems = packages.map((pkg) => {
 const config: Config = {
   title: 'React on Rails',
   tagline: 'Integrate React with Rails, including SSR, RSC, and production-grade docs.',
-  favicon: 'img/logo-mark.png',
+  favicon: 'img/favicon.ico',
 
   future: {
     v4: true,
@@ -119,7 +119,7 @@ const config: Config = {
       title: 'React on Rails',
       logo: {
         alt: 'React on Rails Logo',
-        src: 'img/logo-mark.png',
+        src: 'img/icon-tile.svg',
         width: 40,
         height: 40,
       },
