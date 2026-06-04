@@ -68,7 +68,8 @@ export const demos: Demo[] = [
     tagline:
       'An Octochangelog app migrated to React on Rails Pro with Rails routing, React 19, and streamed RSC.',
     repoUrl: 'https://github.com/shakacode/react_on_rails-demo-octochangelog-on-rails-pro',
-    demoUrl: 'https://rails-wt0q7a2r1svry.cpln.app',
+    demoUrl: 'https://changelog.reactonrails.com',
+    image: '/img/demos/octochangelog.webp',
     category: 'flagship',
     featured: true,
   },
