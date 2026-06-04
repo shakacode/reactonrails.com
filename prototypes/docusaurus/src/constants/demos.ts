@@ -79,7 +79,10 @@ export const demos: Demo[] = [
     tagline:
       'A Gumroad-style creator dashboard comparing Inertia and React on Rails Pro with React 19 and RSC.',
     repoUrl: 'https://github.com/shakacode/react-on-rails-demo-gumroad-rsc',
+    demoUrl: 'https://gumroad.reactonrails.com',
+    image: '/img/demos/gumroad.webp',
     category: 'flagship',
+    featured: true,
   },
 ];
 
