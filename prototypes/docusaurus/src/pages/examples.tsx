@@ -2,46 +2,31 @@ import type {ReactNode} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
-import {docsRoutes} from '../constants/docsRoutes';
+import {demos, type DemoCategory} from '../constants/demos';
+import DemoCard from '../components/DemoCard';
 import styles from './examples.module.css';
 
-const evaluationPaths = [
-  {
-    eyebrow: 'Evaluator path',
-    title: 'Compare setup approaches',
-    description:
-      'Start with the docs landing page to choose between new app setup, existing app install, migration, or Pro evaluation.',
-    href: docsRoutes.docsGuide,
-    cta: 'Open the docs guide',
-  },
-  {
-    eyebrow: 'Migration path',
-    title: 'Move from react-rails',
-    description:
-      'Follow a migration sequence validated against a real open-source example app instead of reconstructing it from old guides.',
-    href: docsRoutes.migrateFromReactRails,
-    cta: 'Use the react-rails guide',
-  },
-];
+type DemoGroup = {
+  category: DemoCategory;
+  eyebrow: string;
+  heading: string;
+};
 
-const exampleApps = [
+const demoGroups: DemoGroup[] = [
   {
-    title: 'react_on_rails_demo_ssr_hmr',
-    description:
-      'Canonical demo app showing React on Rails setup with SSR and hot reloading workflows.',
-    href: 'https://github.com/shakacode/react_on_rails_demo_ssr_hmr',
+    category: 'flagship',
+    eyebrow: 'Flagship demos',
+    heading: 'Production-style apps on React on Rails Pro, React 19, and RSC.',
   },
   {
-    title: 'react-rails-example-app',
-    description:
-      'Legacy react-rails app used to validate the migration guide and current Rails-version constraints.',
-    href: 'https://github.com/shakacode/react-rails-example-app',
+    category: 'starter',
+    eyebrow: 'Get started',
+    heading: 'Start a new app from a template.',
   },
   {
-    title: 'vite_ruby/examples/rails',
-    description:
-      'Official Vite Rails sample app used to document migration preflight and dependency lockfile issues.',
-    href: 'https://github.com/ElMassimo/vite_ruby/tree/main/examples/rails',
+    category: 'legacy',
+    eyebrow: 'Legacy',
+    heading: 'The original full-app tutorial demo.',
   },
 ];
 
@@ -56,38 +41,18 @@ const productionSites = [
 
 export default function ExamplesPage(): ReactNode {
   return (
-    <Layout title="Examples" description="React on Rails example applications and references">
+    <Layout title="Examples" description="React on Rails demo and starter applications">
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className="container">
-            <p className={styles.kicker}>Examples and migration references</p>
+            <p className={styles.kicker}>Demos, starters, and production sites</p>
             <h1>
-              Use concrete sites, concrete repos, and concrete guides when deciding whether React
-              on Rails fits.
+              See React on Rails running in demos and real products.
             </h1>
             <p className={styles.lead}>
-              These links are meant for evaluation, migration, and validation work. They are not a
-              parallel docs track.
+              Use live deployments, source-backed demos, and production references to evaluate
+              React on Rails, compare OSS and Pro, or start a new app.
             </p>
-          </div>
-        </section>
-
-        <section className="container">
-          <div className={styles.sectionHeader}>
-            <p className={styles.sectionEyebrow}>Start with a decision path</p>
-            <h2>Choose the guide that matches your migration or evaluation goal.</h2>
-          </div>
-          <div className={styles.decisionGrid}>
-            {evaluationPaths.map((path) => (
-              <article className={styles.card} key={path.title}>
-                <p className={styles.cardEyebrow}>{path.eyebrow}</p>
-                <h3>{path.title}</h3>
-                <p>{path.description}</p>
-                <Link className={styles.cardLink} to={path.href}>
-                  {path.cta}
-                </Link>
-              </article>
-            ))}
           </div>
         </section>
 
@@ -98,10 +63,10 @@ export default function ExamplesPage(): ReactNode {
           </div>
           <div className={styles.siteGrid}>
             {productionSites.map((site) => (
-              <article className={styles.card} key={site.title}>
+              <article className={styles.siteCard} key={site.title}>
                 <h3>{site.title}</h3>
                 <p>{site.description}</p>
-                <Link className={styles.cardLink} href={site.href}>
+                <Link className={styles.siteLink} href={site.href}>
                   Visit site
                 </Link>
               </article>
@@ -109,23 +74,25 @@ export default function ExamplesPage(): ReactNode {
           </div>
         </section>
 
-        <section className="container">
-          <div className={styles.sectionHeader}>
-            <p className={styles.sectionEyebrow}>Reference repos</p>
-            <h2>Open-source apps that map to the docs.</h2>
-          </div>
-          <div className={styles.grid}>
-            {exampleApps.map((app) => (
-              <article className={styles.card} key={app.title}>
-                <h3>{app.title}</h3>
-                <p>{app.description}</p>
-                <Link className={styles.cardLink} href={app.href}>
-                  Open repository
-                </Link>
-              </article>
-            ))}
-          </div>
-        </section>
+        {demoGroups.map((group) => {
+          const groupDemos = demos.filter((demo) => demo.category === group.category);
+          if (groupDemos.length === 0) {
+            return null;
+          }
+          return (
+            <section className="container" key={group.category}>
+              <div className={styles.sectionHeader}>
+                <p className={styles.sectionEyebrow}>{group.eyebrow}</p>
+                <h2>{group.heading}</h2>
+              </div>
+              <div className={styles.grid}>
+                {groupDemos.map((demo) => (
+                  <DemoCard demo={demo} key={demo.id} />
+                ))}
+              </div>
+            </section>
+          );
+        })}
       </main>
     </Layout>
   );

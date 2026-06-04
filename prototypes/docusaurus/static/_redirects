@@ -1,4 +1,4 @@
-/docs/guides/file-system-based-automated-bundle-generation.md /docs/core-concepts/auto-bundling-file-system-based-automated-bundle-generation/ 301
+/docs/guides/file-system-based-automated-bundle-generation.md /docs/core-concepts/auto-bundling/ 301
 /docs/guides/configuration /docs/configuration/ 301
 /docs/guides/configuration/ /docs/configuration/ 301
 /docs/guides/upgrading-react-on-rails /docs/upgrading/upgrading-react-on-rails/ 301
@@ -23,3 +23,13 @@
 /react-on-rails/docs /docs 301
 /react-on-rails-pro/docs/* /docs/:splat 301
 /react-on-rails-pro/docs /docs 301
+
+# Canonical route cleanup from react_on_rails (see shakacode/react_on_rails#3067)
+/docs/core-concepts/auto-bundling-file-system-based-automated-bundle-generation /docs/core-concepts/auto-bundling/ 301
+/docs/core-concepts/auto-bundling-file-system-based-automated-bundle-generation/ /docs/core-concepts/auto-bundling/ 301
+/docs/getting-started/installation-into-an-existing-rails-app /docs/getting-started/existing-rails-app/ 301
+/docs/getting-started/installation-into-an-existing-rails-app/ /docs/getting-started/existing-rails-app/ 301
+/docs/building-features/how-to-conditionally-server-render-based-on-device-type /docs/building-features/conditional-server-rendering/ 301
+/docs/building-features/how-to-conditionally-server-render-based-on-device-type/ /docs/building-features/conditional-server-rendering/ 301
+/docs/building-features/how-to-use-different-files-for-client-and-server-rendering /docs/building-features/client-server-files/ 301
+/docs/building-features/how-to-use-different-files-for-client-and-server-rendering/ /docs/building-features/client-server-files/ 301

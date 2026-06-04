@@ -1,6 +1,13 @@
 import fs from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  detectDocsLayout,
+  docsLayoutPaths,
+  excludeNamesForRootCopy,
+  exists,
+} from "./docs-layout.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,15 +56,6 @@ const sourceDocs = path.join(
   useSubset ? "docs-subset" : "docs"
 );
 
-async function exists(targetPath) {
-  try {
-    await fs.access(targetPath);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 async function ensureExists(targetPath, message) {
   try {
     await fs.access(targetPath);
@@ -66,10 +64,14 @@ async function ensureExists(targetPath, message) {
   }
 }
 
-async function copyDirectoryContents(sourceDir, targetDir) {
+async function copyDirectoryContents(sourceDir, targetDir, options = {}) {
+  const {excludeNames = new Set()} = options;
   await fs.mkdir(targetDir, { recursive: true });
   const entries = await fs.readdir(sourceDir, { withFileTypes: true });
   for (const entry of entries) {
+    if (excludeNames.has(entry.name)) {
+      continue;
+    }
     const sourcePath = path.join(sourceDir, entry.name);
     const targetPath = path.join(targetDir, entry.name);
     if (entry.isDirectory()) {
@@ -268,6 +270,10 @@ async function archiveLegacyDocs(docsRoot) {
   return true;
 }
 
+export function fixProNodeRendererMdx(content) {
+  return content.replace("Direct render: <50ms", "Direct render: &lt;50ms");
+}
+
 async function fixKnownDocsIssues(docsRoot) {
   await rewriteDocsByPattern(docsRoot, [
     {
@@ -357,6 +363,8 @@ async function fixKnownDocsIssues(docsRoot) {
     content.replace("using React 18's `renderToPipeableStream`", "using React 19's `renderToPipeableStream`")
   );
 
+  await rewriteDoc(docsRoot, "pro/node-renderer.md", fixProNodeRendererMdx);
+
   await rewriteDoc(docsRoot, "api-reference/view-helpers-api.md", (content) =>
     content.replace("using React 18+ streaming", "using React 19+ streaming")
   );
@@ -392,11 +400,11 @@ async function fixKnownDocsIssues(docsRoot) {
     {
       pattern: /https:\/\/www\.shakacode\.com\/react-on-rails-pro\/docs\//g,
       replacement: "https://reactonrails.com/docs/pro/"
-    }
+    },
   ]);
 }
 
-async function rewriteProLinks(proDocsRoot) {
+export async function rewriteProLinks(proDocsRoot) {
   if (!(await exists(proDocsRoot))) {
     return;
   }
@@ -416,7 +424,7 @@ async function rewriteProLinks(proDocsRoot) {
   });
 }
 
-async function rewriteFlattenedOssLinks(docsRoot) {
+export async function rewriteFlattenedOssLinks(docsRoot) {
   await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
     if (!relativeFile.endsWith(".md") && !relativeFile.endsWith(".mdx")) {
       return;
@@ -437,7 +445,7 @@ async function rewriteFlattenedOssLinks(docsRoot) {
   });
 }
 
-async function injectProFriendlyNotice(docsRoot) {
+export async function injectProFriendlyNotice(docsRoot) {
   const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
   if (!(await exists(proIntroPath))) {
     return;
@@ -457,8 +465,8 @@ async function injectProFriendlyNotice(docsRoot) {
     }
   }
 
-  if (!updated.includes("Friendly evaluation policy")) {
-    const notice = `> **Friendly evaluation policy**\n> You can evaluate React on Rails Pro without a license.\n> If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com). We can provide free licenses in qualifying cases.\n\n`;
+  if (!/Friendly license model/i.test(updated)) {
+    const notice = `> **Friendly license model**\n> Try React on Rails Pro freely in development, test, CI/CD, and staging. No token is required to evaluate. If no license is configured, Pro keeps running in unlicensed mode and logs license status instead of blocking your app. Production deployments require a paid license; see [Pro pricing and sign up](https://pro.reactonrails.com/).\n\n`;
     updated = updated.replace(/^# React on Rails Pro\s*\n+/m, `# React on Rails Pro\n\n${notice}`);
   }
 
@@ -466,6 +474,14 @@ async function injectProFriendlyNotice(docsRoot) {
     await fs.writeFile(proIntroPath, updated, "utf8");
   }
 }
+
+const githubAlertToDocusaurus = {
+  NOTE: "note",
+  TIP: "tip",
+  IMPORTANT: "info",
+  WARNING: "warning",
+  CAUTION: "danger",
+};
 
 const languageRemapping = {
   rsc: "text",
@@ -488,6 +504,75 @@ function detectCodeLanguage(content) {
   if (/\b(const |let |var |require\(|module\.exports|import )/.test(content)) return "js";
 
   return "text";
+}
+
+function convertGitHubAlertsInMarkdown(markdown) {
+  const alertPattern = /^(\s*)>\s*\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\](.*)$/;
+  const lines = markdown.split("\n");
+  const result = [];
+  let i = 0;
+  let fence = null;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const normalizedLine = line.replace(/^\s*(?:>\s*)+/, "");
+
+    if (!fence) {
+      const openingFence = normalizedLine.match(/^\s*(`{3,}|~{3,})/);
+      if (openingFence) {
+        fence = {
+          marker: openingFence[1][0],
+          length: openingFence[1].length,
+        };
+        result.push(line);
+        i++;
+        continue;
+      }
+    } else {
+      result.push(line);
+      const closingFence = normalizedLine.match(/^\s*(`{3,}|~{3,})\s*$/);
+      if (
+        closingFence &&
+        closingFence[1][0] === fence.marker &&
+        closingFence[1].length >= fence.length
+      ) {
+        fence = null;
+      }
+      i++;
+      continue;
+    }
+
+    const alertMatch = line.match(alertPattern);
+    if (alertMatch) {
+      const indent = alertMatch[1];
+      const admonitionType = githubAlertToDocusaurus[alertMatch[2]];
+      const trailing = alertMatch[3].trim();
+      const contentLines = [];
+
+      // Handle inline content after the alert type (e.g., "> [!WARNING] > **Title**")
+      if (trailing) {
+        contentLines.push(trailing.replace(/^>\s*/, ""));
+      }
+
+      i++;
+
+      while (i < lines.length && lines[i].startsWith(`${indent}>`)) {
+        contentLines.push(lines[i].replace(new RegExp(`^${indent}>\\s?`), ""));
+        i++;
+      }
+
+      result.push(`${indent}:::${admonitionType}`);
+      for (const line of contentLines) {
+        result.push(line ? `${indent}${line}` : "");
+      }
+      result.push(`${indent}:::`);
+    } else {
+      result.push(line);
+      i++;
+    }
+  }
+
+  return result.join("\n");
 }
 
 function normalizeCodeFencesInMarkdown(markdown) {
@@ -526,6 +611,27 @@ function normalizeCodeFencesInMarkdown(markdown) {
   return lines.join("\n");
 }
 
+async function convertGitHubAlerts(docsRoot) {
+  let filesUpdated = 0;
+
+  await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
+    if (!relativeFile.endsWith(".md") && !relativeFile.endsWith(".mdx")) {
+      return;
+    }
+
+    const original = await fs.readFile(absoluteFile, "utf8");
+    const updated = convertGitHubAlertsInMarkdown(original);
+    if (updated !== original) {
+      await fs.writeFile(absoluteFile, updated, "utf8");
+      filesUpdated += 1;
+    }
+  });
+
+  if (filesUpdated > 0) {
+    console.log(`Converted GitHub alerts to Docusaurus admonitions in ${filesUpdated} files`);
+  }
+}
+
 async function normalizeCodeFences(docsRoot) {
   let filesUpdated = 0;
 
@@ -547,17 +653,121 @@ async function normalizeCodeFences(docsRoot) {
   }
 }
 
-function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
-  const archiveBlock = hasArchive ? "- [Historical Reference](./archive/README.md)\n" : "";
+// Registry-specific URL and shields.io badge builders. The bare `?label=` keeps
+// the badge as a colored version pill only; the Registry table column carries
+// the npm/RubyGems distinction so the two never repeat.
+const registryConfig = {
+  npm: {
+    label: "npm",
+    pageUrl: (name) => `https://www.npmjs.com/package/${name}`,
+    badgeUrl: (name) => `https://img.shields.io/npm/v/${name}?label=`
+  },
+  rubygems: {
+    label: "RubyGems",
+    pageUrl: (name) => `https://rubygems.org/gems/${name}`,
+    badgeUrl: (name) => `https://img.shields.io/gem/v/${name}?label=`
+  }
+};
 
-  const updated = sourceMarkdown
+// Single source of truth for the package list, shared with the landing page
+// (src/pages/index.tsx reads the same file). Versions are not stored here; they
+// render live from the registries via the shields.io badges above.
+const packageReferences = JSON.parse(
+  readFileSync(
+    path.join(workspaceRoot, "prototypes", "docusaurus", "src", "data", "packages.json"),
+    "utf8"
+  )
+);
+
+function packageReferencesMarkdown() {
+  const rows = packageReferences
+    .map((entry) => {
+      const registry = registryConfig[entry.registry];
+      const pageUrl = registry.pageUrl(entry.name);
+      const badgeUrl = registry.badgeUrl(entry.name);
+      return `| [\`${entry.name}\`](${pageUrl}) | [![${entry.name} version](${badgeUrl})](${pageUrl}) | ${registry.label} | ${entry.description} |`;
+    })
+    .join("\n");
+
+  return `## Packages
+
+React on Rails ships as a Ruby gem with companion npm packages. Versions are pulled live from each registry.
+
+| Package | Version | Registry | Description |
+| --- | --- | --- | --- |
+${rows}
+`;
+}
+
+function injectPackageReferences(markdown) {
+  if (/^## Packages$/m.test(markdown)) {
+    return markdown;
+  }
+
+  const section = packageReferencesMarkdown();
+  if (markdown.includes("\n## Need more help?")) {
+    return markdown.replace("\n## Need more help?", `\n${section}\n## Need more help?`);
+  }
+
+  return `${markdown.trimEnd()}\n\n${section}`;
+}
+
+export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
+  const archiveBlock = hasArchive ? "- [Historical Reference](./archive/README.md)\n" : "";
+  const friendlyLicenseSection = `## Friendly License Model
+
+- Try React on Rails Pro freely in development, test, CI/CD, and staging. No token is required to evaluate.
+- Production deployments require a paid license. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
+`;
+
+  const updated = injectPackageReferences(sourceMarkdown
     .trim()
     .replaceAll("(./oss/", "(./")
     .replace("](https://reactonrails.com/examples)", "](/examples)")
     .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n")
-    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`);
+    .replace(/## Friendly evaluation policy\n\n[\s\S]*?(?=\n## )/, `${friendlyLicenseSection}\n`)
+    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`));
 
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
+}
+
+export function changelogMarkdown(sourceMarkdown) {
+  const trimmed = sourceMarkdown.replace(/^﻿/, "").trimStart();
+  // Drop the upstream `# Change Log` (or `# Changelog`) H1; the Docusaurus
+  // page title is supplied by frontmatter. Preserves the rest of the document.
+  const withoutH1 = trimmed.replace(/^#\s+Change\s*log[^\n]*\n+/i, "");
+  // Rewrite relative links that were valid in the source repo layout but
+  // would break inside the published page at /docs/upgrading/changelog.
+  //   docs/oss/<path>.md  → /docs/<path>  (matches the split-layout flatten)
+  //   ./README.md         → upstream README on GitHub
+  //   react_on_rails/spec/dummy → upstream sample app on GitHub
+  const withRewrittenLinks = withoutH1
+    .replace(/\(docs\/oss\/([^)\s]+?)\.md(#[^)]+)?\)/g, "(/docs/$1$2)")
+    .replace(
+      /\]\(\.\/README\.md\)/g,
+      "](https://github.com/shakacode/react_on_rails/blob/main/README.md)"
+    )
+    .replace(
+      /\]\(react_on_rails\/spec\/dummy\)/g,
+      "](https://github.com/shakacode/react_on_rails/tree/main/spec/dummy)"
+    );
+  // `mdx.format: md` opts this page out of MDX so historical entries that
+  // mention raw tags like `<script async>` or `<head>` render as CommonMark
+  // text instead of being parsed as JSX (which would fail the build).
+  const frontmatter = [
+    "---",
+    "id: changelog",
+    "title: Changelog",
+    "description: Release-by-release changelog for React on Rails (open source) and React on Rails Pro.",
+    "sidebar_label: Changelog",
+    "slug: /upgrading/changelog",
+    "mdx:",
+    "  format: md",
+    "custom_edit_url: https://github.com/shakacode/react_on_rails/edit/main/CHANGELOG.md",
+    "---",
+    ""
+  ].join("\n");
+  return `${frontmatter}\n${withRewrittenLinks.trimEnd()}\n`;
 }
 
 function archiveSidebarCategory() {
@@ -582,6 +792,45 @@ ${legacyItems.join("\n")}
     },`;
 }
 
+export function siteSidebarSource(source, { hasArchive }) {
+  let content = source.replace(
+    /\{\s*type: 'link',\s*label: 'Full Changelog',\s*href: 'https:\/\/github\.com\/shakacode\/react_on_rails\/blob\/main\/CHANGELOG\.md',?\s*\},?/,
+    "{ type: 'doc', id: 'upgrading/changelog', label: 'Changelog' },"
+  );
+
+  if (hasArchive) {
+    // Insert archive category as the last item in docsSidebar before the closing ];
+    const archiveCategory = archiveSidebarCategory();
+    content = content.replace(
+      /(\n  \],\n\};\n)/,
+      `\n${archiveCategory}\n  ],\n};\n`
+    );
+  }
+
+  return content;
+}
+
+async function prepareChangelog(docsRoot) {
+  const targetPath = path.join(docsRoot, "upgrading", "changelog.md");
+  const upstreamChangelog = path.join(workspaceRoot, "content", "upstream", "CHANGELOG.md");
+
+  if (!(await exists(upstreamChangelog))) {
+    console.warn(
+      `Warning: ${upstreamChangelog} not found — skipping changelog publish. Run \`npm run sync:docs\` to fetch it.`
+    );
+    return;
+  }
+
+  const source = await fs.readFile(upstreamChangelog, "utf8");
+  const rendered = changelogMarkdown(source);
+
+  // Overwrite the dangling symlink that was copied from the upstream tree.
+  await fs.rm(targetPath, { force: true });
+  await fs.mkdir(path.dirname(targetPath), { recursive: true });
+  await fs.writeFile(targetPath, rendered, "utf8");
+  console.log(`Generated ${path.relative(workspaceRoot, targetPath)} from upstream CHANGELOG.md`);
+}
+
 async function prepareSidebars(siteRoot, hasArchive) {
   const upstreamSidebars = path.join(workspaceRoot, "content", "upstream", "sidebars.ts");
   const targetSidebars = path.join(siteRoot, "sidebars.ts");
@@ -589,14 +838,7 @@ async function prepareSidebars(siteRoot, hasArchive) {
   if (await exists(upstreamSidebars)) {
     let content = await fs.readFile(upstreamSidebars, "utf8");
 
-    if (hasArchive) {
-      // Insert archive category as the last item in docsSidebar before the closing ];
-      const archiveCategory = archiveSidebarCategory();
-      content = content.replace(
-        /(\n  \],\n\};\n)/,
-        `\n${archiveCategory}\n  ],\n};\n`
-      );
-    }
+    content = siteSidebarSource(content, { hasArchive });
 
     await fs.writeFile(targetSidebars, content, "utf8");
     console.log("Generated sidebars.ts from upstream");
@@ -608,52 +850,52 @@ async function prepareSidebars(siteRoot, hasArchive) {
 async function prepareDocusaurus() {
   const siteRoot = path.join(workspaceRoot, "prototypes", "docusaurus");
   const docsRoot = path.join(siteRoot, "docs");
-  const ossDocsRoot = path.join(sourceDocs, "oss");
-  const proDocsRoot = path.join(sourceDocs, "pro");
-  const sourceImagesRoot = path.join(sourceDocs, "images");
-  const sourceAssetsRoot = path.join(sourceDocs, "assets");
+  const layout = await detectDocsLayout(sourceDocs);
+  const layoutPaths = docsLayoutPaths(sourceDocs, layout);
+  const excludedRootEntries = excludeNamesForRootCopy(layout);
 
   await ensureExists(
-    ossDocsRoot,
-    `Expected OSS docs at ${ossDocsRoot}. Check upstream docs layout before preparing.`
+    layoutPaths.readmePath,
+    `Expected docs README at ${layoutPaths.readmePath}. Check upstream docs layout before preparing.`
   );
 
   await fs.rm(docsRoot, { recursive: true, force: true });
   await fs.mkdir(docsRoot, { recursive: true });
 
-  await copyDirectoryContents(ossDocsRoot, docsRoot);
+  await copyDirectoryContents(layoutPaths.contentRoot, docsRoot, {
+    excludeNames: excludedRootEntries,
+  });
 
-  if (await exists(proDocsRoot)) {
-    await fs.cp(proDocsRoot, path.join(docsRoot, "pro"), { recursive: true });
+  if (await exists(layoutPaths.proDocsRoot)) {
+    await fs.cp(layoutPaths.proDocsRoot, path.join(docsRoot, "pro"), { recursive: true });
   }
-  if (await exists(sourceImagesRoot)) {
-    await fs.cp(sourceImagesRoot, path.join(docsRoot, "images"), { recursive: true });
+  if (await exists(layoutPaths.imagesRoot)) {
+    await fs.cp(layoutPaths.imagesRoot, path.join(docsRoot, "images"), { recursive: true });
   }
-  if (await exists(sourceAssetsRoot)) {
-    await fs.cp(sourceAssetsRoot, path.join(docsRoot, "assets"), { recursive: true });
+  if (await exists(layoutPaths.assetsRoot)) {
+    await fs.cp(layoutPaths.assetsRoot, path.join(docsRoot, "assets"), { recursive: true });
   }
 
   await rewriteProLinks(path.join(docsRoot, "pro"));
-  await rewriteFlattenedOssLinks(docsRoot);
+  if (layout === "split") {
+    await rewriteFlattenedOssLinks(docsRoot);
+  }
   await injectProFriendlyNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
   await normalizeCodeFences(docsRoot);
   const hasArchive = await archiveLegacyDocs(docsRoot);
-  await fs.unlink(path.join(docsRoot, "upgrading", "changelog.md")).catch((error) => {
-    if (error?.code !== "ENOENT") {
-      throw error;
-    }
-  });
-  const docsHomeSource = await fs.readFile(path.join(sourceDocs, "README.md"), "utf8");
+  await prepareChangelog(docsRoot);
+  const docsHomeSource = await fs.readFile(layoutPaths.readmePath, "utf8");
   await fs.writeFile(
     path.join(docsRoot, "README.md"),
     docsHomeMarkdown(docsHomeSource, { hasArchive }),
     "utf8"
   );
+  await convertGitHubAlerts(docsRoot);
 
   await prepareSidebars(siteRoot, hasArchive);
 
-  console.log(`Prepared docusaurus docs from ${sourceDocs} (oss -> root, pro -> /pro)`);
+  console.log(`Prepared docusaurus docs from ${sourceDocs} (${layout} layout, pro -> /pro)`);
 }
 
 async function main() {
@@ -669,7 +911,9 @@ async function main() {
   await prepareDocusaurus();
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

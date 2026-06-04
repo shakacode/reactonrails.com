@@ -2,11 +2,49 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {GlobExcludeDefault} from '@docusaurus/utils';
+import packages from './src/data/packages.json';
+
+// Use Algolia DocSearch when configured, otherwise fall back to local search.
+// Set ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, and ALGOLIA_INDEX_NAME env vars
+// to activate Algolia. Apply at https://docsearch.algolia.com/apply/
+const useAlgolia = Boolean(
+  process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_SEARCH_API_KEY
+);
+
+const localSearchTheme: NonNullable<Config['themes']>[number] = [
+  '@easyops-cn/docusaurus-search-local',
+  {
+    hashed: true,
+    indexBlog: false,
+    docsRouteBasePath: '/docs',
+    highlightSearchTermsOnTargetPage: true,
+    searchResultLimits: 8,
+    searchBarShortcutHint: true,
+  },
+];
+
+// Slender version reference for the site footer. Reads the shared packages.json
+// (same source as the docs-home Packages table) and renders one row per package:
+// the package name + registry on the left, a live shields.io version pill on the
+// right. CSS aligns the pills into a neat column (see custom.css).
+const packageFooterItems = packages.map((pkg) => {
+  const isGem = pkg.registry === 'rubygems';
+  const registryShort = isGem ? 'gem' : 'npm';
+  const page = isGem
+    ? `https://rubygems.org/gems/${pkg.name}`
+    : `https://www.npmjs.com/package/${pkg.name}`;
+  const badge = isGem
+    ? `https://img.shields.io/gem/v/${pkg.name}?style=flat-square&label=`
+    : `https://img.shields.io/npm/v/${pkg.name}?style=flat-square&label=`;
+  return {
+    html: `<a class="footer__package" href="${page}" target="_blank" rel="noopener noreferrer"><span class="footer__package-name">${pkg.name} <span class="footer__package-registry">(${registryShort})</span></span><img class="footer__package-version" src="${badge}" alt="${pkg.name} ${registryShort} version" loading="lazy" /></a>`,
+  };
+});
 
 const config: Config = {
   title: 'React on Rails',
   tagline: 'Integrate React with Rails, including SSR, RSC, and production-grade docs.',
-  favicon: 'img/logo-mark.png',
+  favicon: 'img/favicon.ico',
 
   future: {
     v4: true,
@@ -20,6 +58,7 @@ const config: Config = {
 
   onBrokenLinks: 'warn',
   markdown: {
+    mermaid: true,
     hooks: {
       onBrokenMarkdownLinks: 'warn',
     },
@@ -30,19 +69,7 @@ const config: Config = {
     locales: ['en'],
   },
 
-  themes: [
-    [
-      '@easyops-cn/docusaurus-search-local',
-      {
-        hashed: true,
-        indexBlog: false,
-        docsRouteBasePath: '/docs',
-        highlightSearchTermsOnTargetPage: true,
-        searchResultLimits: 8,
-        searchBarShortcutHint: true,
-      },
-    ],
-  ],
+  themes: [...(useAlgolia ? [] : [localSearchTheme]), '@docusaurus/theme-mermaid'],
 
   presets: [
     [
@@ -72,6 +99,12 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      {
+        name: 'algolia-site-verification',
+        content: 'B2E2910709F2DC66',
+      },
+    ],
     image: 'img/react-on-rails-social-card.png',
     colorMode: {
       respectPrefersColorScheme: true,
@@ -86,7 +119,7 @@ const config: Config = {
       title: 'React on Rails',
       logo: {
         alt: 'React on Rails Logo',
-        src: 'img/logo-mark.png',
+        src: 'img/icon-tile.svg',
         width: 40,
         height: 40,
       },
@@ -130,9 +163,11 @@ const config: Config = {
             {label: 'Create a New App', to: '/docs/getting-started/create-react-on-rails-app'},
             {
               label: 'Install into Existing Rails App',
-              to: '/docs/getting-started/installation-into-an-existing-rails-app',
+              to: '/docs/getting-started/existing-rails-app',
             },
             {label: 'Quick Start', to: '/docs/getting-started/quick-start'},
+            {label: 'Compare OSS and Pro', to: '/docs/getting-started/oss-vs-pro'},
+            {label: 'Upgrade to Pro', to: '/docs/pro/upgrading-to-pro'},
             {label: 'React on Rails Pro', to: '/docs/pro'},
           ],
         },
@@ -146,6 +181,10 @@ const config: Config = {
             {
               label: 'Discussions',
               href: 'https://github.com/shakacode/react_on_rails/discussions',
+            },
+            {
+              label: 'Changelog',
+              to: '/docs/upgrading/changelog',
             },
             {
               label: 'ShakaCode',
@@ -165,6 +204,10 @@ const config: Config = {
               to: '/pro',
             },
             {
+              label: 'Pro Pricing & Sign Up',
+              href: 'https://pro.reactonrails.com/',
+            },
+            {
               label: 'GitHub',
               href: 'https://github.com/shakacode/react_on_rails',
             },
@@ -174,6 +217,10 @@ const config: Config = {
             },
           ],
         },
+        {
+          title: 'Packages',
+          items: packageFooterItems,
+        },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} ShakaCode. Built with Docusaurus.`,
     },
@@ -182,6 +229,14 @@ const config: Config = {
       darkTheme: prismThemes.vsDark,
       additionalLanguages: ['ruby', 'markup-templating', 'erb', 'diff', 'haml', 'bash', 'regex', 'ignore'],
     },
+    ...(useAlgolia && {
+      algolia: {
+        appId: process.env.ALGOLIA_APP_ID!,
+        apiKey: process.env.ALGOLIA_SEARCH_API_KEY!,
+        indexName: process.env.ALGOLIA_INDEX_NAME || 'reactonrails',
+        contextualSearch: true,
+      },
+    }),
   } satisfies Preset.ThemeConfig,
 };
 
