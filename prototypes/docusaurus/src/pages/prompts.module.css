@@ -1,0 +1,52 @@
+.main {
+  padding-bottom: 2.6rem;
+}
+
+.hero {
+  padding: 2.6rem 0 2rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid var(--site-border);
+  background: var(--site-soft-surface);
+}
+
+.kicker,
+.sectionEyebrow {
+  margin: 0 0 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ifm-color-primary-dark);
+}
+
+.lead {
+  max-width: 42rem;
+  font-size: 1.02rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+.sectionHeader {
+  max-width: 38rem;
+  margin-bottom: 0.85rem;
+}
+
+.sectionHeader h2 {
+  margin-bottom: 0;
+}
+
+.grid {
+  margin-bottom: 1.6rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+@media (max-width: 996px) {
+  .hero {
+    padding: 2.1rem 0 1.7rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
