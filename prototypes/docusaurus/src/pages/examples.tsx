@@ -45,6 +45,15 @@ const exampleApps = [
   },
 ];
 
+const productionSites = [
+  {
+    title: 'HiChee.com',
+    description:
+      'Production vacation-rental comparison site using React on Rails to help travelers compare Airbnb, Booking.com, Vrbo, and direct-booking prices.',
+    href: 'https://hichee.com/',
+  },
+];
+
 export default function ExamplesPage(): ReactNode {
   return (
     <Layout title="Examples" description="React on Rails example applications and references">
@@ -52,7 +61,10 @@ export default function ExamplesPage(): ReactNode {
         <section className={styles.hero}>
           <div className="container">
             <p className={styles.kicker}>Examples and migration references</p>
-            <h1>Use concrete repos and concrete guides when deciding whether React on Rails fits.</h1>
+            <h1>
+              Use concrete sites, concrete repos, and concrete guides when deciding whether React
+              on Rails fits.
+            </h1>
             <p className={styles.lead}>
               These links are meant for evaluation, migration, and validation work. They are not a
               parallel docs track.
@@ -73,6 +85,24 @@ export default function ExamplesPage(): ReactNode {
                 <p>{path.description}</p>
                 <Link className={styles.cardLink} to={path.href}>
                   {path.cta}
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="container">
+          <div className={styles.sectionHeader}>
+            <p className={styles.sectionEyebrow}>Production sites</p>
+            <h2>Live products built with React on Rails.</h2>
+          </div>
+          <div className={styles.siteGrid}>
+            {productionSites.map((site) => (
+              <article className={styles.card} key={site.title}>
+                <h3>{site.title}</h3>
+                <p>{site.description}</p>
+                <Link className={styles.cardLink} href={site.href}>
+                  Visit site
                 </Link>
               </article>
             ))}

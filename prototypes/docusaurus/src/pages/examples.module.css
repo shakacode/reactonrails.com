@@ -50,6 +50,14 @@
   gap: 0.9rem;
 }
 
+.siteGrid {
+  max-width: 42rem;
+  margin-bottom: 3rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+}
+
 .decisionGrid {
   margin-bottom: 3rem;
   display: grid;
