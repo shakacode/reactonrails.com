@@ -270,7 +270,7 @@ body {
   text-decoration: underline;
 }
 
-/* "Get Expert Help" navbar CTA */
+/* Consultation navbar CTA */
 .navbar-cta {
   background: var(--ifm-color-primary);
   color: #ffffff !important;
