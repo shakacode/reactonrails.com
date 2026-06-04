@@ -131,6 +131,7 @@ const config: Config = {
           label: 'Docs',
         },
         {to: '/examples', label: 'Examples', position: 'left'},
+        {to: '/prompts', label: 'Prompts', position: 'left'},
         {to: '/pro', label: 'React on Rails Pro', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
