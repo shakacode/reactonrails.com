@@ -63,6 +63,16 @@ export const demos: Demo[] = [
     featured: true,
   },
   {
+    id: 'octochangelog',
+    name: 'Octochangelog',
+    tagline:
+      'An Octochangelog app migrated to React on Rails Pro with Rails routing, React 19, and streamed RSC.',
+    repoUrl: 'https://github.com/shakacode/react_on_rails-demo-octochangelog-on-rails-pro',
+    demoUrl: 'https://rails-wt0q7a2r1svry.cpln.app',
+    category: 'flagship',
+    featured: true,
+  },
+  {
     id: 'gumroad',
     name: 'Gumroad',
     tagline:
