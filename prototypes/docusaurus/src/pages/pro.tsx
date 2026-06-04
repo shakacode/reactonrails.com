@@ -198,7 +198,7 @@ export default function ProPage(): ReactNode {
           <p className={styles.note}>
             Prefer to talk it through first?{' '}
             <a href="https://meetings.hubspot.com/justingordon/30-minute-consultation">
-              Book a free 30-min call
+              Book a 30-minute consultation
             </a>
             .
           </p>

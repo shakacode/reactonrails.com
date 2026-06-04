@@ -112,7 +112,7 @@ const config: Config = {
     announcementBar: {
       id: 'consultation_cta',
       content:
-        'Want expert advice on your React on Rails setup? <a href="https://meetings.hubspot.com/justingordon/30-minute-consultation">Book a free 30-min call</a> with the ShakaCode team.',
+        'Want expert advice on your React on Rails setup? <a href="https://meetings.hubspot.com/justingordon/30-minute-consultation">Book a complimentary 30-minute assessment</a> with the ShakaCode team.',
       isCloseable: true,
     },
     navbar: {
@@ -133,8 +133,8 @@ const config: Config = {
         {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/pro', label: 'React on Rails Pro', position: 'left'},
         {
-          href: 'https://meetings.hubspot.com/justingordon/30-minute-consultation',
-          label: 'Book a free 30-min call',
+          href: 'https://www.shakacode.com/contact/',
+          label: 'Get expert help',
           position: 'right',
           className: 'navbar-cta',
         },
@@ -189,10 +189,6 @@ const config: Config = {
             {
               label: 'ShakaCode',
               href: 'https://www.shakacode.com',
-            },
-            {
-              label: 'Book a free 30-min call',
-              href: 'https://meetings.hubspot.com/justingordon/30-minute-consultation',
             },
           ],
         },

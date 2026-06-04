@@ -336,7 +336,7 @@ function ConsultationSection() {
             <Link
               className="button button--primary button--lg"
               href="https://meetings.hubspot.com/justingordon/30-minute-consultation">
-              Book a free 30-min call
+              Book a free call
             </Link>
             <Link
               className="button button--secondary button--lg"
