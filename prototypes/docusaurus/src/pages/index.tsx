@@ -7,32 +7,10 @@ import ThemedImage from '@theme/ThemedImage';
 
 import {docsRoutes} from '../constants/docsRoutes';
 import {featuredDemos} from '../constants/demos';
+import {agentNote, homePrompts} from '../constants/prompts';
 import DemoCard from '../components/DemoCard';
+import PromptCard from '../components/PromptCard';
 import styles from './index.module.css';
-
-const quickStartCards = [
-  {
-    title: 'Create App',
-    command: 'npx create-react-on-rails-app@latest my-app',
-    description: 'Scaffold a working Rails + React app with TypeScript defaults.',
-    href: docsRoutes.createApp,
-    cta: 'Open guide',
-  },
-  {
-    title: 'Install Into Rails',
-    command: 'bundle exec rails generate react_on_rails:install --typescript',
-    description: 'Add React on Rails to an existing app while keeping Rails routes and conventions.',
-    href: docsRoutes.installExistingApp,
-    cta: 'Open guide',
-  },
-  {
-    title: 'Upgrade To Pro',
-    command: 'bundle add react_on_rails_pro',
-    description: 'Evaluate Pro SSR, streaming, and RSC paths before buying a production license.',
-    href: docsRoutes.proUpgrade,
-    cta: 'Open guide',
-  },
-];
 
 const valueCards = [
   {
@@ -183,19 +161,18 @@ function QuickStartSection() {
   return (
     <section className={styles.section}>
       <div className="container">
-        <div className={styles.sectionHeader}>
-          <h2>Quick Start</h2>
+        <div className={styles.sectionHeaderRow}>
+          <div className={styles.sectionHeader}>
+            <h2>Quick Start</h2>
+            <p className={styles.quickStartNote}>{agentNote}</p>
+          </div>
+          <Link className={styles.browseAll} to="/prompts">
+            Browse all prompts →
+          </Link>
         </div>
         <div className={styles.quickStartGrid}>
-          {quickStartCards.map((card) => (
-            <article className={styles.quickStartCard} key={card.title}>
-              <h3>{card.title}</h3>
-              <code className={styles.inlineCode}>{card.command}</code>
-              <p>{card.description}</p>
-              <Link className={styles.cardLink} to={card.href}>
-                {card.cta}
-              </Link>
-            </article>
+          {homePrompts.map((prompt) => (
+            <PromptCard prompt={prompt} key={prompt.id} />
           ))}
         </div>
       </div>

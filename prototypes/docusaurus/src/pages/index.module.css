@@ -108,6 +108,13 @@
   line-height: 1.16;
 }
 
+.quickStartNote {
+  max-width: 44rem;
+  margin: 0.6rem 0 0;
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.95rem;
+}
+
 .quickStartGrid,
 .valueGrid,
 .migrationGrid,
@@ -141,7 +148,6 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.quickStartCard,
 .valueCard,
 .migrationCard,
 .quoteCard {
@@ -153,32 +159,15 @@
   box-shadow: none;
 }
 
-.quickStartCard h3,
 .valueCard h3,
 .migrationCard h3 {
   margin-bottom: 0.55rem;
   line-height: 1.12;
 }
 
-.quickStartCard p,
 .valueCard p,
 .migrationCard p {
   color: var(--ifm-color-content-secondary);
-}
-
-.inlineCode {
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  margin: 0 0 0.8rem;
-  padding: 0.6rem 0.7rem;
-  border: 1px solid var(--site-border);
-  border-radius: 6px;
-  background: var(--site-inline-code-surface);
-  color: var(--ifm-color-content);
-  overflow-x: auto;
-  white-space: nowrap;
 }
 
 .cardLink {
