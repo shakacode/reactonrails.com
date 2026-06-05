@@ -190,6 +190,10 @@ const config: Config = {
               label: 'ShakaCode',
               href: 'https://www.shakacode.com',
             },
+            {
+              label: 'Book a complimentary assessment',
+              href: 'https://meetings.hubspot.com/justingordon/30-minute-consultation',
+            },
           ],
         },
         {
