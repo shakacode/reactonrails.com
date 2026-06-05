@@ -134,7 +134,7 @@ const config: Config = {
         {to: '/pro', label: 'React on Rails Pro', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
-          label: 'Get Expert Help',
+          label: 'Get expert help',
           position: 'right',
           className: 'navbar-cta',
         },
@@ -191,7 +191,7 @@ const config: Config = {
               href: 'https://www.shakacode.com',
             },
             {
-              label: 'Book a Complimentary Assessment',
+              label: 'Book a complimentary assessment',
               href: 'https://meetings.hubspot.com/justingordon/30-minute-consultation',
             },
           ],
