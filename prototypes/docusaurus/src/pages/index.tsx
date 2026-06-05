@@ -12,21 +12,21 @@ import styles from './index.module.css';
 
 const quickStartCards = [
   {
-    title: 'Create App',
+    title: 'Create app',
     command: 'npx create-react-on-rails-app@latest my-app',
     description: 'Scaffold a working Rails + React app with TypeScript defaults.',
     href: docsRoutes.createApp,
     cta: 'Open guide',
   },
   {
-    title: 'Install Into Rails',
+    title: 'Install into Rails',
     command: 'bundle exec rails generate react_on_rails:install --typescript',
     description: 'Add React on Rails to an existing app while keeping Rails routes and conventions.',
     href: docsRoutes.installExistingApp,
     cta: 'Open guide',
   },
   {
-    title: 'Upgrade To Pro',
+    title: 'Upgrade to Pro',
     command: 'bundle add react_on_rails_pro',
     description: 'Evaluate Pro SSR, streaming, and RSC paths before buying a production license.',
     href: docsRoutes.proUpgrade,
@@ -46,7 +46,7 @@ const valueCards = [
       'Use server rendering, hydration, and streaming paths that fit mature Rails deployments.',
   },
   {
-    title: 'OSS And Pro',
+    title: 'OSS and Pro',
     description:
       'Start with open source docs, then add Pro when SSR throughput, RSC support, or guided support matters.',
   },
@@ -164,7 +164,7 @@ function HeroSection() {
           </p>
           <div className={styles.buttons}>
             <Link className="button button--primary button--lg" to={docsRoutes.docsGuide}>
-              Browse Docs
+              Browse docs
             </Link>
             <Link className="button button--secondary button--lg" to="/examples">
               Examples
