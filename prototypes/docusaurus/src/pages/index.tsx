@@ -24,7 +24,7 @@ const valueCards = [
       'Use server rendering, hydration, and streaming paths that fit mature Rails deployments.',
   },
   {
-    title: 'OSS And Pro',
+    title: 'OSS and Pro',
     description:
       'Start with open source docs, then add Pro when SSR throughput, RSC support, or guided support matters.',
   },
@@ -142,7 +142,7 @@ function HeroSection() {
           </p>
           <div className={styles.buttons}>
             <Link className="button button--primary button--lg" to={docsRoutes.docsGuide}>
-              Browse Docs
+              Browse docs
             </Link>
             <Link className="button button--secondary button--lg" to="/examples">
               Examples

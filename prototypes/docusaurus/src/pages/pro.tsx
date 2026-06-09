@@ -47,10 +47,10 @@ const proFeatures = [
 
 const demos = [
   {
-    title: 'LocalHub — RSC performance demo',
+    title: 'Marketplace — RSC performance demo',
     description:
       'A marketplace built on Pro + RSC, with Lighthouse reports and bundle-size evidence you can inspect.',
-    liveHref: 'https://rsc.reactonrails.com/search-performance',
+    liveHref: 'https://rsc.reactonrails.com',
     sourceHref: 'https://github.com/shakacode/react-on-rails-demo-marketplace-rsc',
   },
   {

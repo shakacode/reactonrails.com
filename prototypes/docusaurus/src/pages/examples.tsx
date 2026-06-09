@@ -1,4 +1,5 @@
 import type {ReactNode} from 'react';
+import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
 
 import {demos, type DemoCategory} from '../constants/demos';
@@ -29,18 +30,47 @@ const demoGroups: DemoGroup[] = [
   },
 ];
 
+const productionSites = [
+  {
+    title: 'HiChee.com',
+    description:
+      'Production vacation-rental comparison site using React on Rails to help travelers compare Airbnb, Booking.com, Vrbo, and direct-booking prices.',
+    href: 'https://hichee.com/',
+  },
+];
+
 export default function ExamplesPage(): ReactNode {
   return (
     <Layout title="Examples" description="React on Rails demo and starter applications">
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className="container">
-            <p className={styles.kicker}>Demos and starters</p>
-            <h1>See React on Rails running, then read the source.</h1>
+            <p className={styles.kicker}>Demos, starters, and production sites</p>
+            <h1>
+              See React on Rails running in demos and real products.
+            </h1>
             <p className={styles.lead}>
-              Every demo links to a live deployment and its source code. Use them to evaluate
+              Use live deployments, source-backed demos, and production references to evaluate
               React on Rails, compare OSS and Pro, or start a new app.
             </p>
+          </div>
+        </section>
+
+        <section className="container">
+          <div className={styles.sectionHeader}>
+            <p className={styles.sectionEyebrow}>Production sites</p>
+            <h2>Live products built with React on Rails.</h2>
+          </div>
+          <div className={styles.siteGrid}>
+            {productionSites.map((site) => (
+              <article className={styles.siteCard} key={site.title}>
+                <h3>{site.title}</h3>
+                <p>{site.description}</p>
+                <Link className={styles.siteLink} href={site.href}>
+                  Visit site
+                </Link>
+              </article>
+            ))}
           </div>
         </section>
 

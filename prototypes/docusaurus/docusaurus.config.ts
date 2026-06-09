@@ -135,7 +135,7 @@ const config: Config = {
         {to: '/pro', label: 'React on Rails Pro', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
-          label: 'Get Expert Help',
+          label: 'Get expert help',
           position: 'right',
           className: 'navbar-cta',
         },
@@ -158,15 +158,15 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Documentation Guide',
+              label: 'Documentation guide',
               to: '/docs',
             },
-            {label: 'Create a New App', to: '/docs/getting-started/create-react-on-rails-app'},
+            {label: 'Create a new app', to: '/docs/getting-started/create-react-on-rails-app'},
             {
-              label: 'Install into Existing Rails App',
+              label: 'Install into existing Rails app',
               to: '/docs/getting-started/existing-rails-app',
             },
-            {label: 'Quick Start', to: '/docs/getting-started/quick-start'},
+            {label: 'Quick start', to: '/docs/getting-started/quick-start'},
             {label: 'Compare OSS and Pro', to: '/docs/getting-started/oss-vs-pro'},
             {label: 'Upgrade to Pro', to: '/docs/pro/upgrading-to-pro'},
             {label: 'React on Rails Pro', to: '/docs/pro'},
@@ -192,7 +192,7 @@ const config: Config = {
               href: 'https://www.shakacode.com',
             },
             {
-              label: 'Book a Complimentary Assessment',
+              label: 'Book a complimentary assessment',
               href: 'https://meetings.hubspot.com/justingordon/30-minute-consultation',
             },
           ],
@@ -205,7 +205,7 @@ const config: Config = {
               to: '/pro',
             },
             {
-              label: 'Pro Pricing & Sign Up',
+              label: 'Pro pricing & sign up',
               href: 'https://pro.reactonrails.com/',
             },
             {
