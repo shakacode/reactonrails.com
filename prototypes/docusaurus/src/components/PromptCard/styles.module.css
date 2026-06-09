@@ -1,0 +1,59 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  border: 1px solid var(--site-border);
+  border-radius: 8px;
+  background: var(--site-surface);
+  padding: 0.95rem;
+}
+
+.title {
+  margin-bottom: 0.55rem;
+  line-height: 1.12;
+}
+
+.prompt {
+  flex: 1;
+  margin: 0 0 0.9rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--site-border);
+  border-left: 3px solid var(--ifm-color-primary);
+  border-radius: 6px;
+  background: var(--site-inline-code-surface);
+  color: var(--ifm-color-content);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.copyButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--site-border);
+  border-radius: 6px;
+  background: var(--site-soft-surface);
+  color: var(--ifm-color-content);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.guideLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-weight: 700;
+}
