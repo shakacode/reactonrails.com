@@ -12,6 +12,10 @@ permissions:
   contents: read
   pull-requests: write
 
+concurrency:
+  group: site-build-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -71,6 +75,14 @@ jobs:
           ALGOLIA_SEARCH_API_KEY: ${{ vars.ALGOLIA_SEARCH_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
 
+      - name: Upload built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: docusaurus-build
+          path: prototypes/docusaurus/build
+          if-no-files-found: error
+          retention-days: 1
+
   deploy:
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork == false)
     needs: build
@@ -87,24 +99,11 @@ jobs:
         with:
           node-version: 24
 
-      - name: Sync docs
-        run: npm run sync:docs
-        env:
-          REACT_ON_RAILS_REPO_URL: https://github.com/shakacode/react_on_rails.git
-          REACT_ON_RAILS_REF: main
-
-      - name: Prepare docs
-        run: npm run prepare:docs
-
-      - name: Install site dependencies
-        run: npm --prefix prototypes/docusaurus install
-
-      - name: Build site
-        run: npm run build
-        env:
-          ALGOLIA_APP_ID: ${{ vars.ALGOLIA_APP_ID }}
-          ALGOLIA_SEARCH_API_KEY: ${{ vars.ALGOLIA_SEARCH_API_KEY }}
-          ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: docusaurus-build
+          path: prototypes/docusaurus/build
 
       - name: Determine deploy branch
         id: deploy_branch
