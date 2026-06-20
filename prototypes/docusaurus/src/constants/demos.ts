@@ -20,6 +20,17 @@ export type Demo = {
 // are actually deployed; coming-soon demos follow and still appear on /examples.
 export const demos: Demo[] = [
   {
+    id: 'flagship',
+    name: 'OSS flagship demo',
+    tagline:
+      'The OSS baseline React on Rails demo with Rails 8.1, React 19, SSR, Redux Toolkit, Shakapacker/Rspack, and ActiveRecord CRUD - no Pro or RSC required.',
+    repoUrl: 'https://github.com/shakacode/react-on-rails-demo-flagship',
+    demoUrl: 'https://flagship.reactonrails.com',
+    image: '/img/demos/flagship.webp',
+    category: 'flagship',
+    featured: true,
+  },
+  {
     id: 'marketplace',
     name: 'Marketplace',
     tagline:
