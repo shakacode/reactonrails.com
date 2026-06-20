@@ -6,15 +6,18 @@
   "scripts": {
     "sync:docs": "node scripts/sync-docs.mjs",
     "sync:docs:subset": "node scripts/sync-docs.mjs --subset",
-    "prepare:docs": "node scripts/prepare-docs.mjs --target docusaurus",
+    "prepare:docs": "node scripts/prepare-docs.mjs --target docusaurus && npm run prepare:prompts",
     "prepare:docs:subset": "node scripts/prepare-docs.mjs --target docusaurus --subset",
+    "prepare:prompts": "node scripts/prepare-prompts.mjs",
+    "prepare:prompts:check": "node scripts/prepare-prompts.mjs --check",
     "audit:docs": "node scripts/audit-docs.mjs",
     "prepare": "npm run sync:docs && npm run prepare:docs",
     "prepare:subset": "npm run sync:docs:subset && npm run prepare:docs:subset",
     "test:docs-layout": "node --test scripts/docs-layout.test.mjs",
+    "test:prepare-prompts": "node --test scripts/prepare-prompts.test.mjs",
     "install:site": "npm --prefix prototypes/docusaurus install",
     "dev": "npm --prefix prototypes/docusaurus run start",
-    "build": "npm --prefix prototypes/docusaurus run build",
+    "build": "npm run prepare:prompts:check && npm --prefix prototypes/docusaurus run build",
     "build:full": "npm run prepare && npm run build",
     "cloudflare:deploy": "npm run build:full && npx wrangler pages deploy prototypes/docusaurus/build --project-name ${CLOUDFLARE_PAGES_PROJECT:-reactonrails-com}"
   }

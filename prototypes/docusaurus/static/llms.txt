@@ -1,0 +1,104 @@
+# React on Rails AI Prompts
+
+Source: https://reactonrails.com/prompts.json
+Schema version: 1
+
+Paste into Cursor, Claude Code, Copilot, or any AI assistant. Each prompt points the agent at the official docs so it doesn't guess.
+
+## Get started
+
+### Start a new app
+
+ID: create-app
+Category: get-started
+Doc: https://reactonrails.com/docs/getting-started/create-react-on-rails-app
+
+Set up a new Rails app with React on Rails, using TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app and use the exact commands and versions it specifies — don't improvise.
+
+### Add to an existing Rails app
+
+ID: install-existing
+Category: get-started
+Doc: https://reactonrails.com/docs/getting-started/existing-rails-app
+
+Add React on Rails to my existing Rails app with TypeScript, keeping my current routes and conventions. Follow https://reactonrails.com/docs/getting-started/existing-rails-app and don't change any gem or package versions it doesn't tell you to.
+
+## Server rendering
+
+### Turn on React Server Components
+
+ID: turn-on-rsc
+Category: server-rendering
+Doc: https://reactonrails.com/docs/pro/react-server-components
+
+Turn on React Server Components in my React on Rails app (no license required). Follow https://reactonrails.com/docs/pro/react-server-components exactly, including the renderer and packer setup it specifies.
+
+### Add streaming SSR
+
+ID: streaming-ssr
+Category: server-rendering
+Doc: https://reactonrails.com/docs/pro/streaming-ssr
+
+Add streaming server-side rendering to my React on Rails app. Follow https://reactonrails.com/docs/pro/streaming-ssr exactly and don't change versions it doesn't ask you to.
+
+### Use async/Suspense rendering
+
+ID: async-rendering
+Category: server-rendering
+Doc: https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options--
+
+Set up async (Suspense) rendering for a React on Rails component. Follow https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options-- exactly.
+
+## Migrate
+
+### Migrate from react-rails
+
+ID: migrate-react-rails
+Category: migrate
+Doc: https://reactonrails.com/docs/migrating/migrating-from-react-rails
+
+Migrate my app from react-rails to React on Rails, keeping my existing components working. Follow https://reactonrails.com/docs/migrating/migrating-from-react-rails and don't skip any step it lists.
+
+## Build features
+
+### Add code splitting
+
+ID: code-splitting
+Category: features
+Doc: https://reactonrails.com/docs/building-features/code-splitting
+
+Add code splitting / lazy loading to my React on Rails components. Follow https://reactonrails.com/docs/building-features/code-splitting exactly.
+
+## Optimize & go to production
+
+### Evaluate OSS vs Pro
+
+ID: oss-vs-pro
+Category: production
+Doc: https://reactonrails.com/docs/getting-started/oss-vs-pro
+
+Review my React on Rails setup and tell me whether OSS or Pro fits my workload, citing the tradeoffs. Base your answer on https://reactonrails.com/docs/getting-started/oss-vs-pro.
+
+### Set up the Node renderer
+
+ID: node-renderer
+Category: production
+Doc: https://reactonrails.com/docs/pro/node-renderer
+
+Set up the React on Rails Pro Node renderer for server rendering. Follow https://reactonrails.com/docs/pro/node-renderer exactly, including the configuration it specifies.
+
+### Add fragment caching
+
+ID: fragment-caching
+Category: production
+Doc: https://reactonrails.com/docs/pro/fragment-caching
+
+Add fragment caching to my server-rendered React on Rails components. Follow https://reactonrails.com/docs/pro/fragment-caching exactly.
+
+### Get a production license / upgrade to Pro
+
+ID: upgrade-to-pro
+Category: production
+Doc: https://reactonrails.com/docs/pro/upgrading-to-pro
+
+Walk me through upgrading my React on Rails app to Pro and getting a production license. Follow https://reactonrails.com/docs/pro/upgrading-to-pro.
