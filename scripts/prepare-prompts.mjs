@@ -52,11 +52,43 @@ function toPosix(relativePath) {
 }
 
 function stripInlineComment(value) {
-  const commentIndex = value.search(/\s+#/);
-  if (commentIndex === -1) {
+  const openingQuote = value[0];
+  if (openingQuote === "\"" || openingQuote === "'") {
+    let escaped = false;
+
+    for (let index = 1; index < value.length; index += 1) {
+      const char = value[index];
+
+      if (openingQuote === "\"" && escaped) {
+        escaped = false;
+        continue;
+      }
+      if (openingQuote === "\"" && char === "\\") {
+        escaped = true;
+        continue;
+      }
+      if (openingQuote === "'" && char === "'" && value[index + 1] === "'") {
+        index += 1;
+        continue;
+      }
+      if (char === openingQuote) {
+        const rest = value.slice(index + 1);
+        return /^\s+#/.test(rest) ? value.slice(0, index + 1) : value;
+      }
+    }
+
     return value;
   }
-  return value.slice(0, commentIndex).trimEnd();
+
+  for (let index = 0; index < value.length; index += 1) {
+    const char = value[index];
+
+    if (char === "#" && index > 0 && /\s/.test(value[index - 1])) {
+      return value.slice(0, index).trimEnd();
+    }
+  }
+
+  return value;
 }
 
 function parseScalar(rawValue, context) {
@@ -97,7 +129,7 @@ function foldedBlockValue(lines) {
 
   for (const line of lines) {
     const trimmed = line.trim();
-    if (trimmed === "" || trimmed.startsWith("#")) {
+    if (trimmed === "") {
       if (current.length > 0) {
         paragraphs.push(current.join(" "));
         current = [];

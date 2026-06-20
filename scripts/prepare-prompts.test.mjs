@@ -94,6 +94,46 @@ test("parsePromptsYaml validates schema and folds block strings", () => {
   assert.equal(catalog.prompts[1].doc_route, "/docs/api-reference/ruby-api-pro#async_react_component");
 });
 
+test("parsePromptsYaml handles comments outside quoted scalars and inside folded blocks", () => {
+  const catalog = parsePromptsYaml(`schema_version: 1
+site_url: https://reactonrails.com
+agent_note: >-
+  Keep the next marker literal.
+  # Not a YAML comment inside a block scalar.
+
+categories:
+  - id: get-started
+    eyebrow: "Get # started" # outside comment
+    heading: 'Spin up React # on Rails.'
+
+home_prompt_ids:
+  - create-app
+
+prompts:
+  - id: create-app
+    title: "Start # a new app" # outside comment
+    category: get-started
+    doc_route: /docs/getting-started/create-react-on-rails-app
+    prompt: "Follow {{doc_url}} # exactly."
+  - id: existing-app
+    title: Don't skip setup # outside comment
+    category: get-started
+    doc_route: /docs/getting-started/create-react-on-rails-app
+    prompt: Follow {{doc_url}} exactly. # outside comment
+`);
+
+  assert.equal(
+    catalog.agentNote,
+    "Keep the next marker literal. # Not a YAML comment inside a block scalar."
+  );
+  assert.equal(catalog.categories[0].eyebrow, "Get # started");
+  assert.equal(catalog.categories[0].heading, "Spin up React # on Rails.");
+  assert.equal(catalog.prompts[0].title, "Start # a new app");
+  assert.equal(catalog.prompts[0].prompt, "Follow {{doc_url}} # exactly.");
+  assert.equal(catalog.prompts[1].title, "Don't skip setup");
+  assert.equal(catalog.prompts[1].prompt, "Follow {{doc_url}} exactly.");
+});
+
 test("collectPreparedDocRoutes includes default routes and frontmatter slugs", async () => {
   await withTempDir(async (tmpDir) => {
     const docsRoot = path.join(tmpDir, "docs");
