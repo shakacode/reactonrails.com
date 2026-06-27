@@ -15,6 +15,10 @@ trusted_bots:
   - cursor
   - dependabot
   - greptile-apps
+  # Current use is limited to the deterministic Cloudflare Pages preview
+  # comment in `.github/workflows/site-build-deploy.yml`. Do not add new
+  # `GITHUB_TOKEN` comment workflows without a distinct bot/app identity or a
+  # matching provenance check in the batch preflight tool.
   - github-actions
 
 # Team entries are GitHub team slugs under the repository owner org. Reading
