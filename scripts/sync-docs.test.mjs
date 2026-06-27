@@ -30,9 +30,10 @@ async function writeFakeUpstream(upstreamRoot) {
   await fs.writeFile(path.join(upstreamRoot, "llms.txt"), "llms index\n", "utf8");
   await fs.writeFile(path.join(upstreamRoot, "llms-full.txt"), "oss full\n", "utf8");
   await fs.writeFile(path.join(upstreamRoot, "llms-full-pro.txt"), "pro full\n", "utf8");
+  await fs.writeFile(path.join(upstreamRoot, "prompts.yml"), "schema_version: 1\n", "utf8");
 }
 
-test("sync docs stages root llms files for static publishing", async () => {
+test("sync docs stages prompts and root llms files for publishing", async () => {
   await withTempDir(async (tmpDir) => {
     const upstreamRoot = path.join(tmpDir, "react_on_rails");
     await writeFakeUpstream(upstreamRoot);
@@ -59,6 +60,10 @@ test("sync docs stages root llms files for static publishing", async () => {
     assert.equal(
       await fs.readFile(path.join(upstreamContent, "static", "llms-full-pro.txt"), "utf8"),
       "pro full\n"
+    );
+    assert.equal(
+      await fs.readFile(path.join(upstreamContent, "prompts.yml"), "utf8"),
+      "schema_version: 1\n"
     );
   });
 });

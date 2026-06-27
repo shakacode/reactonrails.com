@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "site_url": "https://reactonrails.com",
+  "agent_note": "Paste into Cursor, Claude Code, Copilot, or any AI assistant. Each prompt points the agent at the official docs so it doesn't guess.",
+  "categories": [
+    {
+      "id": "get-started",
+      "eyebrow": "Get started",
+      "heading": "Spin up React on Rails."
+    },
+    {
+      "id": "server-rendering",
+      "eyebrow": "Server rendering",
+      "heading": "Render on the server: RSC, SSR, streaming."
+    },
+    {
+      "id": "migrate",
+      "eyebrow": "Migrate",
+      "heading": "Move an existing setup to React on Rails."
+    },
+    {
+      "id": "features",
+      "eyebrow": "Build features",
+      "heading": "Add common capabilities."
+    },
+    {
+      "id": "production",
+      "eyebrow": "Optimize & go to production",
+      "heading": "Tune performance and ship with Pro."
+    }
+  ],
+  "home_prompt_ids": [
+    "turn-on-rsc",
+    "create-app",
+    "install-existing"
+  ],
+  "prompts": [
+    {
+      "id": "create-app",
+      "title": "Start a new app",
+      "category": "get-started",
+      "doc_route": "/docs/getting-started/create-react-on-rails-app",
+      "doc_url": "https://reactonrails.com/docs/getting-started/create-react-on-rails-app",
+      "prompt": "Set up a new Rails app with React on Rails, using TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app and use the exact commands and versions it specifies — don't improvise."
+    },
+    {
+      "id": "install-existing",
+      "title": "Add to an existing Rails app",
+      "category": "get-started",
+      "doc_route": "/docs/getting-started/existing-rails-app",
+      "doc_url": "https://reactonrails.com/docs/getting-started/existing-rails-app",
+      "prompt": "Add React on Rails to my existing Rails app with TypeScript, keeping my current routes and conventions. Follow https://reactonrails.com/docs/getting-started/existing-rails-app and don't change any gem or package versions it doesn't tell you to."
+    },
+    {
+      "id": "turn-on-rsc",
+      "title": "Turn on React Server Components",
+      "category": "server-rendering",
+      "doc_route": "/docs/pro/react-server-components",
+      "doc_url": "https://reactonrails.com/docs/pro/react-server-components",
+      "prompt": "Turn on React Server Components in my React on Rails app (no license required). Follow https://reactonrails.com/docs/pro/react-server-components exactly, including the renderer and packer setup it specifies."
+    },
+    {
+      "id": "streaming-ssr",
+      "title": "Add streaming SSR",
+      "category": "server-rendering",
+      "doc_route": "/docs/pro/streaming-ssr",
+      "doc_url": "https://reactonrails.com/docs/pro/streaming-ssr",
+      "prompt": "Add streaming server-side rendering to my React on Rails app. Follow https://reactonrails.com/docs/pro/streaming-ssr exactly and don't change versions it doesn't ask you to."
+    },
+    {
+      "id": "async-rendering",
+      "title": "Use async/Suspense rendering",
+      "category": "server-rendering",
+      "doc_route": "/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options--",
+      "doc_url": "https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options--",
+      "prompt": "Set up async (Suspense) rendering for a React on Rails component. Follow https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options-- exactly."
+    },
+    {
+      "id": "migrate-react-rails",
+      "title": "Migrate from react-rails",
+      "category": "migrate",
+      "doc_route": "/docs/migrating/migrating-from-react-rails",
+      "doc_url": "https://reactonrails.com/docs/migrating/migrating-from-react-rails",
+      "prompt": "Migrate my app from react-rails to React on Rails, keeping my existing components working. Follow https://reactonrails.com/docs/migrating/migrating-from-react-rails and don't skip any step it lists."
+    },
+    {
+      "id": "code-splitting",
+      "title": "Add code splitting",
+      "category": "features",
+      "doc_route": "/docs/building-features/code-splitting",
+      "doc_url": "https://reactonrails.com/docs/building-features/code-splitting",
+      "prompt": "Add code splitting / lazy loading to my React on Rails components. Follow https://reactonrails.com/docs/building-features/code-splitting exactly."
+    },
+    {
+      "id": "oss-vs-pro",
+      "title": "Evaluate OSS vs Pro",
+      "category": "production",
+      "doc_route": "/docs/getting-started/oss-vs-pro",
+      "doc_url": "https://reactonrails.com/docs/getting-started/oss-vs-pro",
+      "prompt": "Review my React on Rails setup and tell me whether OSS or Pro fits my workload, citing the tradeoffs. Base your answer on https://reactonrails.com/docs/getting-started/oss-vs-pro."
+    },
+    {
+      "id": "node-renderer",
+      "title": "Set up the Node renderer",
+      "category": "production",
+      "doc_route": "/docs/pro/node-renderer",
+      "doc_url": "https://reactonrails.com/docs/pro/node-renderer",
+      "prompt": "Set up the React on Rails Pro Node renderer for server rendering. Follow https://reactonrails.com/docs/pro/node-renderer exactly, including the configuration it specifies."
+    },
+    {
+      "id": "fragment-caching",
+      "title": "Add fragment caching",
+      "category": "production",
+      "doc_route": "/docs/pro/fragment-caching",
+      "doc_url": "https://reactonrails.com/docs/pro/fragment-caching",
+      "prompt": "Add fragment caching to my server-rendered React on Rails components. Follow https://reactonrails.com/docs/pro/fragment-caching exactly."
+    },
+    {
+      "id": "upgrade-to-pro",
+      "title": "Get a production license / upgrade to Pro",
+      "category": "production",
+      "doc_route": "/docs/pro/upgrading-to-pro",
+      "doc_url": "https://reactonrails.com/docs/pro/upgrading-to-pro",
+      "prompt": "Walk me through upgrading my React on Rails app to Pro and getting a production license. Follow https://reactonrails.com/docs/pro/upgrading-to-pro."
+    }
+  ]
+}

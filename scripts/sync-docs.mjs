@@ -146,6 +146,18 @@ async function main() {
     console.warn("Warning: CHANGELOG.md not found in source repo");
   }
 
+  // Sync canonical prompt definitions from the source repo root. The site
+  // generates display constants and public agent artifacts from this file.
+  const sourcePrompts = path.join(sourceRepo, "prompts.yml");
+  const promptsTarget = path.join(upstreamRoot, "prompts.yml");
+  await fs.rm(promptsTarget, { force: true });
+  if (await exists(sourcePrompts)) {
+    await fs.copyFile(sourcePrompts, promptsTarget);
+    console.log(`Synced prompts.yml to ${promptsTarget}`);
+  } else {
+    throw new Error(`prompts.yml not found in source repo at ${sourcePrompts}`);
+  }
+
   const copiedStaticFiles = await syncRootStaticFiles(sourceRepo);
   if (copiedStaticFiles.length > 0) {
     console.log(`Synced static root files: ${copiedStaticFiles.join(", ")}`);
