@@ -8,6 +8,7 @@ import {
   excludeNamesForRootCopy,
   exists,
 } from "./docs-layout.mjs";
+import { syncedStaticFiles } from "./synced-static-files.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -847,9 +848,30 @@ async function prepareSidebars(siteRoot, hasArchive) {
   }
 }
 
+export async function copySyncedStaticFiles(sourceStaticDir, targetStaticDir) {
+  await fs.mkdir(targetStaticDir, { recursive: true });
+
+  const copied = [];
+  for (const fileName of syncedStaticFiles) {
+    const sourceFile = path.join(sourceStaticDir, fileName);
+    const targetFile = path.join(targetStaticDir, fileName);
+
+    await fs.rm(targetFile, { force: true });
+    if (!(await exists(sourceFile))) {
+      continue;
+    }
+
+    await fs.copyFile(sourceFile, targetFile);
+    copied.push(fileName);
+  }
+
+  return copied;
+}
+
 async function prepareDocusaurus() {
   const siteRoot = path.join(workspaceRoot, "prototypes", "docusaurus");
   const docsRoot = path.join(siteRoot, "docs");
+  const staticRoot = path.join(siteRoot, "static");
   const layout = await detectDocsLayout(sourceDocs);
   const layoutPaths = docsLayoutPaths(sourceDocs, layout);
   const excludedRootEntries = excludeNamesForRootCopy(layout);
@@ -894,6 +916,13 @@ async function prepareDocusaurus() {
   await convertGitHubAlerts(docsRoot);
 
   await prepareSidebars(siteRoot, hasArchive);
+  const copiedStaticFiles = await copySyncedStaticFiles(
+    path.join(workspaceRoot, "content", "upstream", "static"),
+    staticRoot
+  );
+  if (copiedStaticFiles.length > 0) {
+    console.log(`Prepared static root files: ${copiedStaticFiles.join(", ")}`);
+  }
 
   console.log(`Prepared docusaurus docs from ${sourceDocs} (${layout} layout, pro -> /pro)`);
 }

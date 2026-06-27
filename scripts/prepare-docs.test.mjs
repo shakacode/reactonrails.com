@@ -6,6 +6,7 @@ import test from "node:test";
 
 import {
   changelogMarkdown,
+  copySyncedStaticFiles,
   docsHomeMarkdown,
   fixProNodeRendererMdx,
   injectProFriendlyNotice,
@@ -207,4 +208,36 @@ test("Pro node renderer table comparisons are escaped for MDX", () => {
     fixProNodeRendererMdx(sourceMarkdown),
     "| First request on fresh deploy | 410->retry | Direct render: &lt;50ms |\n"
   );
+});
+
+test("prepare docs copies synced llms files to the Docusaurus static root", async () => {
+  await withTempDir(async (tmpDir) => {
+    const upstreamStatic = path.join(tmpDir, "upstream-static");
+    const docusaurusStatic = path.join(tmpDir, "docusaurus-static");
+    await fs.mkdir(upstreamStatic, { recursive: true });
+    await fs.mkdir(docusaurusStatic, { recursive: true });
+
+    await fs.writeFile(path.join(upstreamStatic, "llms.txt"), "llms index\n", "utf8");
+    await fs.writeFile(path.join(upstreamStatic, "llms-full.txt"), "oss full\n", "utf8");
+    await fs.writeFile(path.join(upstreamStatic, "llms-full-pro.txt"), "pro full\n", "utf8");
+    await fs.writeFile(path.join(upstreamStatic, "ignored.txt"), "ignored\n", "utf8");
+    await fs.writeFile(path.join(docusaurusStatic, "llms-full.txt"), "stale\n", "utf8");
+
+    const copied = await copySyncedStaticFiles(upstreamStatic, docusaurusStatic);
+
+    assert.deepEqual(copied.sort(), ["llms-full-pro.txt", "llms-full.txt", "llms.txt"]);
+    assert.equal(await fs.readFile(path.join(docusaurusStatic, "llms.txt"), "utf8"), "llms index\n");
+    assert.equal(
+      await fs.readFile(path.join(docusaurusStatic, "llms-full.txt"), "utf8"),
+      "oss full\n"
+    );
+    assert.equal(
+      await fs.readFile(path.join(docusaurusStatic, "llms-full-pro.txt"), "utf8"),
+      "pro full\n"
+    );
+    await assert.rejects(
+      fs.access(path.join(docusaurusStatic, "ignored.txt")),
+      /ENOENT/
+    );
+  });
 });
