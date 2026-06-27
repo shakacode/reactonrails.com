@@ -21,9 +21,9 @@ export type Demo = {
 export const demos: Demo[] = [
   {
     id: 'flagship',
-    name: 'OSS flagship demo',
+    name: 'Flagship demo',
     tagline:
-      'The OSS baseline React on Rails demo with Rails 8.1, React 19, SSR, Redux Toolkit, Shakapacker/Rspack, and ActiveRecord CRUD - no Pro or RSC required.',
+      'The flagship React on Rails Pro demo with Rails 8.1, React 19, RSC, streaming SSR, Redux Toolkit, Shakapacker/Rspack, and ActiveRecord CRUD.',
     repoUrl: 'https://github.com/shakacode/react-on-rails-demo-flagship',
     demoUrl: 'https://flagship.reactonrails.com',
     image: '/img/demos/flagship.webp',
