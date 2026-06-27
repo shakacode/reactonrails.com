@@ -410,42 +410,140 @@ function routeForDoc(relativePath, markdown) {
   return defaultRouteForDoc(relativePath);
 }
 
+function slugForHeading(text) {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/<[^>]*>/g, "")
+    .replace(/[\p{C}\p{P}\p{S}]/gu, (char) => (char === "-" || char === "_" ? char : ""))
+    .replace(/ /g, "-");
+}
+
+function headingTextForSlug(heading) {
+  return heading
+    .replace(/`([^`]+)`/g, (_, code) => code.replace(/[<>]/g, ""))
+    .replace(/!?\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, "$1");
+}
+
+function uniqueSlug(baseSlug, occurrences) {
+  let slug = baseSlug;
+  while (occurrences.has(slug)) {
+    occurrences.set(baseSlug, (occurrences.get(baseSlug) ?? 0) + 1);
+    slug = `${baseSlug}-${occurrences.get(baseSlug)}`;
+  }
+
+  occurrences.set(slug, 0);
+  return slug;
+}
+
+function collectMarkdownAnchors(markdown) {
+  const anchors = new Set();
+  const slugOccurrences = new Map();
+  let fencedBlock = null;
+
+  for (const line of markdown.split("\n")) {
+    const fence = line.match(/^\s*(```|~~~)/);
+    if (fence) {
+      fencedBlock = fencedBlock === fence[1] ? null : fence[1];
+      continue;
+    }
+    if (fencedBlock) {
+      continue;
+    }
+
+    const match = line.match(/^(#{1,6})\s+(.+?)\s*#*$/);
+    if (!match) {
+      continue;
+    }
+    if (match[1].length === 1) {
+      continue;
+    }
+
+    const heading = match[2].trim();
+    const explicitAnchor = heading.match(/\s*\{#((?:.(?!\{#|\}))*.)\}$/);
+    if (explicitAnchor) {
+      anchors.add(explicitAnchor[1]);
+      continue;
+    }
+
+    const baseSlug = slugForHeading(headingTextForSlug(heading));
+    if (baseSlug === "") {
+      continue;
+    }
+
+    anchors.add(uniqueSlug(baseSlug, slugOccurrences));
+  }
+
+  return anchors;
+}
+
 export async function collectPreparedDocRoutes(docsRoot) {
   if (!(await exists(docsRoot))) {
     throw new Error(`Prepared docs not found at ${docsRoot}. Run \`npm run prepare:docs\` first.`);
   }
 
-  const routes = new Set();
+  const routes = new Map();
   await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
     if (!/\.(md|mdx)$/i.test(relativeFile)) {
       return;
     }
     const markdown = await fs.readFile(absoluteFile, "utf8");
-    routes.add(routeForDoc(relativeFile, markdown));
+    routes.set(routeForDoc(relativeFile, markdown), collectMarkdownAnchors(markdown));
   });
 
   return routes;
 }
 
-function routeWithoutFragment(docRoute) {
-  return normalizeRoute(docRoute.split("#")[0]);
+function splitDocRoute(docRoute) {
+  const fragmentIndex = docRoute.indexOf("#");
+  if (fragmentIndex === -1) {
+    return { route: normalizeRoute(docRoute), fragment: null };
+  }
+
+  return {
+    route: normalizeRoute(docRoute.slice(0, fragmentIndex)),
+    fragment: docRoute.slice(fragmentIndex + 1),
+  };
+}
+
+function routeAnchors(preparedDocRoutes, route) {
+  if (!(preparedDocRoutes instanceof Map)) {
+    return null;
+  }
+
+  return preparedDocRoutes.get(route) ?? null;
 }
 
 export function validatePromptRoutes(catalog, preparedDocRoutes) {
   const missingRoutes = [];
+  const missingFragments = [];
   for (const prompt of catalog.prompts) {
-    const route = routeWithoutFragment(prompt.doc_route);
+    const { route, fragment } = splitDocRoute(prompt.doc_route);
     if (!preparedDocRoutes.has(route)) {
       missingRoutes.push(`${prompt.id}: ${prompt.doc_route}`);
+      continue;
+    }
+
+    const anchors = routeAnchors(preparedDocRoutes, route);
+    if (fragment && anchors && !anchors.has(fragment)) {
+      missingFragments.push(`${prompt.id}: ${prompt.doc_route}`);
     }
   }
 
-  if (missingRoutes.length > 0) {
+  if (missingRoutes.length > 0 || missingFragments.length > 0) {
+    const lines = ["Prompt doc_route validation failed."];
+    if (missingRoutes.length > 0) {
+      lines.push("Missing prepared docs routes:", ...missingRoutes.map((missingRoute) => `- ${missingRoute}`));
+    }
+    if (missingFragments.length > 0) {
+      lines.push(
+        "Missing prepared docs anchors:",
+        ...missingFragments.map((missingFragment) => `- ${missingFragment}`)
+      );
+    }
     throw new Error(
-      [
-        "Prompt doc_route validation failed. Missing prepared docs routes:",
-        ...missingRoutes.map((missingRoute) => `- ${missingRoute}`),
-      ].join("\n")
+      lines.join("\n")
     );
   }
 }

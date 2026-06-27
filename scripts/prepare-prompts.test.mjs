@@ -48,7 +48,7 @@ prompts:
   - id: async-rendering
     title: Use async rendering
     category: pro
-    doc_route: "/docs/api-reference/ruby-api-pro#async_react_component"
+    doc_route: "/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options--"
     prompt: "Use {{doc_url}} and then check {{doc_url}} again."
 `;
 
@@ -68,7 +68,28 @@ async function writePreparedDocs(docsRoot) {
   );
   await fs.writeFile(
     path.join(docsRoot, "api-reference", "ruby-api-pro.md"),
-    "# Ruby API Pro\n",
+    [
+      "# Ruby API Pro",
+      "",
+      "### 🚀 Step 1: Install React on Rails (3 minutes)",
+      "",
+      "### React canary: `<ViewTransition>` status (experimental)",
+      "",
+      "### Foo",
+      "",
+      "### Foo-1",
+      "",
+      "### Foo",
+      "",
+      "### `async_react_component(component_name, options = {})`",
+      "",
+      "### 1. [Preparing Your App](rsc-preparing-app.md)",
+      "",
+      "### Production Case Study: Popmenu {#popmenu}",
+      "",
+      "### Versioned API {#api.v1}",
+      "",
+    ].join("\n"),
     "utf8"
   );
   await fs.writeFile(
@@ -91,7 +112,7 @@ test("parsePromptsYaml validates schema and folds block strings", () => {
     catalog.categories.map((category) => category.id),
     ["get-started", "pro"]
   );
-  assert.equal(catalog.prompts[1].doc_route, "/docs/api-reference/ruby-api-pro#async_react_component");
+  assert.equal(catalog.prompts[1].doc_route, "/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options--");
 });
 
 test("parsePromptsYaml handles comments outside quoted scalars and inside folded blocks", () => {
@@ -159,10 +180,10 @@ test("renderPromptArtifacts expands doc URLs in TypeScript and public artifacts"
   const promptsJson = JSON.parse(artifacts.promptsJson);
   assert.equal(
     promptsJson.prompts[1].prompt,
-    "Use https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_component and then check https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_component again."
+    "Use https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options-- and then check https://reactonrails.com/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options-- again."
   );
   assert.match(artifacts.llmsTxt, /# React on Rails AI Prompts/);
-  assert.match(artifacts.llmsTxt, /Doc: https:\/\/reactonrails\.com\/docs\/api-reference\/ruby-api-pro#async_react_component/);
+  assert.match(artifacts.llmsTxt, /Doc: https:\/\/reactonrails\.com\/docs\/api-reference\/ruby-api-pro#async_react_componentcomponent_name-options--/);
 });
 
 test("validatePromptRoutes fails on dangling prepared doc routes", () => {
@@ -171,8 +192,143 @@ test("validatePromptRoutes fails on dangling prepared doc routes", () => {
 
   assert.throws(
     () => validatePromptRoutes(catalog, routes),
-    /async-rendering: \/docs\/api-reference\/ruby-api-pro#async_react_component/
+    /async-rendering: \/docs\/api-reference\/ruby-api-pro#async_react_componentcomponent_name-options--/
   );
+});
+
+test("validatePromptRoutes fails on dangling prepared doc anchors", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const catalog = parsePromptsYaml(
+      samplePromptsYaml.replace("#async_react_component", "#missing_anchor")
+    );
+    const routes = await collectPreparedDocRoutes(docsRoot);
+
+    assert.throws(
+      () => validatePromptRoutes(catalog, routes),
+      /Missing prepared docs anchors:[\s\S]*async-rendering: \/docs\/api-reference\/ruby-api-pro#missing_anchor/
+    );
+  });
+});
+
+test("validatePromptRoutes excludes page h1 text from prepared doc anchors", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const catalog = parsePromptsYaml(
+      samplePromptsYaml.replace("#async_react_componentcomponent_name-options--", "#ruby-api-pro")
+    );
+    const routes = await collectPreparedDocRoutes(docsRoot);
+
+    assert.throws(
+      () => validatePromptRoutes(catalog, routes),
+      /Missing prepared docs anchors:[\s\S]*async-rendering: \/docs\/api-reference\/ruby-api-pro#ruby-api-pro/
+    );
+  });
+});
+
+test("validatePromptRoutes honors explicit Docusaurus heading anchors", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const routes = await collectPreparedDocRoutes(docsRoot);
+    const validCatalog = parsePromptsYaml(
+      samplePromptsYaml.replace("#async_react_componentcomponent_name-options--", "#popmenu")
+    );
+    const invalidCatalog = parsePromptsYaml(
+      samplePromptsYaml.replace(
+        "#async_react_componentcomponent_name-options--",
+        "#production-case-study-popmenu"
+      )
+    );
+
+    assert.doesNotThrow(() => validatePromptRoutes(validCatalog, routes));
+    assert.throws(
+      () => validatePromptRoutes(invalidCatalog, routes),
+      /Missing prepared docs anchors:[\s\S]*async-rendering: \/docs\/api-reference\/ruby-api-pro#production-case-study-popmenu/
+    );
+  });
+});
+
+test("validatePromptRoutes accepts Docusaurus explicit anchors with punctuation", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const routes = await collectPreparedDocRoutes(docsRoot);
+    const catalog = parsePromptsYaml(
+      samplePromptsYaml.replace(
+        "#async_react_componentcomponent_name-options--",
+        "#api.v1"
+      )
+    );
+
+    assert.doesNotThrow(() => validatePromptRoutes(catalog, routes));
+  });
+});
+
+test("validatePromptRoutes ignores markdown link destinations in heading anchors", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const routes = await collectPreparedDocRoutes(docsRoot);
+    const catalog = parsePromptsYaml(
+      samplePromptsYaml.replace(
+        "#async_react_componentcomponent_name-options--",
+        "#1-preparing-your-app"
+      )
+    );
+
+    assert.doesNotThrow(() => validatePromptRoutes(catalog, routes));
+  });
+});
+
+test("validatePromptRoutes matches Docusaurus slugging for emoji headings", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const routes = await collectPreparedDocRoutes(docsRoot);
+    const catalog = parsePromptsYaml(
+      samplePromptsYaml.replace(
+        "#async_react_componentcomponent_name-options--",
+        "#-step-1-install-react-on-rails-3-minutes"
+      )
+    );
+
+    assert.doesNotThrow(() => validatePromptRoutes(catalog, routes));
+  });
+});
+
+test("validatePromptRoutes preserves inline code text in heading anchors", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const routes = await collectPreparedDocRoutes(docsRoot);
+    const catalog = parsePromptsYaml(
+      samplePromptsYaml.replace(
+        "#async_react_componentcomponent_name-options--",
+        "#react-canary-viewtransition-status-experimental"
+      )
+    );
+
+    assert.doesNotThrow(() => validatePromptRoutes(catalog, routes));
+  });
+});
+
+test("validatePromptRoutes matches Docusaurus duplicate heading collisions", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    await writePreparedDocs(docsRoot);
+    const routes = await collectPreparedDocRoutes(docsRoot);
+    const catalog = parsePromptsYaml(
+      samplePromptsYaml.replace(
+        "#async_react_componentcomponent_name-options--",
+        "#foo-2"
+      )
+    );
+
+    assert.doesNotThrow(() => validatePromptRoutes(catalog, routes));
+  });
 });
 
 test("preparePrompts writes artifacts and check mode detects drift", async () => {
