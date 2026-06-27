@@ -720,7 +720,7 @@ async function writeOrCheckFile(targetPath, expected, check) {
 }
 
 function driftedPromptArtifactLabels(results) {
-  const labels = ["prompts.ts", "prompts.json", "llms.txt"];
+  const labels = ["prompts.ts", "prompts.json", "prompts/llms.txt"];
   return results
     .map((matched, index) => (matched ? null : `- ${labels[index]}`))
     .filter(Boolean);
@@ -805,7 +805,7 @@ async function main() {
     promptsTs:
       argValue("--prompts-ts") ?? path.join(siteRoot, "src", "constants", "prompts.ts"),
     promptsJson: argValue("--prompts-json") ?? path.join(siteRoot, "static", "prompts.json"),
-    llmsTxt: argValue("--llms-txt") ?? path.join(siteRoot, "static", "llms.txt"),
+    llmsTxt: argValue("--llms-txt") ?? path.join(siteRoot, "static", "prompts", "llms.txt"),
     check,
     failOnWriteDrift,
   });

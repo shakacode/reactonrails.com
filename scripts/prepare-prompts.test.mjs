@@ -337,7 +337,7 @@ test("preparePrompts writes artifacts and check mode detects drift", async () =>
     const sourcePrompts = path.join(tmpDir, "content", "upstream", "prompts.yml");
     const promptsTs = path.join(tmpDir, "site", "src", "constants", "prompts.ts");
     const promptsJson = path.join(tmpDir, "site", "static", "prompts.json");
-    const llmsTxt = path.join(tmpDir, "site", "static", "llms.txt");
+    const llmsTxt = path.join(tmpDir, "site", "static", "prompts", "llms.txt");
 
     await writePreparedDocs(docsRoot);
     await fs.mkdir(path.dirname(sourcePrompts), { recursive: true });
@@ -374,7 +374,7 @@ test("preparePrompts writes artifacts and check mode detects drift", async () =>
           llmsTxt,
           failOnWriteDrift: true,
         }),
-      /Generated prompt artifacts changed during prepare[\s\S]*llms\.txt/
+      /Generated prompt artifacts changed during prepare[\s\S]*prompts\/llms\.txt/
     );
     assert.match(await fs.readFile(llmsTxt, "utf8"), /# React on Rails AI Prompts/);
 
