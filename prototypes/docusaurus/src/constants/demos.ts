@@ -44,7 +44,8 @@ export const demos: Demo[] = [
   {
     id: 'tanstack-starter',
     name: 'TanStack Starter',
-    tagline: 'A minimal React on Rails + TanStack starter template to build from.',
+    tagline:
+      'A minimal React on Rails Pro + TanStack starter for the current Pro-first app path.',
     repoUrl: 'https://github.com/shakacode/react-on-rails-starter-tanstack',
     demoUrl: 'https://starter.reactonrails.com',
     image: '/img/demos/tanstack-starter.webp',

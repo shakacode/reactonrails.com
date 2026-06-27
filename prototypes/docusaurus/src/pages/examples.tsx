@@ -21,7 +21,7 @@ const demoGroups: DemoGroup[] = [
   {
     category: 'starter',
     eyebrow: 'Get started',
-    heading: 'Start a new app from a template.',
+    heading: 'Start from the Pro default, or choose OSS-only deliberately.',
   },
   {
     category: 'legacy',
@@ -51,7 +51,8 @@ export default function ExamplesPage(): ReactNode {
             </h1>
             <p className={styles.lead}>
               Use live deployments, source-backed demos, and production references to evaluate
-              React on Rails, compare OSS and Pro, or start a new app.
+              React on Rails Pro, compare OSS and Pro, or choose the <code>--standard</code>{' '}
+              OSS-only path deliberately.
             </p>
           </div>
         </section>
