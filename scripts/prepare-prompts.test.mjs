@@ -372,6 +372,21 @@ test("preparePrompts writes artifacts and check mode detects drift", async () =>
           promptsTs,
           promptsJson,
           llmsTxt,
+          failOnWriteDrift: true,
+        }),
+      /Generated prompt artifacts changed during prepare[\s\S]*llms\.txt/
+    );
+    assert.match(await fs.readFile(llmsTxt, "utf8"), /# React on Rails AI Prompts/);
+
+    await fs.writeFile(llmsTxt, "hand edited again\n", "utf8");
+    await assert.rejects(
+      () =>
+        preparePrompts({
+          sourcePrompts,
+          docsRoot,
+          promptsTs,
+          promptsJson,
+          llmsTxt,
           check: true,
         }),
       /Generated prompt artifacts are out of date/

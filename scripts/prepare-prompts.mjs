@@ -709,31 +709,48 @@ export function renderPromptArtifacts(catalog) {
 }
 
 async function writeOrCheckFile(targetPath, expected, check) {
+  const actual = await fs.readFile(targetPath, "utf8").catch(() => null);
   if (check) {
-    const actual = await fs.readFile(targetPath, "utf8").catch(() => null);
     return actual === expected;
   }
 
   await fs.mkdir(path.dirname(targetPath), { recursive: true });
   await fs.writeFile(targetPath, expected, "utf8");
-  return true;
+  return actual === expected;
 }
 
-export async function writePromptArtifacts(artifacts, targets, { check = false } = {}) {
+function driftedPromptArtifactLabels(results) {
+  const labels = ["prompts.ts", "prompts.json", "llms.txt"];
+  return results
+    .map((matched, index) => (matched ? null : `- ${labels[index]}`))
+    .filter(Boolean);
+}
+
+export async function writePromptArtifacts(
+  artifacts,
+  targets,
+  { check = false, failOnWriteDrift = false } = {}
+) {
   const results = await Promise.all([
     writeOrCheckFile(targets.promptsTs, artifacts.promptsTs, check),
     writeOrCheckFile(targets.promptsJson, artifacts.promptsJson, check),
     writeOrCheckFile(targets.llmsTxt, artifacts.llmsTxt, check),
   ]);
+  const drifted = driftedPromptArtifactLabels(results);
 
-  if (check && results.some((matched) => !matched)) {
-    const labels = ["prompts.ts", "prompts.json", "llms.txt"];
-    const drifted = results
-      .map((matched, index) => (matched ? null : `- ${labels[index]}`))
-      .filter(Boolean);
+  if (check && drifted.length > 0) {
     throw new Error(
       [
         "Generated prompt artifacts are out of date. Run `npm run prepare:prompts`.",
+        ...drifted,
+      ].join("\n")
+    );
+  }
+
+  if (!check && failOnWriteDrift && drifted.length > 0) {
+    throw new Error(
+      [
+        "Generated prompt artifacts changed during prepare. Run `npm run prepare:prompts` and commit the generated files.",
         ...drifted,
       ].join("\n")
     );
@@ -747,6 +764,7 @@ export async function preparePrompts({
   promptsJson,
   llmsTxt,
   check = false,
+  failOnWriteDrift = false,
 }) {
   if (!(await exists(sourcePrompts))) {
     throw new Error(`Synced prompts source not found at ${sourcePrompts}. Run \`npm run sync:docs\` first.`);
@@ -764,7 +782,7 @@ export async function preparePrompts({
       promptsJson,
       llmsTxt,
     },
-    { check }
+    { check, failOnWriteDrift }
   );
 
   return {
@@ -777,6 +795,9 @@ export async function preparePrompts({
 async function main() {
   const siteRoot = path.join(workspaceRoot, "prototypes", "docusaurus");
   const check = process.argv.includes("--check");
+  const failOnWriteDrift =
+    process.argv.includes("--fail-on-write-drift") ||
+    (process.env.CI === "true" && process.env.GITHUB_EVENT_NAME === "pull_request");
   const result = await preparePrompts({
     sourcePrompts:
       argValue("--source") ?? path.join(workspaceRoot, "content", "upstream", "prompts.yml"),
@@ -786,6 +807,7 @@ async function main() {
     promptsJson: argValue("--prompts-json") ?? path.join(siteRoot, "static", "prompts.json"),
     llmsTxt: argValue("--llms-txt") ?? path.join(siteRoot, "static", "llms.txt"),
     check,
+    failOnWriteDrift,
   });
 
   const mode = check ? "Validated" : "Generated";

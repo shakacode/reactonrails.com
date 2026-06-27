@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { detectDocsLayout, docsLayoutPaths, exists, subsetPathsForLayout } from "./docs-layout.mjs";
+import { syncedStaticFiles } from "./synced-static-files.mjs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,6 +17,7 @@ const buildSubset = args.has("--subset");
 const upstreamRoot = path.join(workspaceRoot, "content", "upstream");
 const fullDocsTarget = path.join(upstreamRoot, "docs");
 const subsetDocsTarget = path.join(upstreamRoot, "docs-subset");
+const staticTarget = path.join(upstreamRoot, "static");
 
 function cloneRepo(repoUrl, ref) {
   const tmpDir = mkdtempSync(path.join(os.tmpdir(), "react-on-rails-docs-"));
@@ -77,6 +79,25 @@ async function countFiles(rootDir) {
   return count;
 }
 
+async function syncRootStaticFiles(sourceRepo) {
+  await fs.rm(staticTarget, { recursive: true, force: true });
+  await fs.mkdir(staticTarget, { recursive: true });
+
+  const copied = [];
+  for (const fileName of syncedStaticFiles) {
+    const sourceFile = path.join(sourceRepo, fileName);
+    if (!(await exists(sourceFile))) {
+      console.warn(`Warning: ${fileName} not found in source repo`);
+      continue;
+    }
+
+    await fs.copyFile(sourceFile, path.join(staticTarget, fileName));
+    copied.push(fileName);
+  }
+
+  return copied;
+}
+
 async function main() {
   const configuredRepo = process.env.REACT_ON_RAILS_REPO;
   const localRepo = configuredRepo
@@ -135,6 +156,11 @@ async function main() {
     console.log(`Synced prompts.yml to ${promptsTarget}`);
   } else {
     throw new Error(`prompts.yml not found in source repo at ${sourcePrompts}`);
+  }
+
+  const copiedStaticFiles = await syncRootStaticFiles(sourceRepo);
+  if (copiedStaticFiles.length > 0) {
+    console.log(`Synced static root files: ${copiedStaticFiles.join(", ")}`);
   }
 
   let subsetStats = null;
