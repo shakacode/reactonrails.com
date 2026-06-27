@@ -16,7 +16,7 @@ const demoGroups: DemoGroup[] = [
   {
     category: 'flagship',
     eyebrow: 'Flagship demos',
-    heading: 'Production-style apps on React on Rails Pro, React 19, and RSC.',
+    heading: 'Full-stack apps with React on Rails Pro, React 19, and RSC.',
   },
   {
     category: 'starter',
