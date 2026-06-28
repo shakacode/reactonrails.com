@@ -28,6 +28,11 @@ const valueCards = [
     description:
       'Start with open source docs, then add Pro when SSR throughput, RSC support, or guided support matters.',
   },
+  {
+    title: 'Modern data fetching',
+    description:
+      'Pair Rails JSON APIs with TanStack Query for client-side caching, mutations, and first-paint data, without adding a second backend.',
+  },
 ];
 
 const migrationGuides = [
