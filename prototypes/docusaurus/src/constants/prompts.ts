@@ -26,7 +26,7 @@ export const prompts: Prompt[] = [
   {
     "id": "create-app",
     "title": "Start a new app",
-    "prompt": "Set up a new Rails app with React on Rails, using TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app and use the exact commands and versions it specifies — don't improvise.",
+    "prompt": "Set up a new Rails app using the default React on Rails Pro path (no token required for development, test, CI/CD, or staging; production requires a paid license) with TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app exactly; don't improvise commands or versions. Use --standard only when you intentionally want an open-source-only scaffold.",
     "href": "/docs/getting-started/create-react-on-rails-app",
     "category": "get-started"
   },
