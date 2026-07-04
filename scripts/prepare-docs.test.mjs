@@ -170,6 +170,24 @@ test("docs homepage inserts trust-based commercial licensing copy when no legacy
   assert(updated.indexOf("## ShakaCode Trust-Based Commercial Licensing") < updated.indexOf("## Need more help?"));
 });
 
+test("docs homepage replaces compact legacy licensing section headings", () => {
+  const sourceMarkdown = `# React on Rails
+
+## Friendly evaluation policy - no runtime lockouts
+You can try React on Rails Pro without a license while evaluating.
+
+## Need more help?
+`;
+
+  const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
+
+  assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
+  assert.match(updated, /private business value in production/);
+  assert.match(updated, /React on Rails Pro EULA/);
+  assert.doesNotMatch(updated, /Friendly evaluation policy/);
+  assert.doesNotMatch(updated, /without a license while evaluating/);
+});
+
 test("docs homepage renders a package table with linked names and live version badges", () => {
   const sourceMarkdown = `# React on Rails
 

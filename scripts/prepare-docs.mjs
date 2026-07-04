@@ -751,7 +751,7 @@ export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
 - Production use remains governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
 `;
   const legacyLicensingSectionPattern =
-    /## (?:Friendly evaluation policy|Friendly License Model|ShakaCode Trust-Based Commercial Licensing)\n\n[\s\S]*?(?=\n## |$)/;
+    /## (?:Friendly evaluation policy|Friendly License Model|ShakaCode Trust-Based Commercial Licensing)[^\n]*\n+[\s\S]*?(?=\n## |$)/;
 
   let updated = sourceMarkdown
     .trim()
