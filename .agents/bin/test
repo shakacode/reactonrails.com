@@ -3,5 +3,5 @@
 # Run tests.
 set -euo pipefail
 cd "$(CDPATH= cd -- "$(dirname -- "$0")/../.." && pwd)"
-npm run test:docs-layout -- "$@"
-npm run test:prepare-prompts -- "$@"
+npm run test:docs-layout
+npm run test:prepare-prompts
