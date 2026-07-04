@@ -467,8 +467,25 @@ export async function injectProTrustBasedLicensingNotice(docsRoot) {
   }
 
   const notice = `> **ShakaCode Trust-Based Commercial Licensing**\n> Free to learn, evaluate, demo, and use for qualifying open-source projects. Paid when React on Rails Pro creates private business value in production. No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation. Product-specific legal terms still apply: production use is governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/).\n\n`;
+  const licensingSection = `## ShakaCode Trust-Based Commercial Licensing
+
+Free to learn, evaluate, demo, and use for qualifying open-source projects. Paid when React on Rails Pro creates private business value in production. No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation.
+
+Product-specific legal terms still apply: production use is governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com) about free or low-cost licenses in qualifying cases.
+`;
+  const licensingSectionPattern =
+    /(^|\n)## ShakaCode Trust-Based Commercial Licensing\n\n[\s\S]*?(?=\n## |\n*$)/;
   const legacyNoticePattern = /^> \*\*Friendly license model\*\*\n(?:>.*(?:\n|$))+\n?/gim;
   let hasTrustBasedNotice = /ShakaCode Trust-Based Commercial Licensing/i.test(updated);
+
+  if (licensingSectionPattern.test(updated)) {
+    updated = updated.replace(
+      licensingSectionPattern,
+      (_matchedSection, leadingNewline) => `${leadingNewline}${licensingSection}\n`
+    );
+    hasTrustBasedNotice = true;
+  }
+
   updated = updated.replace(legacyNoticePattern, () => {
     if (hasTrustBasedNotice) {
       return "";

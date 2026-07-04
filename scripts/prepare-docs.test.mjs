@@ -102,6 +102,35 @@ Existing Pro overview.
   });
 });
 
+test("prepare docs normalizes existing Pro trust-based licensing section", async () => {
+  await withTempDir(async (docsRoot) => {
+    const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
+    await fs.mkdir(path.dirname(proIntroPath), { recursive: true });
+    await fs.writeFile(
+      proIntroPath,
+      `# React on Rails Pro
+
+## ShakaCode Trust-Based Commercial Licensing
+
+Trust-based means ShakaCode keeps evaluation low-friction instead of forcing runtime lockouts in non-production environments.
+It relies on professional teams to purchase a license before production deployment.
+
+## Explore the Dummy App
+`,
+      "utf8"
+    );
+
+    await injectProTrustBasedLicensingNotice(docsRoot);
+
+    const updated = await fs.readFile(proIntroPath, "utf8");
+    assert.match(updated, /ShakaCode Trust-Based Commercial Licensing/);
+    assert.match(updated, /private business value in production/);
+    assert.match(updated, /React on Rails Pro EULA/);
+    assert.match(updated, /## Explore the Dummy App/);
+    assert.doesNotMatch(updated, /professional teams to purchase/);
+  });
+});
+
 test("docs homepage uses trust-based commercial licensing copy", () => {
   const sourceMarkdown = `# React on Rails
 
