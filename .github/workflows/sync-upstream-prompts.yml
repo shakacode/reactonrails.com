@@ -47,14 +47,18 @@ jobs:
         id: changes
         run: |
           set -euo pipefail
-          paths="prototypes/docusaurus/src/constants/prompts.ts prototypes/docusaurus/static/prompts.json prototypes/docusaurus/static/prompts/llms.txt"
-          if git diff --quiet -- $paths; then
+          paths=(
+            prototypes/docusaurus/src/constants/prompts.ts
+            prototypes/docusaurus/static/prompts.json
+            prototypes/docusaurus/static/prompts/llms.txt
+          )
+          if git diff --quiet -- "${paths[@]}"; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Prompt artifacts already current."
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
             echo "Prompt-artifact drift detected:"
-            git status --short -- $paths
+            git status --short -- "${paths[@]}"
           fi
 
       - name: Create pull request for regenerated prompt artifacts
