@@ -467,10 +467,18 @@ export async function injectProTrustBasedLicensingNotice(docsRoot) {
   }
 
   const notice = `> **ShakaCode Trust-Based Commercial Licensing**\n> Free to learn, evaluate, demo, and use for qualifying open-source projects. Paid when React on Rails Pro creates private business value in production. No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation. Product-specific legal terms still apply: production use is governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/).\n\n`;
-  const legacyNoticePattern = /^> \*\*Friendly license model\*\*\n> .+\n\n/m;
-  if (legacyNoticePattern.test(updated)) {
-    updated = updated.replace(legacyNoticePattern, notice);
-  } else if (!/ShakaCode Trust-Based Commercial Licensing/i.test(updated)) {
+  const legacyNoticePattern = /^> \*\*Friendly license model\*\*\n(?:>.*(?:\n|$))+\n?/gim;
+  let hasTrustBasedNotice = /ShakaCode Trust-Based Commercial Licensing/i.test(updated);
+  updated = updated.replace(legacyNoticePattern, () => {
+    if (hasTrustBasedNotice) {
+      return "";
+    }
+
+    hasTrustBasedNotice = true;
+    return notice;
+  });
+
+  if (!hasTrustBasedNotice) {
     updated = updated.replace(/^# React on Rails Pro\s*\n+/m, `# React on Rails Pro\n\n${notice}`);
   }
 
@@ -725,14 +733,29 @@ export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
 - No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation.
 - Production use remains governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
 `;
+  const legacyLicensingSectionPattern =
+    /## (?:Friendly evaluation policy|Friendly License Model|ShakaCode Trust-Based Commercial Licensing)\n\n[\s\S]*?(?=\n## |$)/;
 
-  const updated = injectPackageReferences(sourceMarkdown
+  let updated = sourceMarkdown
     .trim()
     .replaceAll("(./oss/", "(./")
     .replace("](https://reactonrails.com/examples)", "](/examples)")
-    .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n")
-    .replace(/## (?:Friendly evaluation policy|Friendly License Model|ShakaCode Trust-Based Commercial Licensing)\n\n[\s\S]*?(?=\n## )/, `${licensingSection}\n`)
-    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`));
+    .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n");
+
+  if (legacyLicensingSectionPattern.test(updated)) {
+    updated = updated.replace(legacyLicensingSectionPattern, `${licensingSection}\n`);
+  } else if (!/## ShakaCode Trust-Based Commercial Licensing/i.test(updated)) {
+    const helpHeadingPattern = /^## Need more help\?\s*(?:\n|$)/m;
+    if (helpHeadingPattern.test(updated)) {
+      updated = updated.replace(helpHeadingPattern, `${licensingSection}\n## Need more help?\n\n`);
+    } else {
+      updated = `${updated.trimEnd()}\n\n${licensingSection}`;
+    }
+  }
+
+  updated = injectPackageReferences(
+    updated.replace(/^## Need more help\?\s*(?:\n|$)/m, `## Need more help?\n\n${archiveBlock}`)
+  );
 
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
 }
