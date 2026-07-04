@@ -37,6 +37,24 @@ const valueCards = [
 
 const migrationGuides = [
   {
+    title: 'Migrate from Inertia Rails',
+    description:
+      'Move from Inertia page props and SPA navigation to React on Rails view helpers route by route.',
+    href: docsRoutes.migrateFromInertiaRails,
+  },
+  {
+    title: 'Migrate from vite_rails',
+    description:
+      'Switch from vite_rails when you want Rails view helpers, SSR, or React on Rails Pro features.',
+    href: docsRoutes.migrateFromViteRails,
+  },
+  {
+    title: 'Migrate from Next.js',
+    description:
+      'Collapse a separate Next.js frontend into Rails while keeping a modern React migration path.',
+    href: docsRoutes.migrateFromNextjs,
+  },
+  {
     title: 'Migrate from react-rails',
     description:
       'Step-by-step checklist for swapping `react-rails` to React on Rails, with a sample app.',
@@ -269,7 +287,7 @@ function MigrationSection() {
       <div className="container">
         <div className={styles.sectionHeader}>
           <p className={styles.sectionEyebrow}>Migration</p>
-          <h2>Move from another setup</h2>
+          <h2>Switch from another React setup</h2>
         </div>
         <div className={styles.migrationGrid}>
           {migrationGuides.map((guide) => (

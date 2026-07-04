@@ -13,5 +13,8 @@ export const docsRoutes = {
   proAsyncRendering:
     '/docs/api-reference/ruby-api-pro#async_react_componentcomponent_name-options--',
   codeSplitting: '/docs/building-features/code-splitting',
+  migrateFromInertiaRails: '/docs/migrating/migrating-from-inertia-rails',
+  migrateFromViteRails: '/docs/migrating/migrating-from-vite-rails',
+  migrateFromNextjs: '/docs/migrating/migrating-from-nextjs',
   migrateFromReactRails: '/docs/migrating/migrating-from-react-rails',
 } as const;
