@@ -45,6 +45,41 @@ const config: Config = {
   title: 'React on Rails',
   tagline: 'Integrate React with Rails, including SSR, RSC, and production-grade docs.',
   favicon: 'img/favicon.ico',
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'apple-touch-icon',
+        sizes: '192x192',
+        href: '/img/icon-192.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '192x192',
+        href: '/img/icon-192.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '512x512',
+        href: '/img/icon-512.png',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'manifest',
+        href: '/manifest.webmanifest',
+      },
+    },
+  ],
 
   future: {
     v4: true,

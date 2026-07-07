@@ -14,6 +14,7 @@
     "prepare": "npm run sync:docs && npm run prepare:docs",
     "prepare:subset": "npm run sync:docs:subset && npm run prepare:docs:subset",
     "test:docs-layout": "node --test scripts/docs-layout.test.mjs",
+    "test:site-icons": "node --test scripts/site-icons.test.mjs",
     "test:prepare-prompts": "node --test scripts/prepare-prompts.test.mjs",
     "install:site": "npm --prefix prototypes/docusaurus install",
     "dev": "npm --prefix prototypes/docusaurus run start",
