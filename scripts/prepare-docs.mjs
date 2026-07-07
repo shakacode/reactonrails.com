@@ -150,6 +150,60 @@ function rewriteRelativeMarkdownLinksToAbsolute(markdown, sourceRelativePath) {
   });
 }
 
+function isAbsoluteOrExternalTarget(target) {
+  return (
+    target.startsWith("/") ||
+    target.startsWith("#") ||
+    target.startsWith("//") ||
+    /^[a-z][a-z0-9+.-]*:/i.test(target)
+  );
+}
+
+function splitTargetPathQueryAndAnchor(target) {
+  const hashIndex = target.indexOf("#");
+  const pathAndQuery = hashIndex === -1 ? target : target.slice(0, hashIndex);
+  const anchorSuffix = hashIndex === -1 ? "" : target.slice(hashIndex);
+  const queryIndex = pathAndQuery.indexOf("?");
+  const targetPath = queryIndex === -1 ? pathAndQuery : pathAndQuery.slice(0, queryIndex);
+  const querySuffix = queryIndex === -1 ? "" : pathAndQuery.slice(queryIndex);
+
+  return { targetPath, querySuffix, anchorSuffix };
+}
+
+function rewriteRelativeHtmlImageSource(markdown, sourceRelativePath) {
+  return markdown.replace(/(<img\b[^>]*?\bsrc\s*=\s*)(["'])([^"']+)\2/gi, (fullMatch, prefix, quote, target) => {
+    if (!target || isAbsoluteOrExternalTarget(target)) {
+      return fullMatch;
+    }
+
+    const { targetPath, querySuffix, anchorSuffix } = splitTargetPathQueryAndAnchor(target);
+    if (!targetPath) {
+      return fullMatch;
+    }
+
+    const resolved = resolveRelativeDocPath(sourceRelativePath, targetPath);
+    if (resolved.startsWith("..")) {
+      return fullMatch;
+    }
+
+    return `${prefix}${quote}/docs/${resolved}${querySuffix}${anchorSuffix}${quote}`;
+  });
+}
+
+export async function rewriteRelativeHtmlImageSources(docsRoot) {
+  await walkFiles(docsRoot, async (absoluteFile, relativeFile) => {
+    if (!relativeFile.endsWith(".md") && !relativeFile.endsWith(".mdx")) {
+      return;
+    }
+
+    const original = await fs.readFile(absoluteFile, "utf8");
+    const updated = rewriteRelativeHtmlImageSource(original, relativeFile);
+    if (updated !== original) {
+      await fs.writeFile(absoluteFile, updated, "utf8");
+    }
+  });
+}
+
 async function rewriteDoc(docsRoot, relativePath, transform) {
   const absolutePath = path.join(docsRoot, ...relativePath.split("/"));
   if (!(await exists(absolutePath))) {
@@ -913,6 +967,37 @@ export async function copySyncedStaticFiles(sourceStaticDir, targetStaticDir) {
   return copied;
 }
 
+export async function copyDocsImageDirectories(docsRoot, targetStaticRoot) {
+  const targetDocsRoot = path.join(targetStaticRoot, "docs");
+  await fs.rm(targetDocsRoot, { recursive: true, force: true });
+
+  const copied = [];
+  async function copyImageDirs(currentDir, relativePrefix = "") {
+    const entries = await fs.readdir(currentDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+
+      const sourceDir = path.join(currentDir, entry.name);
+      const relativeDir = relativePrefix ? path.join(relativePrefix, entry.name) : entry.name;
+      if (entry.name === "images") {
+        await fs.cp(sourceDir, path.join(targetDocsRoot, relativeDir), { recursive: true });
+        copied.push(toPosix(relativeDir));
+        continue;
+      }
+
+      await copyImageDirs(sourceDir, relativeDir);
+    }
+  }
+
+  if (await exists(docsRoot)) {
+    await copyImageDirs(docsRoot);
+  }
+
+  return copied.sort();
+}
+
 async function prepareDocusaurus() {
   const siteRoot = path.join(workspaceRoot, "prototypes", "docusaurus");
   const docsRoot = path.join(siteRoot, "docs");
@@ -958,9 +1043,14 @@ async function prepareDocusaurus() {
     docsHomeMarkdown(docsHomeSource, { hasArchive }),
     "utf8"
   );
+  await rewriteRelativeHtmlImageSources(docsRoot);
   await convertGitHubAlerts(docsRoot);
 
   await prepareSidebars(siteRoot, hasArchive);
+  const copiedImageDirs = await copyDocsImageDirectories(docsRoot, staticRoot);
+  if (copiedImageDirs.length > 0) {
+    console.log(`Prepared docs image directories: ${copiedImageDirs.join(", ")}`);
+  }
   const copiedStaticFiles = await copySyncedStaticFiles(
     path.join(workspaceRoot, "content", "upstream", "static"),
     staticRoot

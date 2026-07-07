@@ -10,6 +10,7 @@ content/upstream/sidebars.ts
 content/upstream/CHANGELOG.md
 content/upstream/prompts.yml
 prototypes/docusaurus/docs/
+prototypes/docusaurus/static/docs/
 prototypes/docusaurus/static/llms.txt
 prototypes/docusaurus/static/llms-full.txt
 prototypes/docusaurus/static/llms-full-pro.txt

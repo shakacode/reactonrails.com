@@ -6,10 +6,12 @@ import test from "node:test";
 
 import {
   changelogMarkdown,
+  copyDocsImageDirectories,
   copySyncedStaticFiles,
   docsHomeMarkdown,
   fixProNodeRendererMdx,
   injectProTrustBasedLicensingNotice,
+  rewriteRelativeHtmlImageSources,
   rewriteFlattenedOssLinks,
   rewriteProLinks,
   siteSidebarSource,
@@ -338,5 +340,97 @@ test("prepare docs copies synced llms files to the Docusaurus static root", asyn
       fs.access(path.join(docusaurusStatic, "ignored.txt")),
       /ENOENT/
     );
+  });
+});
+
+test("prepare docs mirrors docs image directories into static docs paths", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    const staticRoot = path.join(tmpDir, "static");
+
+    await fs.mkdir(path.join(docsRoot, "pro", "images"), { recursive: true });
+    await fs.mkdir(path.join(docsRoot, "pro", "react-server-components", "images"), {
+      recursive: true,
+    });
+    await fs.mkdir(path.join(docsRoot, "pro", "not-images"), { recursive: true });
+    await fs.mkdir(path.join(staticRoot, "docs", "pro", "images"), { recursive: true });
+
+    await fs.writeFile(
+      path.join(docsRoot, "pro", "images", "rolling-deploy-problem.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+    await fs.writeFile(
+      path.join(docsRoot, "pro", "react-server-components", "images", "flight.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+    await fs.writeFile(
+      path.join(docsRoot, "pro", "not-images", "ignored.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+    await fs.writeFile(
+      path.join(staticRoot, "docs", "pro", "images", "stale.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+
+    const copied = await copyDocsImageDirectories(docsRoot, staticRoot);
+
+    assert.deepEqual(copied, [
+      "pro/images",
+      "pro/react-server-components/images",
+    ]);
+    assert.equal(
+      await fs.readFile(
+        path.join(staticRoot, "docs", "pro", "images", "rolling-deploy-problem.svg"),
+        "utf8"
+      ),
+      "<svg />\n"
+    );
+    assert.equal(
+      await fs.readFile(
+        path.join(staticRoot, "docs", "pro", "react-server-components", "images", "flight.svg"),
+        "utf8"
+      ),
+      "<svg />\n"
+    );
+    await assert.rejects(
+      fs.access(path.join(staticRoot, "docs", "pro", "images", "stale.svg")),
+      /ENOENT/
+    );
+    await assert.rejects(
+      fs.access(path.join(staticRoot, "docs", "pro", "not-images", "ignored.svg")),
+      /ENOENT/
+    );
+  });
+});
+
+test("prepare docs rewrites raw HTML image sources to static docs paths", async () => {
+  await withTempDir(async (docsRoot) => {
+    const docPath = path.join(docsRoot, "pro", "rolling-deploy-adapters.md");
+    await fs.mkdir(path.dirname(docPath), { recursive: true });
+    await fs.writeFile(
+      docPath,
+      `<img src="images/rolling-deploy-problem.svg" alt="problem" width="840" />
+<img src='./images/rolling-deploy-solution.svg?cache=1#diagram' alt='solution' />
+<img src="../images/shared.svg" alt="shared" />
+<img src="/img/icon.svg" alt="root" />
+<img src="https://example.com/icon.svg" alt="external" />
+<img src="data:image/svg+xml;base64,abc" alt="data" />
+`,
+      "utf8"
+    );
+
+    await rewriteRelativeHtmlImageSources(docsRoot);
+
+    const updated = await fs.readFile(docPath, "utf8");
+    assert.match(updated, /src="\/docs\/pro\/images\/rolling-deploy-problem\.svg"/);
+    assert.match(updated, /src='\/docs\/pro\/images\/rolling-deploy-solution\.svg\?cache=1#diagram'/);
+    assert.match(updated, /src="\/docs\/images\/shared\.svg"/);
+    assert.match(updated, /src="\/img\/icon\.svg"/);
+    assert.match(updated, /src="https:\/\/example\.com\/icon\.svg"/);
+    assert.match(updated, /src="data:image\/svg\+xml;base64,abc"/);
   });
 });
