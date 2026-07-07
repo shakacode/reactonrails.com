@@ -446,7 +446,7 @@ export async function rewriteFlattenedOssLinks(docsRoot) {
   });
 }
 
-export async function injectProFriendlyNotice(docsRoot) {
+export async function injectProTrustBasedLicensingNotice(docsRoot) {
   const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
   if (!(await exists(proIntroPath))) {
     return;
@@ -466,8 +466,36 @@ export async function injectProFriendlyNotice(docsRoot) {
     }
   }
 
-  if (!/Friendly license model/i.test(updated)) {
-    const notice = `> **Friendly license model**\n> Try React on Rails Pro freely in development, test, CI/CD, and staging. No token is required to evaluate. If no license is configured, Pro keeps running in unlicensed mode and logs license status instead of blocking your app. Production deployments require a paid license; see [Pro pricing and sign up](https://pro.reactonrails.com/).\n\n`;
+  const notice = `> **ShakaCode Trust-Based Commercial Licensing**\n> Free to learn, evaluate, demo, and use for qualifying open-source projects. Paid when React on Rails Pro creates private business value in production. No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation. Product-specific legal terms still apply: production use is governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/).\n\n`;
+  const licensingSection = `## ShakaCode Trust-Based Commercial Licensing
+
+Free to learn, evaluate, demo, and use for qualifying open-source projects. Paid when React on Rails Pro creates private business value in production. No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation.
+
+Product-specific legal terms still apply: production use is governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com) about free or low-cost licenses in qualifying cases.
+`;
+  const licensingSectionPattern =
+    /(^|\n)## ShakaCode Trust-Based Commercial Licensing\n\n[\s\S]*?(?=\n## |\n*$)/;
+  const legacyNoticePattern = /^> \*\*Friendly license model\*\*\n(?:>.*(?:\n|$))+\n?/gim;
+  let hasTrustBasedNotice = /ShakaCode Trust-Based Commercial Licensing/i.test(updated);
+
+  if (licensingSectionPattern.test(updated)) {
+    updated = updated.replace(
+      licensingSectionPattern,
+      (_matchedSection, leadingNewline) => `${leadingNewline}${licensingSection}\n`
+    );
+    hasTrustBasedNotice = true;
+  }
+
+  updated = updated.replace(legacyNoticePattern, () => {
+    if (hasTrustBasedNotice) {
+      return "";
+    }
+
+    hasTrustBasedNotice = true;
+    return notice;
+  });
+
+  if (!hasTrustBasedNotice) {
     updated = updated.replace(/^# React on Rails Pro\s*\n+/m, `# React on Rails Pro\n\n${notice}`);
   }
 
@@ -715,19 +743,36 @@ function injectPackageReferences(markdown) {
 
 export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
   const archiveBlock = hasArchive ? "- [Historical Reference](./archive/README.md)\n" : "";
-  const friendlyLicenseSection = `## Friendly License Model
+  const licensingSection = `## ShakaCode Trust-Based Commercial Licensing
 
-- Try React on Rails Pro freely in development, test, CI/CD, and staging. No token is required to evaluate.
-- Production deployments require a paid license. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
+- Free to learn, evaluate, demo, and use for qualifying open-source projects.
+- Paid when React on Rails Pro creates private business value in production.
+- No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation.
+- Production use remains governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
 `;
+  const legacyLicensingSectionPattern =
+    /## (?:Friendly evaluation policy|Friendly License Model|ShakaCode Trust-Based Commercial Licensing)[^\n]*\n+[\s\S]*?(?=\n## |$)/;
 
-  const updated = injectPackageReferences(sourceMarkdown
+  let updated = sourceMarkdown
     .trim()
     .replaceAll("(./oss/", "(./")
     .replace("](https://reactonrails.com/examples)", "](/examples)")
-    .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n")
-    .replace(/## Friendly evaluation policy\n\n[\s\S]*?(?=\n## )/, `${friendlyLicenseSection}\n`)
-    .replace("## Need more help?\n\n", `## Need more help?\n\n${archiveBlock}`));
+    .replace(/\n- \[Documentation website\]\(https:\/\/reactonrails\.com\/docs\/\)\s*/g, "\n");
+
+  if (legacyLicensingSectionPattern.test(updated)) {
+    updated = updated.replace(legacyLicensingSectionPattern, `${licensingSection}\n`);
+  } else if (!/## ShakaCode Trust-Based Commercial Licensing/i.test(updated)) {
+    const helpHeadingPattern = /^## Need more help\?\s*(?:\n|$)/m;
+    if (helpHeadingPattern.test(updated)) {
+      updated = updated.replace(helpHeadingPattern, `${licensingSection}\n## Need more help?\n\n`);
+    } else {
+      updated = `${updated.trimEnd()}\n\n${licensingSection}`;
+    }
+  }
+
+  updated = injectPackageReferences(
+    updated.replace(/^## Need more help\?\s*(?:\n|$)/m, `## Need more help?\n\n${archiveBlock}`)
+  );
 
   return `---\ncustom_edit_url: null\n---\n\n${updated}\n`;
 }
@@ -902,7 +947,7 @@ async function prepareDocusaurus() {
   if (layout === "split") {
     await rewriteFlattenedOssLinks(docsRoot);
   }
-  await injectProFriendlyNotice(docsRoot);
+  await injectProTrustBasedLicensingNotice(docsRoot);
   await fixKnownDocsIssues(docsRoot);
   await normalizeCodeFences(docsRoot);
   const hasArchive = await archiveLegacyDocs(docsRoot);

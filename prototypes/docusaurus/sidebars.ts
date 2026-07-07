@@ -198,10 +198,10 @@ const sidebars: SidebarsConfig = {
           label: 'Migration Guides',
           items: [
             'migrating/example-migrations',
-            'migrating/migrating-from-nextjs',
-            'migrating/migrating-from-react-rails',
             'migrating/migrating-from-inertia-rails',
             'migrating/migrating-from-vite-rails',
+            'migrating/migrating-from-nextjs',
+            'migrating/migrating-from-react-rails',
             'migrating/migrating-from-webpack-to-rspack',
             'migrating/babel-to-swc-migration',
             'migrating/convert-rails-5-api-only-app',

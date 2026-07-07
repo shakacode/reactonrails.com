@@ -9,7 +9,7 @@ import {
   copySyncedStaticFiles,
   docsHomeMarkdown,
   fixProNodeRendererMdx,
-  injectProFriendlyNotice,
+  injectProTrustBasedLicensingNotice,
   rewriteFlattenedOssLinks,
   rewriteProLinks,
   siteSidebarSource,
@@ -49,7 +49,7 @@ test("prepare docs keeps external Pro pricing links", async () => {
   });
 });
 
-test("prepare docs injects current friendly license model notice", async () => {
+test("prepare docs injects trust-based commercial licensing notice", async () => {
   await withTempDir(async (docsRoot) => {
     const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
     await fs.mkdir(path.dirname(proIntroPath), { recursive: true });
@@ -59,18 +59,79 @@ test("prepare docs injects current friendly license model notice", async () => {
       "utf8"
     );
 
-    await injectProFriendlyNotice(docsRoot);
+    await injectProTrustBasedLicensingNotice(docsRoot);
 
     const updated = await fs.readFile(proIntroPath, "utf8");
     assert.match(updated, /slug: \/pro/);
-    assert.match(updated, /Friendly license model/);
+    assert.match(updated, /ShakaCode Trust-Based Commercial Licensing/);
+    assert.match(updated, /Free to learn, evaluate, demo/);
+    assert.match(updated, /private business value in production/);
+    assert.match(updated, /React on Rails Pro EULA/);
     assert.match(updated, /development, test, CI\/CD, and staging/);
     assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
+    assert.doesNotMatch(updated, /Friendly license model/);
     assert.doesNotMatch(updated, /Friendly evaluation policy/);
+    assert.doesNotMatch(updated, /Honest License/);
   });
 });
 
-test("docs homepage uses current friendly license model copy", () => {
+test("prepare docs replaces multi-line legacy Pro licensing notice", async () => {
+  await withTempDir(async (docsRoot) => {
+    const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
+    await fs.mkdir(path.dirname(proIntroPath), { recursive: true });
+    await fs.writeFile(
+      proIntroPath,
+      `# React on Rails Pro
+
+> **Friendly license model**
+> You can try React on Rails Pro in development without a license.
+> Teams should contact us before production.
+
+Existing Pro overview.
+`,
+      "utf8"
+    );
+
+    await injectProTrustBasedLicensingNotice(docsRoot);
+
+    const updated = await fs.readFile(proIntroPath, "utf8");
+    assert.match(updated, /ShakaCode Trust-Based Commercial Licensing/);
+    assert.match(updated, /private business value in production/);
+    assert.doesNotMatch(updated, /Friendly license model/);
+    assert.doesNotMatch(updated, /Teams should contact us before production/);
+  });
+});
+
+test("prepare docs normalizes existing Pro trust-based licensing section", async () => {
+  await withTempDir(async (docsRoot) => {
+    const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
+    await fs.mkdir(path.dirname(proIntroPath), { recursive: true });
+    await fs.writeFile(
+      proIntroPath,
+      `# React on Rails Pro
+
+## ShakaCode Trust-Based Commercial Licensing
+
+Trust-based means ShakaCode keeps evaluation low-friction instead of forcing runtime lockouts in non-production environments.
+It relies on professional teams to purchase a license before production deployment.
+
+## Explore the Dummy App
+`,
+      "utf8"
+    );
+
+    await injectProTrustBasedLicensingNotice(docsRoot);
+
+    const updated = await fs.readFile(proIntroPath, "utf8");
+    assert.match(updated, /ShakaCode Trust-Based Commercial Licensing/);
+    assert.match(updated, /private business value in production/);
+    assert.match(updated, /React on Rails Pro EULA/);
+    assert.match(updated, /## Explore the Dummy App/);
+    assert.doesNotMatch(updated, /professional teams to purchase/);
+  });
+});
+
+test("docs homepage uses trust-based commercial licensing copy", () => {
   const sourceMarkdown = `# React on Rails
 
 ## Friendly evaluation policy
@@ -83,10 +144,48 @@ test("docs homepage uses current friendly license model copy", () => {
 
   const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
 
-  assert.match(updated, /## Friendly License Model/);
+  assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
+  assert.match(updated, /Free to learn, evaluate, demo/);
+  assert.match(updated, /private business value in production/);
+  assert.match(updated, /React on Rails Pro EULA/);
   assert.match(updated, /development, test, CI\/CD, and staging/);
   assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
+  assert.doesNotMatch(updated, /Friendly License Model/);
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
+  assert.doesNotMatch(updated, /Honest License/);
+});
+
+test("docs homepage inserts trust-based commercial licensing copy when no legacy section exists", () => {
+  const sourceMarkdown = `# React on Rails
+
+## Need more help?
+`;
+
+  const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
+
+  assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
+  assert.match(updated, /## Need more help\?/);
+  assert.match(updated, /private business value in production/);
+  assert.match(updated, /React on Rails Pro EULA/);
+  assert(updated.indexOf("## ShakaCode Trust-Based Commercial Licensing") < updated.indexOf("## Need more help?"));
+});
+
+test("docs homepage replaces compact legacy licensing section headings", () => {
+  const sourceMarkdown = `# React on Rails
+
+## Friendly evaluation policy - no runtime lockouts
+You can try React on Rails Pro without a license while evaluating.
+
+## Need more help?
+`;
+
+  const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
+
+  assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
+  assert.match(updated, /private business value in production/);
+  assert.match(updated, /React on Rails Pro EULA/);
+  assert.doesNotMatch(updated, /Friendly evaluation policy/);
+  assert.doesNotMatch(updated, /without a license while evaluating/);
 });
 
 test("docs homepage renders a package table with linked names and live version badges", () => {

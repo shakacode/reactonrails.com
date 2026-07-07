@@ -77,9 +77,9 @@ const upgradeSteps = [
   },
   {
     step: '3',
-    title: 'License when you deploy',
+    title: 'Align licensing before production',
     description:
-      'Confirm production rendering and performance on the paths that matter, then add a license when you ship.',
+      'Confirm production rendering and performance on the paths that matter, then add a paid license before private business value ships.',
   },
 ];
 
@@ -95,14 +95,15 @@ export default function ProPage(): ReactNode {
             <p>
               Pro adds React Server Components, streaming SSR, concurrent and cached rendering, and a
               dedicated Node renderer on top of the open-source gem. The gem and npm package are
-              public — install and build today; you only need a license to deploy to production.
+              public — install and build today under ShakaCode Trust-Based Commercial Licensing.
             </p>
             <code className={styles.install}>bundle add react_on_rails_pro</code>
             <div className={styles.licenseHighlight}>
-              <strong>Free to build with</strong>
+              <strong>Free to learn. Paid for private business value.</strong>
               <span>
-                No token needed for development, test, CI/CD, or staging. With no license configured,
-                Pro keeps running and logs its status instead of ever blocking your app.
+                No token is required for development, test, CI/CD, and staging, plus demos, education, or
+                qualifying open-source projects. Production use that creates private business value
+                requires a paid React on Rails Pro license.
               </span>
             </div>
             <div className={styles.actions}>
@@ -119,8 +120,8 @@ export default function ProPage(): ReactNode {
         <section className="container">
           <h2>What Pro adds</h2>
           <p className={styles.note}>
-            Every feature below ships in the public Pro gem. The license covers production use and
-            support — not access.
+            Every feature below ships in the public Pro gem. Trust-based commercial licensing covers
+            production use and support — not access to evaluate the package.
           </p>
           <div className={styles.cardGrid}>
             {proFeatures.map((feature) => (
@@ -179,19 +180,20 @@ export default function ProPage(): ReactNode {
             </article>
 
             <article className={styles.policyCard}>
-              <p className={styles.cardEyebrow}>Friendly license model</p>
-              <h2>Build now. License when you ship.</h2>
+              <p className={styles.cardEyebrow}>Trust-Based Commercial Licensing</p>
+              <h2>Free to learn. Paid when it creates private business value.</h2>
               <p>
-                Production deployments require a paid license, which includes support from the
-                ShakaCode maintainers. Visit{' '}
+                React on Rails Pro uses ShakaCode Trust-Based Commercial Licensing: free for
+                learning, demos, tutorials, education, and qualifying OSS; paid for production use
+                that creates private business value. Visit{' '}
                 <a href="https://pro.reactonrails.com/">Pro pricing and sign up</a> for current
                 options.
               </p>
               <p>
-                Budget-constrained? Email{' '}
-                <a href="mailto:justin@shakacode.com">justin@shakacode.com</a> — we grant free or
-                low-cost licenses in qualifying cases. Licenses from larger companies fund continued
-                React on Rails development.
+                The umbrella philosophy is separate from the legal terms: production use remains
+                governed by the React on Rails Pro EULA. Budget-constrained? Email{' '}
+                <a href="mailto:justin@shakacode.com">justin@shakacode.com</a> about free or
+                low-cost licenses in qualifying cases.
               </p>
             </article>
           </div>
