@@ -10,6 +10,9 @@ import packages from './src/data/packages.json';
 const useAlgolia = Boolean(
   process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_SEARCH_API_KEY
 );
+const siteBaseUrl = '/';
+const withBaseUrl = (assetPath: string) =>
+  `${siteBaseUrl}${assetPath.replace(/^\/+/, '')}`;
 
 const localSearchTheme: NonNullable<Config['themes']>[number] = [
   '@easyops-cn/docusaurus-search-local',
@@ -51,7 +54,7 @@ const config: Config = {
       attributes: {
         rel: 'apple-touch-icon',
         sizes: '192x192',
-        href: '/img/icon-192.png',
+        href: withBaseUrl('img/icon-192.png'),
       },
     },
     {
@@ -60,7 +63,7 @@ const config: Config = {
         rel: 'icon',
         type: 'image/png',
         sizes: '192x192',
-        href: '/img/icon-192.png',
+        href: withBaseUrl('img/icon-192.png'),
       },
     },
     {
@@ -69,14 +72,14 @@ const config: Config = {
         rel: 'icon',
         type: 'image/png',
         sizes: '512x512',
-        href: '/img/icon-512.png',
+        href: withBaseUrl('img/icon-512.png'),
       },
     },
     {
       tagName: 'link',
       attributes: {
         rel: 'manifest',
-        href: '/manifest.webmanifest',
+        href: withBaseUrl('manifest.webmanifest'),
       },
     },
   ],
@@ -86,7 +89,7 @@ const config: Config = {
   },
 
   url: 'https://reactonrails.com',
-  baseUrl: '/',
+  baseUrl: siteBaseUrl,
 
   organizationName: 'shakacode',
   projectName: 'reactonrails.com',
