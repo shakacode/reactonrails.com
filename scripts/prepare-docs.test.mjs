@@ -6,6 +6,7 @@ import test from "node:test";
 
 import {
   changelogMarkdown,
+  copyDocsImageDirectories,
   copySyncedStaticFiles,
   docsHomeMarkdown,
   fixProNodeRendererMdx,
@@ -336,6 +337,70 @@ test("prepare docs copies synced llms files to the Docusaurus static root", asyn
     );
     await assert.rejects(
       fs.access(path.join(docusaurusStatic, "ignored.txt")),
+      /ENOENT/
+    );
+  });
+});
+
+test("prepare docs mirrors docs image directories into static docs paths", async () => {
+  await withTempDir(async (tmpDir) => {
+    const docsRoot = path.join(tmpDir, "docs");
+    const staticRoot = path.join(tmpDir, "static");
+
+    await fs.mkdir(path.join(docsRoot, "pro", "images"), { recursive: true });
+    await fs.mkdir(path.join(docsRoot, "pro", "react-server-components", "images"), {
+      recursive: true,
+    });
+    await fs.mkdir(path.join(docsRoot, "pro", "not-images"), { recursive: true });
+    await fs.mkdir(path.join(staticRoot, "docs", "pro", "images"), { recursive: true });
+
+    await fs.writeFile(
+      path.join(docsRoot, "pro", "images", "rolling-deploy-problem.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+    await fs.writeFile(
+      path.join(docsRoot, "pro", "react-server-components", "images", "flight.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+    await fs.writeFile(
+      path.join(docsRoot, "pro", "not-images", "ignored.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+    await fs.writeFile(
+      path.join(staticRoot, "docs", "pro", "images", "stale.svg"),
+      "<svg />\n",
+      "utf8"
+    );
+
+    const copied = await copyDocsImageDirectories(docsRoot, staticRoot);
+
+    assert.deepEqual(copied, [
+      "pro/images",
+      "pro/react-server-components/images",
+    ]);
+    assert.equal(
+      await fs.readFile(
+        path.join(staticRoot, "docs", "pro", "images", "rolling-deploy-problem.svg"),
+        "utf8"
+      ),
+      "<svg />\n"
+    );
+    assert.equal(
+      await fs.readFile(
+        path.join(staticRoot, "docs", "pro", "react-server-components", "images", "flight.svg"),
+        "utf8"
+      ),
+      "<svg />\n"
+    );
+    await assert.rejects(
+      fs.access(path.join(staticRoot, "docs", "pro", "images", "stale.svg")),
+      /ENOENT/
+    );
+    await assert.rejects(
+      fs.access(path.join(staticRoot, "docs", "pro", "not-images", "ignored.svg")),
       /ENOENT/
     );
   });

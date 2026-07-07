@@ -913,6 +913,37 @@ export async function copySyncedStaticFiles(sourceStaticDir, targetStaticDir) {
   return copied;
 }
 
+export async function copyDocsImageDirectories(docsRoot, targetStaticRoot) {
+  const targetDocsRoot = path.join(targetStaticRoot, "docs");
+  await fs.rm(targetDocsRoot, { recursive: true, force: true });
+
+  const copied = [];
+  async function copyImageDirs(currentDir, relativePrefix = "") {
+    const entries = await fs.readdir(currentDir, { withFileTypes: true });
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+
+      const sourceDir = path.join(currentDir, entry.name);
+      const relativeDir = relativePrefix ? path.join(relativePrefix, entry.name) : entry.name;
+      if (entry.name === "images") {
+        await fs.cp(sourceDir, path.join(targetDocsRoot, relativeDir), { recursive: true });
+        copied.push(toPosix(relativeDir));
+        continue;
+      }
+
+      await copyImageDirs(sourceDir, relativeDir);
+    }
+  }
+
+  if (await exists(docsRoot)) {
+    await copyImageDirs(docsRoot);
+  }
+
+  return copied.sort();
+}
+
 async function prepareDocusaurus() {
   const siteRoot = path.join(workspaceRoot, "prototypes", "docusaurus");
   const docsRoot = path.join(siteRoot, "docs");
@@ -961,6 +992,10 @@ async function prepareDocusaurus() {
   await convertGitHubAlerts(docsRoot);
 
   await prepareSidebars(siteRoot, hasArchive);
+  const copiedImageDirs = await copyDocsImageDirectories(docsRoot, staticRoot);
+  if (copiedImageDirs.length > 0) {
+    console.log(`Prepared docs image directories: ${copiedImageDirs.join(", ")}`);
+  }
   const copiedStaticFiles = await copySyncedStaticFiles(
     path.join(workspaceRoot, "content", "upstream", "static"),
     staticRoot
