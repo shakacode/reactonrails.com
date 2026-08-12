@@ -9,7 +9,7 @@ means that capability is n/a here.
 | --- | --- | --- |
 | `setup` | Install dependencies | `npm ci --ignore-scripts` + `npm --prefix prototypes/docusaurus ci` + `npm run prepare` |
 | `validate` | Pre-push gate | `.agents/bin/build` + `.agents/bin/test` |
-| `test` | Run tests | `npm run test:docs-layout` + `npm run test:prepare-prompts` |
+| `test` | Run tests | `npm run test:docs-layout` + `npm run test:prepare-prompts` + `npm run test:algolia-config` |
 | `lint` | Lint / format | n/a |
 | `build` | Build / type-check | `npm run build` |
 | `docs` | Docs checks | n/a |
