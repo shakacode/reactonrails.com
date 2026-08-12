@@ -5,11 +5,21 @@ import {GlobExcludeDefault} from '@docusaurus/utils';
 import packages from './src/data/packages.json';
 
 // Use Algolia DocSearch when configured, otherwise fall back to local search.
-// Set ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, and ALGOLIA_INDEX_NAME env vars
-// to activate Algolia. Apply at https://docsearch.algolia.com/apply/
-const useAlgolia = Boolean(
-  process.env.ALGOLIA_APP_ID && process.env.ALGOLIA_SEARCH_API_KEY
-);
+// Requiring all three values prevents a typo or missing GitHub setting from
+// silently changing the production search implementation.
+const algoliaConfig = {
+  appId: process.env.ALGOLIA_APP_ID,
+  apiKey: process.env.ALGOLIA_SEARCH_API_KEY,
+  indexName: process.env.ALGOLIA_INDEX_NAME,
+};
+const algoliaConfigValues = Object.values(algoliaConfig);
+const useAlgolia = algoliaConfigValues.every(Boolean);
+
+if (algoliaConfigValues.some(Boolean) && !useAlgolia) {
+  throw new Error(
+    'Algolia search configuration is incomplete. Set ALGOLIA_APP_ID, ALGOLIA_SEARCH_API_KEY, and ALGOLIA_INDEX_NAME together.'
+  );
+}
 const siteBaseUrl = '/';
 const withBaseUrl = (assetPath: string) =>
   `${siteBaseUrl}${assetPath.replace(/^\/+/, '')}`;
@@ -270,9 +280,9 @@ const config: Config = {
     },
     ...(useAlgolia && {
       algolia: {
-        appId: process.env.ALGOLIA_APP_ID!,
-        apiKey: process.env.ALGOLIA_SEARCH_API_KEY!,
-        indexName: process.env.ALGOLIA_INDEX_NAME || 'reactonrails',
+        appId: algoliaConfig.appId!,
+        apiKey: algoliaConfig.apiKey!,
+        indexName: algoliaConfig.indexName!,
         contextualSearch: true,
       },
     }),

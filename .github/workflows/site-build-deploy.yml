@@ -68,12 +68,15 @@ jobs:
       - name: Install site dependencies
         run: npm --prefix prototypes/docusaurus install
 
+      - name: Test Algolia configuration
+        run: npm run test:algolia-config
+
       - name: Build site
         run: npm run build
         env:
-          ALGOLIA_APP_ID: ${{ vars.ALGOLIA_APP_ID }}
-          ALGOLIA_SEARCH_API_KEY: ${{ vars.ALGOLIA_SEARCH_API_KEY }}
-          ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_SEARCH_API_KEY: ${{ secrets.ALGOLIA_SEARCH_API_KEY }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_APP_ID != '' && secrets.ALGOLIA_SEARCH_API_KEY != '' && vars.ALGOLIA_INDEX_NAME || '' }}
 
       - name: Upload built site
         uses: actions/upload-artifact@v4

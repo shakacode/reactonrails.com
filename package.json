@@ -16,6 +16,7 @@
     "test:docs-layout": "node --test scripts/docs-layout.test.mjs",
     "test:site-icons": "node --test scripts/site-icons.test.mjs",
     "test:prepare-prompts": "node --test scripts/prepare-prompts.test.mjs",
+    "test:algolia-config": "node --test scripts/algolia-config.test.mjs",
     "install:site": "npm --prefix prototypes/docusaurus install",
     "dev": "npm --prefix prototypes/docusaurus run start",
     "build": "npm run prepare:prompts:check && npm --prefix prototypes/docusaurus run build",
