@@ -65,12 +65,11 @@ test("prepare docs injects trust-based commercial licensing notice", async () =>
 
     const updated = await fs.readFile(proIntroPath, "utf8");
     assert.match(updated, /slug: \/pro/);
-    assert.match(updated, /ShakaCode Trust-Based Commercial Licensing/);
-    assert.match(updated, /Free to learn, evaluate, demo/);
-    assert.match(updated, /private business value in production/);
-    assert.match(updated, /React on Rails Pro EULA/);
-    assert.match(updated, /development, test, CI\/CD, and staging/);
+    assert.match(updated, /The React on Rails Pro License/);
+    assert.match(updated, /development, test, CI, and staging/);
+    assert.match(updated, /\$1,800 per year covers the whole organization/);
     assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
+    assert.match(updated, /\[pricing\]\(\/pricing\)/);
     assert.doesNotMatch(updated, /Friendly license model/);
     assert.doesNotMatch(updated, /Friendly evaluation policy/);
     assert.doesNotMatch(updated, /Honest License/);
@@ -97,25 +96,27 @@ Existing Pro overview.
     await injectProTrustBasedLicensingNotice(docsRoot);
 
     const updated = await fs.readFile(proIntroPath, "utf8");
-    assert.match(updated, /ShakaCode Trust-Based Commercial Licensing/);
-    assert.match(updated, /private business value in production/);
+    assert.match(updated, /The React on Rails Pro License/);
+    assert.match(updated, /\$1,800 per year covers the whole organization/);
     assert.doesNotMatch(updated, /Friendly license model/);
     assert.doesNotMatch(updated, /Teams should contact us before production/);
   });
 });
 
-test("prepare docs normalizes existing Pro trust-based licensing section", async () => {
+test("prepare docs preserves existing Pro trust-based licensing section", async () => {
   await withTempDir(async (docsRoot) => {
     const proIntroPath = path.join(docsRoot, "pro", "react-on-rails-pro.md");
     await fs.mkdir(path.dirname(proIntroPath), { recursive: true });
+    const licensingSection = `## ShakaCode Trust-Based Commercial Licensing
+
+Trust-based means ShakaCode keeps evaluation low-friction instead of forcing runtime lockouts in non-production environments.
+It relies on professional teams to purchase a license before production deployment.
+`;
     await fs.writeFile(
       proIntroPath,
       `# React on Rails Pro
 
-## ShakaCode Trust-Based Commercial Licensing
-
-Trust-based means ShakaCode keeps evaluation low-friction instead of forcing runtime lockouts in non-production environments.
-It relies on professional teams to purchase a license before production deployment.
+${licensingSection}
 
 ## Explore the Dummy App
 `,
@@ -125,11 +126,8 @@ It relies on professional teams to purchase a license before production deployme
     await injectProTrustBasedLicensingNotice(docsRoot);
 
     const updated = await fs.readFile(proIntroPath, "utf8");
-    assert.match(updated, /ShakaCode Trust-Based Commercial Licensing/);
-    assert.match(updated, /private business value in production/);
-    assert.match(updated, /React on Rails Pro EULA/);
+    assert(updated.includes(licensingSection));
     assert.match(updated, /## Explore the Dummy App/);
-    assert.doesNotMatch(updated, /professional teams to purchase/);
   });
 });
 
@@ -147,11 +145,10 @@ test("docs homepage uses trust-based commercial licensing copy", () => {
   const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
 
   assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
-  assert.match(updated, /Free to learn, evaluate, demo/);
-  assert.match(updated, /private business value in production/);
-  assert.match(updated, /React on Rails Pro EULA/);
-  assert.match(updated, /development, test, CI\/CD, and staging/);
+  assert.match(updated, /development, test, CI, and staging/);
+  assert.match(updated, /\$1,800 per year per organization/);
   assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
+  assert.match(updated, /\[pricing\]\(\/pricing\)/);
   assert.doesNotMatch(updated, /Friendly License Model/);
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
   assert.doesNotMatch(updated, /Honest License/);
@@ -167,8 +164,7 @@ test("docs homepage inserts trust-based commercial licensing copy when no legacy
 
   assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
   assert.match(updated, /## Need more help\?/);
-  assert.match(updated, /private business value in production/);
-  assert.match(updated, /React on Rails Pro EULA/);
+  assert.match(updated, /\$1,800 per year per organization/);
   assert(updated.indexOf("## ShakaCode Trust-Based Commercial Licensing") < updated.indexOf("## Need more help?"));
 });
 
@@ -184,10 +180,27 @@ You can try React on Rails Pro without a license while evaluating.
   const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
 
   assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
-  assert.match(updated, /private business value in production/);
-  assert.match(updated, /React on Rails Pro EULA/);
+  assert.match(updated, /\$1,800 per year per organization/);
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
   assert.doesNotMatch(updated, /without a license while evaluating/);
+});
+
+test("docs homepage preserves existing trust-based commercial licensing copy", () => {
+  const licensingSection = `## ShakaCode Trust-Based Commercial Licensing
+
+Canonical upstream licensing copy stays unchanged.
+`;
+  const sourceMarkdown = `# React on Rails
+
+${licensingSection}
+
+## Need more help?
+`;
+
+  const updated = docsHomeMarkdown(sourceMarkdown, { hasArchive: false });
+
+  assert(updated.includes(licensingSection));
+  assert.doesNotMatch(updated, /\$1,800 per year per organization/);
 });
 
 test("docs homepage renders a package table with linked names and live version badges", () => {

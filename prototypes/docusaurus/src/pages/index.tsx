@@ -26,7 +26,7 @@ const valueCards = [
   {
     title: 'OSS and Pro',
     description:
-      'Start with open source docs, then add Pro when SSR throughput, RSC support, or guided support matters.',
+      'Start with the MIT gem. Add Pro for RSC, streaming SSR, and the Node renderer: free for small organizations, $1,800 per year per organization otherwise.',
   },
   {
     title: 'Modern data fetching',
@@ -249,6 +249,9 @@ function ProSection() {
           <div className={styles.featureActions}>
             <Link className="button button--primary button--lg" to={docsRoutes.ossVsPro}>
               Compare OSS and Pro
+            </Link>
+            <Link className="button button--secondary button--lg" to="/pricing">
+              Pricing
             </Link>
             <Link className="button button--secondary button--lg" to={docsRoutes.proUpgrade}>
               Open upgrade guide
