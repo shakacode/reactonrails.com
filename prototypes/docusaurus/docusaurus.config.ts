@@ -180,7 +180,7 @@ const config: Config = {
         },
         {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/prompts', label: 'Prompts', position: 'left'},
-        {to: '/pro', label: 'React on Rails Pro', position: 'left'},
+        {to: '/pro', label: 'Pro', position: 'left'},
         {to: '/pricing', label: 'Pricing', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
