@@ -77,11 +77,14 @@ const upgradeSteps = [
   },
   {
     step: '3',
-    title: 'Align licensing before production',
+    title: 'Check the free line before production',
     description:
-      'Confirm production rendering and performance on the paths that matter, then add a paid license before private business value ships.',
+      'Small organizations, charities, schools, and hospitals run Pro in production for free. Larger organizations subscribe at pro.reactonrails.com; one subscription covers every app and developer.',
   },
 ];
+
+const proLicenseUrl =
+  'https://github.com/shakacode/react_on_rails/blob/main/REACT-ON-RAILS-PRO-LICENSE.md';
 
 export default function ProPage(): ReactNode {
   return (
@@ -99,11 +102,15 @@ export default function ProPage(): ReactNode {
             </p>
             <code className={styles.install}>bundle add react_on_rails_pro</code>
             <div className={styles.licenseHighlight}>
-              <strong>Free to learn. Paid for private business value.</strong>
+              <strong>
+                Free for small organizations and free uses. $1,800 per year per organization
+                otherwise.
+              </strong>
               <span>
-                No token is required for development, test, CI/CD, and staging, plus demos, education, or
-                qualifying open-source projects. Production use that creates private business value
-                requires a paid React on Rails Pro license.
+                No license key is needed in development, test, CI, staging, or review apps. Production
+                is free for organizations under 10 people, $1M revenue, and $1M raised, and for
+                charities, schools, and hospitals at any size; larger organizations subscribe. Nothing
+                phones home and a missing key never blocks your app.
               </span>
             </div>
             <div className={styles.actions}>
@@ -120,8 +127,9 @@ export default function ProPage(): ReactNode {
         <section className="container">
           <h2>What Pro adds</h2>
           <p className={styles.note}>
-            Every feature below ships in the public Pro gem. Trust-based commercial licensing covers
-            production use and support — not access to evaluate the package.
+            Every feature below ships in the public Pro gem. The license covers production use by
+            larger organizations; evaluating, developing, and running Pro at a small organization is
+            free.
           </p>
           <div className={styles.cardGrid}>
             {proFeatures.map((feature) => (
@@ -181,19 +189,17 @@ export default function ProPage(): ReactNode {
 
             <article className={styles.policyCard}>
               <p className={styles.cardEyebrow}>Trust-Based Commercial Licensing</p>
-              <h2>Free to learn. Paid when it creates private business value.</h2>
+              <h2>Free for most teams. One flat subscription for the rest.</h2>
               <p>
-                React on Rails Pro uses ShakaCode Trust-Based Commercial Licensing: free for
-                learning, demos, tutorials, education, and qualifying OSS; paid for production use
-                that creates private business value. Visit{' '}
-                <a href="https://pro.reactonrails.com/">Pro pricing and sign up</a> for current
-                options.
+                React on Rails Pro uses The React on Rails Pro License, an application of ShakaCode
+                Trust-Based Commercial Licensing: free in development, test, CI, and staging for
+                everyone, free in production for small organizations and for charities, schools, and
+                hospitals, and $1,800 per year per organization for everyone else. No license key is
+                required to run it.
               </p>
               <p>
-                The umbrella philosophy is separate from the legal terms: production use remains
-                governed by the React on Rails Pro EULA. Budget-constrained? Email{' '}
-                <a href="mailto:justin@shakacode.com">justin@shakacode.com</a> about free or
-                low-cost licenses in qualifying cases.
+                See <Link to="/pricing">pricing</Link> for the three questions that define a small
+                organization, and the <a href={proLicenseUrl}>full license text</a> on GitHub.
               </p>
             </article>
           </div>
