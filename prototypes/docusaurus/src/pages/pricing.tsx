@@ -74,7 +74,7 @@ const pricingCards = [
         destination: 'https://pro.reactonrails.com/',
         primary: false,
       },
-      {label: 'What Pro adds', destination: '/pro', primary: false},
+      {label: 'What Pro adds', destination: '/pro', primary: false, secondary: true},
     ],
   },
   {
@@ -217,6 +217,8 @@ export default function PricingPage(): ReactNode {
                       className={
                         action.primary
                           ? 'button button--primary'
+                          : 'secondary' in action
+                            ? 'button button--secondary'
                           : styles.secondaryAction
                       }
                       key={action.label}
