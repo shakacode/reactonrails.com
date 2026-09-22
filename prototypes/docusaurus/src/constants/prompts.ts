@@ -26,7 +26,7 @@ export const prompts: Prompt[] = [
   {
     "id": "create-app",
     "title": "Start a new app",
-    "prompt": "Set up a new Rails app using the default React on Rails Pro path (no token required for development, test, CI/CD, or staging; production requires a paid license) with TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app exactly; don't improvise commands or versions. Use --standard only when you intentionally want an open-source-only scaffold.",
+    "prompt": "Set up a new Rails app using the default React on Rails Pro path (no license key required; production is free for small organizations, charities, schools, and hospitals, and a subscription for larger organizations) with TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app exactly; don't improvise commands or versions. Use --standard only when you intentionally want an open-source-only scaffold.",
     "href": "/docs/getting-started/create-react-on-rails-app",
     "category": "get-started"
   },
@@ -95,8 +95,8 @@ export const prompts: Prompt[] = [
   },
   {
     "id": "upgrade-to-pro",
-    "title": "Get a production license / upgrade to Pro",
-    "prompt": "Walk me through upgrading my React on Rails app to Pro and getting a production license. Follow https://reactonrails.com/docs/pro/upgrading-to-pro.",
+    "title": "Upgrade to Pro and check the license",
+    "prompt": "Walk me through upgrading my React on Rails app to Pro and checking whether my organization needs a subscription under The React on Rails Pro License. Follow https://reactonrails.com/docs/pro/upgrading-to-pro.",
     "href": "/docs/pro/upgrading-to-pro",
     "category": "production"
   }
