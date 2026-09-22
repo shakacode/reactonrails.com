@@ -74,6 +74,7 @@ const pricingCards = [
         destination: 'https://pro.reactonrails.com/',
         primary: false,
       },
+      {label: 'What Pro adds', destination: '/pro', primary: false},
     ],
   },
   {

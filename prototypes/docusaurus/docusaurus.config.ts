@@ -180,7 +180,6 @@ const config: Config = {
         },
         {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/prompts', label: 'Prompts', position: 'left'},
-        {to: '/pro', label: 'Pro', position: 'left'},
         {to: '/pricing', label: 'Free & Pro', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
