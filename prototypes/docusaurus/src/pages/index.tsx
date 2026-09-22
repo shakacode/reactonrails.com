@@ -12,6 +12,17 @@ import DemoCard from '../components/DemoCard';
 import PromptCard from '../components/PromptCard';
 import styles from './index.module.css';
 
+const freeLineCopy = {
+  eyebrow: 'Free for most teams',
+  title: 'Free before production for everyone. Free in production for small teams.',
+  description:
+    'React on Rails is MIT. React on Rails Pro needs no license key in development, test, CI, staging or review apps, and runs free in production for organizations under 10 people, $1M revenue and $1M raised, and for charities, schools and hospitals at any size. Everyone else subscribes to ShakaStack Pro: $1,800 per year per organization for React on Rails Pro, ShakaPerf and Slack support from the maintainers.',
+  actions: [
+    {label: 'Free & Pro', destination: '/pricing', primary: true},
+    {label: 'Start building with Pro', destination: docsRoutes.proInstall, primary: false},
+  ],
+};
+
 const valueCards = [
   {
     title: 'Rails-first React',
@@ -26,7 +37,7 @@ const valueCards = [
   {
     title: 'OSS and Pro',
     description:
-      'Start with the MIT gem. Add Pro for RSC, streaming SSR, and the Node renderer: free for small organizations, $1,800 per year per organization otherwise.',
+      'Start with the MIT gem. Add Pro for RSC, streaming SSR, and the Node renderer: free for small organizations, ShakaStack Pro at $1,800 per year per organization otherwise.',
   },
   {
     title: 'Modern data fetching',
@@ -180,6 +191,32 @@ function HeroSection() {
   );
 }
 
+function FreeLineSection() {
+  return (
+    <section className={styles.sectionFeature}>
+      <div className="container">
+        <p className={styles.sectionEyebrow}>{freeLineCopy.eyebrow}</p>
+        <h2>{freeLineCopy.title}</h2>
+        <p>{freeLineCopy.description}</p>
+        <div className={styles.featureActions}>
+          {freeLineCopy.actions.map((action) => (
+            <Link
+              className={
+                action.primary
+                  ? 'button button--primary button--lg'
+                  : 'button button--secondary button--lg'
+              }
+              key={action.label}
+              to={action.destination}>
+              {action.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function QuickStartSection() {
   return (
     <section className={styles.section}>
@@ -251,7 +288,7 @@ function ProSection() {
               Compare OSS and Pro
             </Link>
             <Link className="button button--secondary button--lg" to="/pricing">
-              Pricing
+              Free & Pro
             </Link>
             <Link className="button button--secondary button--lg" to={docsRoutes.proUpgrade}>
               Open upgrade guide
@@ -382,6 +419,7 @@ export default function Home(): ReactNode {
     <Layout description="Official React on Rails documentation, examples, and React on Rails Pro details.">
       <HeroSection />
       <main>
+        <FreeLineSection />
         <QuickStartSection />
         <LiveDemosSection />
         <ProSection />

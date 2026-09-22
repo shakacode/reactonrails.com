@@ -9,11 +9,12 @@ const LICENSE_URL =
   'https://github.com/shakacode/react_on_rails/blob/main/REACT-ON-RAILS-PRO-LICENSE.md';
 
 const pageCopy = {
-  title: 'Pricing',
+  layoutTitle: 'Free & Pro',
+  title: 'Free for most teams. ShakaStack Pro for the rest.',
   description:
-    'React on Rails is MIT. React on Rails Pro is free for small organizations and free uses; larger organizations subscribe for production use.',
+    'React on Rails is MIT. React on Rails Pro is free for small organizations and free uses; larger organizations subscribe to ShakaStack Pro.',
   hero:
-    'React on Rails is open source under the MIT License. React on Rails Pro is trust-based: most uses are free under The React on Rails Pro License, and production use by larger organizations is one flat subscription per organization.',
+    'React on Rails is open source under the MIT License. React on Rails Pro is free in development, test, CI, staging and review apps for everyone, and free in production for small organizations, charities, schools and hospitals. Larger organizations subscribe to ShakaStack Pro: one flat price per organization that includes React on Rails Pro, ShakaPerf, and Slack support from the maintainers.',
 };
 
 const pricingCards = [
@@ -73,28 +74,28 @@ const pricingCards = [
         destination: 'https://pro.reactonrails.com/',
         primary: false,
       },
+      {label: 'What Pro adds', destination: '/pro', primary: false, secondary: true},
     ],
   },
   {
-    tag: 'Subscription',
+    tag: 'ShakaStack Pro',
     title: 'Larger organizations',
     price: '$1,800 per year per organization',
     bullets: [
       {
         id: 'production',
-        content: 'Production use beyond the small-organization line',
+        content: 'React on Rails Pro in production above the free line',
       },
-      {
-        id: 'coverage',
-        content: 'Every application, environment, and developer in your organization',
-      },
-      {id: 'key', content: 'A license key that marks your pages Licensed'},
-      {id: 'support', content: 'Updates and support from the maintainers'},
       {
         id: 'shakaperf',
-        content:
-          'ShakaPerf production use for your organization is included (under 250 people and under $10M revenue)',
+        content: 'ShakaPerf for your organization (under 250 people and under $10M revenue)',
       },
+      {
+        id: 'support',
+        content: 'Slack support from the maintainers, plus Zoom and GitHub code review',
+      },
+      {id: 'coverage', content: 'Every application, environment, and developer'},
+      {id: 'key', content: 'A license key that marks your pages Licensed'},
     ],
     actions: [
       {
@@ -155,7 +156,7 @@ const comparison = {
       values: [
         'Free',
         'Free',
-        'Free for small organizations, charities, schools, and hospitals; $1,800 per year per organization otherwise',
+        'Free for small organizations, charities, schools, and hospitals; ShakaStack Pro at $1,800 per year per organization otherwise (React on Rails Pro, ShakaPerf, Slack support)',
       ],
     },
     {label: 'React Server Components', values: ['No', 'No', 'Yes']},
@@ -189,7 +190,7 @@ const finePrint = (
 
 export default function PricingPage(): ReactNode {
   return (
-    <Layout title={pageCopy.title} description={pageCopy.description}>
+    <Layout title={pageCopy.layoutTitle} description={pageCopy.description}>
       <main className={styles.main}>
         <section className={styles.hero}>
           <div className="container">
@@ -216,6 +217,8 @@ export default function PricingPage(): ReactNode {
                       className={
                         action.primary
                           ? 'button button--primary'
+                          : 'secondary' in action
+                            ? 'button button--secondary'
                           : styles.secondaryAction
                       }
                       key={action.label}

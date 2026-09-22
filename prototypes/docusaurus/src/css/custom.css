@@ -108,6 +108,34 @@ body {
   font-weight: 500;
 }
 
+@media (min-width: 997px) and (max-width: 1200px) {
+  .navbar {
+    --ifm-navbar-item-padding-horizontal: 0.5rem;
+  }
+
+  .navbar__brand {
+    flex-shrink: 0;
+  }
+
+  .navbar__item {
+    white-space: nowrap;
+  }
+
+  .navbar__search-input {
+    width: 6rem;
+  }
+}
+
+@media (min-width: 997px) and (max-width: 1023px) {
+  .navbar__search-input {
+    width: 5rem;
+  }
+
+  .navbar__search kbd {
+    display: none;
+  }
+}
+
 /* ── Footer ───────────────────────────────────────────────── */
 
 .footer {
