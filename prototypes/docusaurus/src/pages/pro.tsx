@@ -103,14 +103,15 @@ export default function ProPage(): ReactNode {
             <code className={styles.install}>bundle add react_on_rails_pro</code>
             <div className={styles.licenseHighlight}>
               <strong>
-                Free for small organizations and free uses. $1,800 per year per organization
-                otherwise.
+                Free for small organizations and free uses. ShakaStack Pro, $1,800 per year per
+                organization, otherwise.
               </strong>
               <span>
                 No license key is needed in development, test, CI, staging, or review apps. Production
                 is free for organizations under 10 people, $1M revenue, and $1M raised, and for
                 charities, schools, and hospitals at any size; larger organizations subscribe. Nothing
-                phones home and a missing key never blocks your app.
+                phones home and a missing key never blocks your app. ShakaStack Pro includes React on
+                Rails Pro, ShakaPerf and Slack support from the maintainers.
               </span>
             </div>
             <div className={styles.actions}>
@@ -198,7 +199,7 @@ export default function ProPage(): ReactNode {
                 required to run it.
               </p>
               <p>
-                See <Link to="/pricing">pricing</Link> for the three questions that define a small
+                See <Link to="/pricing">Free & Pro</Link> for the three questions that define a small
                 organization, and the <a href={proLicenseUrl}>full license text</a> on GitHub.
               </p>
             </article>
