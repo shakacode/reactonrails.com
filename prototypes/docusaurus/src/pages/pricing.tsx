@@ -100,7 +100,7 @@ const pricingCards = [
     actions: [
       {
         label: 'Subscribe at pro.reactonrails.com',
-        destination: 'https://pro.reactonrails.com/',
+        destination: 'https://pro.reactonrails.com/#shakastack-pro',
         primary: true,
       },
     ],
