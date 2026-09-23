@@ -65,6 +65,35 @@ Production site workspace for [reactonrails.com](https://reactonrails.com), buil
 - moves selected legacy docs to `docs/archive/legacy/`
 - leaves stub pages at original routes pointing to archived content and modern replacements
 
+## Versioned Documentation
+
+The canonical `/docs/` route publishes the current stable React on Rails 17
+documentation. The `/docs/16/` route publishes the archived React on Rails 16
+documentation, including the OSS and Pro guides captured from the final stable
+v16 release, `v16.6.0` (`1595fb8d823ffbc06d2f05ac7364b56f4c6c5aca`).
+
+The version selector and the archived-version banner are configured in
+`prototypes/docusaurus/docusaurus.config.ts`. Algolia uses Docusaurus
+contextual search so results stay within the selected documentation version.
+Local search remains the fallback when the Algolia environment is absent.
+
+For the next major release, archive the outgoing stable docs before changing
+the configured stable label:
+
+1. Check out the final stable release tag in a temporary `react_on_rails`
+   checkout.
+2. Run `REACT_ON_RAILS_REPO=/absolute/path/to/checkout npm run sync:docs`.
+3. Run `npm run prepare:docs`.
+4. Run `npm --prefix prototypes/docusaurus run docusaurus docs:version MAJOR`.
+5. Restore the current docs with `npm run prepare`, then update the `versions`
+   configuration, source-tag mapping, redirects, and this policy.
+6. Run `npm run test:algolia-config` and `npm run build`. Verify the stable and
+   archived routes, version selector, banner, and version-scoped search in the
+   preview deployment.
+
+Keep one archived major. Do not publish a separate prerelease or `next` version
+unless a release owner intentionally adds it to the Docusaurus configuration.
+
 ## Cloudflare Pages
 
 - Project: `reactonrails-com`
