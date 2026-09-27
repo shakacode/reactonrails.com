@@ -28,3 +28,6 @@ pnpm-debug.log*
 .Codex/napkin.md
 .claude/napkin.md
 .gstack/
+
+# Generated inventory reports (npm run audit:inventory)
+DOCS_INVENTORY_*
