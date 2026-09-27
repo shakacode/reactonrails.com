@@ -124,6 +124,10 @@ body {
   .navbar__search-input {
     width: 6rem;
   }
+
+  .navbar .DocSearch-Button-Keys {
+    display: none;
+  }
 }
 
 @media (min-width: 997px) and (max-width: 1023px) {
