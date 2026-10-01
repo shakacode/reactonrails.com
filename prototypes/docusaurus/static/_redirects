@@ -24,6 +24,11 @@
 /react-on-rails-pro/docs/* /docs/:splat 301
 /react-on-rails-pro/docs /docs 301
 
+# v17 is the stable canonical docs version. Preserve explicit v17 links while
+# keeping /docs/ as the canonical URL.
+/docs/17/* /docs/:splat 301
+/docs/17 /docs 301
+
 # Canonical route cleanup from react_on_rails (see shakacode/react_on_rails#3067)
 /docs/core-concepts/auto-bundling-file-system-based-automated-bundle-generation /docs/core-concepts/auto-bundling/ 301
 /docs/core-concepts/auto-bundling-file-system-based-automated-bundle-generation/ /docs/core-concepts/auto-bundling/ 301
