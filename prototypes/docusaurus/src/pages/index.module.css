@@ -247,7 +247,7 @@
   transform: scale(1.05);
 }
 
-[data-theme="dark"] .invertDark img {
+[data-theme='dark'] .invertDark img {
   filter: invert(1);
 }
 
@@ -255,7 +255,7 @@
   filter: brightness(0.4) contrast(1.3) saturate(1.3);
 }
 
-[data-theme="dark"] .darkenLight img {
+[data-theme='dark'] .darkenLight img {
   filter: none;
 }
 

@@ -1,86 +1,81 @@
-import type { ReactNode } from "react";
-import clsx from "clsx";
-import Link from "@docusaurus/Link";
-import useBaseUrl, { useBaseUrlUtils } from "@docusaurus/useBaseUrl";
-import Layout from "@theme/Layout";
-import ThemedImage from "@theme/ThemedImage";
+import type {ReactNode} from 'react';
+import clsx from 'clsx';
+import Link from '@docusaurus/Link';
+import useBaseUrl, {useBaseUrlUtils} from '@docusaurus/useBaseUrl';
+import Layout from '@theme/Layout';
+import ThemedImage from '@theme/ThemedImage';
 
-import { docsRoutes } from "../constants/docsRoutes";
-import { featuredDemos } from "../constants/demos";
-import { agentNote, homePrompts } from "../constants/prompts";
-import DemoCard from "../components/DemoCard";
-import PromptCard from "../components/PromptCard";
-import styles from "./index.module.css";
+import {docsRoutes} from '../constants/docsRoutes';
+import {featuredDemos} from '../constants/demos';
+import {agentNote, homePrompts} from '../constants/prompts';
+import DemoCard from '../components/DemoCard';
+import PromptCard from '../components/PromptCard';
+import styles from './index.module.css';
 
 const freeLineCopy = {
-  eyebrow: "Free for most teams",
-  title:
-    "Free before production for everyone. Free in production for small teams.",
+  eyebrow: 'Free for most teams',
+  title: 'Free before production for everyone. Free in production for small teams.',
   description:
-    "React on Rails is MIT. React on Rails Pro needs no license key in development, test, CI, staging or review apps, and runs free in production for organizations under 10 people, $1M revenue and $1M raised, and for charities, schools and hospitals at any size. Everyone else subscribes to ShakaStack Pro: $1,800 per year per organization for React on Rails Pro, ShakaPerf and Slack support from the maintainers.",
+    'React on Rails is MIT. React on Rails Pro needs no license key in development, test, CI, staging or review apps, and runs free in production for organizations under 10 people, $1M revenue and $1M raised, and for charities, schools and hospitals at any size. Everyone else subscribes to ShakaStack Pro: $1,800 per year per organization for React on Rails Pro, ShakaPerf and Slack support from the maintainers.',
   actions: [
-    { label: "Free & Pro", destination: "/pricing", primary: true },
-    {
-      label: "Start building with Pro",
-      destination: docsRoutes.proInstall,
-      primary: false,
-    },
+    {label: 'Free & Pro', destination: '/pricing', primary: true},
+    {label: 'Start building with Pro', destination: docsRoutes.proInstall, primary: false},
   ],
 };
 
 const valueCards = [
   {
-    title: "Rails-first React",
+    title: 'Rails-first React',
     description:
-      "Render React components from Rails views and controllers without splitting your product into separate apps.",
+      'Render React components from Rails views and controllers without splitting your product into separate apps.',
   },
   {
-    title: "Production SSR",
+    title: 'Production SSR',
     description:
-      "Use server rendering, hydration, and streaming paths that fit mature Rails deployments.",
+      'Use server rendering, hydration, and streaming paths that fit mature Rails deployments.',
   },
   {
-    title: "OSS and Pro",
+    title: 'OSS and Pro',
     description:
-      "Start with the MIT gem. Add Pro for RSC, streaming SSR, and the Node renderer: free for small organizations, ShakaStack Pro at $1,800 per year per organization otherwise.",
+      'Start with the MIT gem. Add Pro for RSC, streaming SSR, and the Node renderer: free for small organizations, ShakaStack Pro at $1,800 per year per organization otherwise.',
   },
   {
-    title: "Modern data fetching",
+    title: 'Modern data fetching',
     description:
-      "Pair Rails JSON APIs with TanStack Query for client-side caching, mutations, and first-paint data, without adding a second backend.",
+      'Pair Rails JSON APIs with TanStack Query for client-side caching, mutations, and first-paint data, without adding a second backend.',
   },
 ];
 
 const migrationGuides = [
   {
-    title: "Migrate from Inertia Rails",
+    title: 'Migrate from Inertia Rails',
     description:
-      "Move from Inertia page props and SPA navigation to React on Rails view helpers route by route.",
+      'Move from Inertia page props and SPA navigation to React on Rails view helpers route by route.',
     href: docsRoutes.migrateFromInertiaRails,
   },
   {
-    title: "Migrate from vite_rails",
+    title: 'Migrate from vite_rails',
     description:
-      "Switch from vite_rails when you want Rails view helpers, SSR, or React on Rails Pro features.",
+      'Switch from vite_rails when you want Rails view helpers, SSR, or React on Rails Pro features.',
     href: docsRoutes.migrateFromViteRails,
   },
   {
-    title: "Migrate from Next.js",
+    title: 'Migrate from Next.js',
     description:
-      "Collapse a separate Next.js frontend into Rails while keeping a modern React migration path.",
+      'Collapse a separate Next.js frontend into Rails while keeping a modern React migration path.',
     href: docsRoutes.migrateFromNextjs,
   },
   {
-    title: "Migrate from react-rails",
+    title: 'Migrate from react-rails',
     description:
-      "Step-by-step checklist for swapping `react-rails` to React on Rails, with a sample app.",
+      'Step-by-step checklist for swapping `react-rails` to React on Rails, with a sample app.',
     href: docsRoutes.migrateFromReactRails,
   },
   {
-    title: "Browse sample apps",
+    title: 'Browse sample apps',
     description:
-      "Working repositories showing SSR, migration, and integration patterns.",
-    href: "/examples",
+      'Working repositories showing SSR, migration, and integration patterns.',
+    href: '/examples',
   },
 ];
 
@@ -88,122 +83,35 @@ const testimonials = [
   {
     quote:
       "React on Rails lets us run React at scale inside Rails without the complexity of a separate frontend deployment. ShakaCode's implementation optimized the framework for our specific workload, delivering 97% Good LCP scores and 80% faster hydration across our platform.",
-    author: "Justis Blasco",
-    role: "Popmenu",
+    author: 'Justis Blasco',
+    role: 'Popmenu',
   },
 ];
 
 const trustedByCompanies = [
-  {
-    name: "Academia.edu",
-    logo: "/img/logos/academia_logo.svg",
-    href: "https://www.academia.edu",
-    invertDark: true,
-  },
-  {
-    name: "ACTIVE Network",
-    logo: "/img/logos/active_network_logo.png",
-    href: "https://www.activenetwork.com",
-  },
-  {
-    name: "AirRobe",
-    logo: "/img/logos/airrobe_logo.svg",
-    href: "https://www.airrobe.com",
-    invertDark: true,
-  },
-  {
-    name: "Airtasker",
-    logo: "/img/logos/airtasker_logo.svg",
-    href: "https://www.airtasker.com",
-  },
-  {
-    name: "Attuned Education Partners",
-    logo: "/img/logos/attuned_logo.png",
-    href: "https://attunedpartners.com",
-    invertDark: true,
-  },
-  {
-    name: "City Falcon",
-    logo: "/img/logos/city_falcon_logo.svg",
-    href: "https://www.cityfalcon.com",
-    invertDark: true,
-  },
-  {
-    name: "ClientCircle",
-    logo: "/img/logos/clientcircle_logo.svg",
-    href: "https://clientcircle.com",
-  },
-  {
-    name: "Curbside Provisions",
-    logo: "/img/logos/curbside_logo.png",
-    href: "https://curbsideprovisions.com",
-  },
-  {
-    name: "Direct Dental",
-    logo: "/img/logos/direct_dental_logo.png",
-    href: "https://directdental.com",
-  },
-  {
-    name: "Ejbla",
-    logo: "/img/logos/ejbla_logo.png",
-    href: "https://ejbla.com",
-    invertDark: true,
-  },
-  {
-    name: "Estately",
-    logo: "/img/logos/estately_logo.png",
-    href: "https://www.estately.com",
-    invertDark: true,
-  },
-  {
-    name: "Heal.me",
-    logo: "/img/logos/healme_logo.png",
-    href: "https://heal.me",
-  },
-  {
-    name: "Jewlr",
-    logo: "/img/logos/jewlr_logo.svg",
-    href: "https://www.jewlr.com",
-    invertDark: true,
-  },
-  {
-    name: "Popmenu",
-    logo: "/img/logos/popmenu_logo.png",
-    href: "https://popmenu.com",
-  },
-  {
-    name: "Printivity",
-    logo: "/img/logos/printivity_logo.png",
-    href: "https://www.printivity.com",
-  },
-  {
-    name: "Sample Focus",
-    logo: "/img/logos/sample_focus_logo.png",
-    href: "https://samplefocus.com",
-    darkenLight: true,
-  },
-  {
-    name: "Simply Business",
-    logo: "/img/logos/simply_business_logo.svg",
-    href: "https://www.simplybusiness.co.uk",
-    invertDark: true,
-  },
-  {
-    name: "The Information",
-    logo: "/img/logos/the_information_logo.svg",
-    darkLogo: "/img/logos/the_information_logo_dark.svg",
-    href: "https://www.theinformation.com",
-  },
-  {
-    name: "User Interviews",
-    logo: "/img/logos/user_interviews_logo.svg",
-    darkLogo: "/img/logos/user_interviews_logo_dark.svg",
-    href: "https://www.userinterviews.com",
-  },
+  {name: 'Academia.edu', logo: '/img/logos/academia_logo.svg', href: 'https://www.academia.edu', invertDark: true},
+  {name: 'ACTIVE Network', logo: '/img/logos/active_network_logo.png', href: 'https://www.activenetwork.com'},
+  {name: 'AirRobe', logo: '/img/logos/airrobe_logo.svg', href: 'https://www.airrobe.com', invertDark: true},
+  {name: 'Airtasker', logo: '/img/logos/airtasker_logo.svg', href: 'https://www.airtasker.com'},
+  {name: 'Attuned Education Partners', logo: '/img/logos/attuned_logo.png', href: 'https://attunedpartners.com', invertDark: true},
+  {name: 'City Falcon', logo: '/img/logos/city_falcon_logo.svg', href: 'https://www.cityfalcon.com', invertDark: true},
+  {name: 'ClientCircle', logo: '/img/logos/clientcircle_logo.svg', href: 'https://clientcircle.com'},
+  {name: 'Curbside Provisions', logo: '/img/logos/curbside_logo.png', href: 'https://curbsideprovisions.com'},
+  {name: 'Direct Dental', logo: '/img/logos/direct_dental_logo.png', href: 'https://directdental.com'},
+  {name: 'Ejbla', logo: '/img/logos/ejbla_logo.png', href: 'https://ejbla.com', invertDark: true},
+  {name: 'Estately', logo: '/img/logos/estately_logo.png', href: 'https://www.estately.com', invertDark: true},
+  {name: 'Heal.me', logo: '/img/logos/healme_logo.png', href: 'https://heal.me'},
+  {name: 'Jewlr', logo: '/img/logos/jewlr_logo.svg', href: 'https://www.jewlr.com', invertDark: true},
+  {name: 'Popmenu', logo: '/img/logos/popmenu_logo.png', href: 'https://popmenu.com'},
+  {name: 'Printivity', logo: '/img/logos/printivity_logo.png', href: 'https://www.printivity.com'},
+  {name: 'Sample Focus', logo: '/img/logos/sample_focus_logo.png', href: 'https://samplefocus.com', darkenLight: true},
+  {name: 'Simply Business', logo: '/img/logos/simply_business_logo.svg', href: 'https://www.simplybusiness.co.uk', invertDark: true},
+  {name: 'The Information', logo: '/img/logos/the_information_logo.svg', darkLogo: '/img/logos/the_information_logo_dark.svg', href: 'https://www.theinformation.com'},
+  {name: 'User Interviews', logo: '/img/logos/user_interviews_logo.svg', darkLogo: '/img/logos/user_interviews_logo_dark.svg', href: 'https://www.userinterviews.com'},
 ];
 
 function TrustedBySection() {
-  const { withBaseUrl } = useBaseUrlUtils();
+  const {withBaseUrl} = useBaseUrlUtils();
   return (
     <section className={styles.trustedBy}>
       <div className="container">
@@ -220,8 +128,7 @@ function TrustedBySection() {
                 company.invertDark && styles.invertDark,
                 company.darkenLight && styles.darkenLight,
               )}
-              title={company.name}
-            >
+              title={company.name}>
               {company.darkLogo ? (
                 <ThemedImage
                   sources={{
@@ -246,11 +153,11 @@ function TrustedBySection() {
 }
 
 function HeroSection() {
-  const heroLogoSrc = useBaseUrl("/img/icon-tile.svg");
+  const heroLogoSrc = useBaseUrl('/img/icon-tile.svg');
 
   return (
     <header className={styles.heroBanner}>
-      <div className={clsx("container", styles.heroLayout)}>
+      <div className={clsx('container', styles.heroLayout)}>
         <div className={styles.heroContent}>
           <p className={styles.heroEyebrow}>React + Rails Integration</p>
           <div className={styles.heroIdentity}>
@@ -264,21 +171,14 @@ function HeroSection() {
             <h1 className={styles.heroName}>React on Rails</h1>
           </div>
           <p className={styles.subtitle}>
-            Official docs for installing, configuring, deploying, and upgrading
-            React on Rails in production Rails apps, with SSR, RSC, and React on
-            Rails Pro paths.
+            Official docs for installing, configuring, deploying, and upgrading React on Rails in
+            production Rails apps, with SSR, RSC, and React on Rails Pro paths.
           </p>
           <div className={styles.buttons}>
-            <Link
-              className="button button--primary button--lg"
-              to={docsRoutes.docsGuide}
-            >
+            <Link className="button button--primary button--lg" to={docsRoutes.docsGuide}>
               Browse docs
             </Link>
-            <Link
-              className="button button--secondary button--lg"
-              to="/examples"
-            >
+            <Link className="button button--secondary button--lg" to="/examples">
               Examples
             </Link>
             <Link className="button button--secondary button--lg" to="/pro">
@@ -354,12 +254,11 @@ function FreeLineSection() {
             <Link
               className={
                 action.primary
-                  ? "button button--primary button--lg"
-                  : "button button--secondary button--lg"
+                  ? 'button button--primary button--lg'
+                  : 'button button--secondary button--lg'
               }
               key={action.label}
-              to={action.destination}
-            >
+              to={action.destination}>
               {action.label}
             </Link>
           ))}
@@ -416,11 +315,11 @@ function LiveDemosSection() {
 }
 
 function ProSection() {
-  const proLogoSrc = useBaseUrl("/img/icon-tile.svg");
+  const proLogoSrc = useBaseUrl('/img/icon-tile.svg');
 
   return (
     <section className={styles.sectionFeature}>
-      <div className={clsx("container", styles.featureLayout)}>
+      <div className={clsx('container', styles.featureLayout)}>
         <img
           className={styles.featureLogo}
           src={proLogoSrc}
@@ -432,24 +331,17 @@ function ProSection() {
           <p className={styles.sectionEyebrow}>React on Rails Pro</p>
           <h2>Higher-throughput SSR and RSC support, same Rails workflow.</h2>
           <p>
-            Pro is an upgrade tier for teams that need more rendering
-            throughput, React Server Components, streaming, and guided support
-            without replacing their Rails app.
+            Pro is an upgrade tier for teams that need more rendering throughput, React Server
+            Components, streaming, and guided support without replacing their Rails app.
           </p>
           <div className={styles.featureActions}>
-            <Link
-              className="button button--primary button--lg"
-              to={docsRoutes.ossVsPro}
-            >
+            <Link className="button button--primary button--lg" to={docsRoutes.ossVsPro}>
               Compare OSS and Pro
             </Link>
             <Link className="button button--secondary button--lg" to="/pricing">
               Free & Pro
             </Link>
-            <Link
-              className="button button--secondary button--lg"
-              to={docsRoutes.proUpgrade}
-            >
+            <Link className="button button--secondary button--lg" to={docsRoutes.proUpgrade}>
               Open upgrade guide
             </Link>
           </div>
@@ -505,7 +397,7 @@ function MigrationSection() {
 }
 
 function ConsultationSection() {
-  const shakaLogoSrc = useBaseUrl("/img/shakacode-icon.png");
+  const shakaLogoSrc = useBaseUrl('/img/shakacode-icon.png');
 
   return (
     <section className={styles.section}>
@@ -526,22 +418,20 @@ function ConsultationSection() {
               </div>
             </div>
             <p>
-              ShakaCode maintains React on Rails and helps teams ship with SSR,
-              RSC, and Rails integration. Book a free 30-minute call for
-              architecture, performance, or migration advice.
+              ShakaCode maintains React on Rails and helps teams ship with SSR, RSC, and Rails
+              integration. Book a free 30-minute call for architecture, performance, or migration
+              advice.
             </p>
           </div>
           <div className={styles.consultationActions}>
             <Link
               className="button button--primary button--lg"
-              href="https://meetings.hubspot.com/justingordon/30-minute-consultation"
-            >
+              href="https://meetings.hubspot.com/justingordon/30-minute-consultation">
               Book a free call
             </Link>
             <Link
               className="button button--secondary button--lg"
-              href="https://www.shakacode.com"
-            >
+              href="https://www.shakacode.com">
               Learn about ShakaCode
             </Link>
           </div>
