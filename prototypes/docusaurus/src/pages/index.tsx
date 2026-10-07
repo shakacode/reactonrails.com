@@ -191,6 +191,57 @@ function HeroSection() {
   );
 }
 
+function GumroadArticlesSection() {
+  return (
+    <section
+      className={styles.researchSection}
+      aria-labelledby="gumroad-research-title"
+    >
+      <div className="container">
+        <p className={styles.sectionEyebrow}>
+          Featured research · Gumroad + React Server Components
+        </p>
+        <h2 id="gumroad-research-title">
+          What changes when Gumroad renders with RSC?
+        </h2>
+        <p>
+          Two essential reads on Rails + React performance: the experiment and
+          the evidence behind it.
+        </p>
+        <div className={styles.researchGrid}>
+          <article className={styles.valueCard}>
+            <h3>The Gumroad RSC experiment</h3>
+            <p>
+              See the live product pages, PageSpeed reports, and recorded
+              interactions comparing React Server Components with
+              client-rendered Inertia.
+            </p>
+            <Link
+              className={styles.cardLink}
+              href="https://shakacode.com/blog/gumroad-inertia-react-server-components/"
+            >
+              Read the main article →
+            </Link>
+          </article>
+          <article className={styles.valueCard}>
+            <h3>The technical reference</h3>
+            <p>
+              Inspect the repeated measurements, rendering choices, and
+              trade-offs behind the experiment.
+            </p>
+            <Link
+              className={styles.cardLink}
+              href="https://shakacode.com/blog/gumroad-rsc-performance-reference/"
+            >
+              Read the technical reference →
+            </Link>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FreeLineSection() {
   return (
     <section className={styles.sectionFeature}>
@@ -419,6 +470,7 @@ export default function Home(): ReactNode {
     <Layout description="Official React on Rails documentation, examples, and React on Rails Pro details.">
       <HeroSection />
       <main>
+        <GumroadArticlesSection />
         <FreeLineSection />
         <QuickStartSection />
         <LiveDemosSection />
