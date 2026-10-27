@@ -126,3 +126,14 @@ react_on_rails/docs  -->  content/upstream/docs  -->  prototypes/docusaurus/docs
 Portable shared skills resolve this repo's commands and policy through:
 - **Commands** — run `.agents/bin/<name>` (`setup`, `validate`, `test`, ...); see `.agents/bin/README.md`. A missing script means that capability is n/a here.
 - **Policy / config** — `.agents/agent-workflow.yml`.
+
+## Shaka delivery policy
+
+- Shaka configuration uses contract version 1 in `.agents/agent-workflow.yml`.
+- Merge preference is Ask: bring the verified PR back for an explicit merge decision.
+- Before merge, the full `gh pr checks` list must be green, all review threads
+  resolved, and the PR cleanly mergeable. AI findings block only when verified
+  as correctness bugs, broken builds, regressions, or clear inconsistencies.
+- Keep the existing cap of at most one AI reviewer leaving inline comments.
+- No hosted AI review job is configured. Shaka's local independent review still
+  applies to meaningful changes.
