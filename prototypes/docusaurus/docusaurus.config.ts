@@ -24,6 +24,9 @@ const siteBaseUrl = '/';
 const withBaseUrl = (assetPath: string) =>
   `${siteBaseUrl}${assetPath.replace(/^\/+/, '')}`;
 
+const docsSourceRef = (version: string) =>
+  version === '16' ? 'v16.6.0' : 'main';
+
 const localSearchTheme: NonNullable<Config['themes']>[number] = [
   '@easyops-cn/docusaurus-search-local',
   {
@@ -126,9 +129,25 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
+          // Keep stable docs at the canonical /docs/ route. Archived majors
+          // use explicit version paths; prerelease docs are added only when a
+          // release owner intentionally configures another version.
+          lastVersion: 'current',
+          versions: {
+            current: {
+              label: '17.x (stable)',
+              path: '',
+              banner: 'none',
+            },
+            '16': {
+              label: '16.x',
+              path: '16',
+              banner: 'unmaintained',
+            },
+          },
           exclude: [...GlobExcludeDefault, '**/planning/**'],
-          editUrl: ({docPath}) => {
-            const root = 'https://github.com/shakacode/react_on_rails/tree/main/docs/';
+          editUrl: ({docPath, version}) => {
+            const root = `https://github.com/shakacode/react_on_rails/tree/${docsSourceRef(version)}/docs/`;
             if (docPath === 'README.md') {
               return `${root}README.md`;
             }
@@ -177,6 +196,10 @@ const config: Config = {
           sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Docs',
+        },
+        {
+          type: 'docsVersionDropdown',
+          position: 'left',
         },
         {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/prompts', label: 'Prompts', position: 'left'},

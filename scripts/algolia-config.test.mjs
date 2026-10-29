@@ -20,6 +20,13 @@ const workflow = fs.readFileSync(
   ".github/workflows/site-build-deploy.yml",
   "utf8"
 );
+const archivedVersions = JSON.parse(
+  fs.readFileSync("prototypes/docusaurus/versions.json", "utf8")
+);
+const redirects = fs.readFileSync(
+  "prototypes/docusaurus/static/_redirects",
+  "utf8"
+);
 
 async function withAlgoliaEnv(env, callback) {
   const previousEnv = Object.fromEntries(
@@ -84,4 +91,44 @@ test("CI reads protected credentials without breaking fork builds", () => {
     workflow,
     /ALGOLIA_INDEX_NAME: \$\{\{ secrets\.ALGOLIA_APP_ID != '' && secrets\.ALGOLIA_SEARCH_API_KEY != '' && vars\.ALGOLIA_INDEX_NAME \|\| '' \}\}/
   );
+});
+
+test("documentation versions keep v17 canonical and archive v16", async () => {
+  await withAlgoliaEnv({}, async () => {
+    const { siteConfig } = await loadSiteConfig({ siteDir });
+    const [, classicOptions] = siteConfig.presets[0];
+    const docs = classicOptions.docs;
+
+    assert.equal(docs.lastVersion, "current");
+    assert.deepEqual(docs.versions, {
+      current: {
+        label: "17.x (stable)",
+        path: "",
+        banner: "none",
+      },
+      16: {
+        label: "16.x",
+        path: "16",
+        banner: "unmaintained",
+      },
+    });
+    assert.ok(
+      siteConfig.themeConfig.navbar.items.some(
+        (item) => item.type === "docsVersionDropdown"
+      )
+    );
+  });
+
+  assert.deepEqual(archivedVersions, ["16"]);
+  assert.ok(
+    fs.existsSync("prototypes/docusaurus/versioned_docs/version-16/README.md")
+  );
+  assert.ok(
+    fs.existsSync(
+      "prototypes/docusaurus/versioned_docs/version-16/pro/react-on-rails-pro.md"
+    )
+  );
+  assert.match(config, /version === '16' \? 'v16\.6\.0' : 'main'/);
+  assert.match(redirects, /^\/docs\/17\/\* \/docs\/:splat 301$/m);
+  assert.match(redirects, /^\/docs\/17 \/docs 301$/m);
 });
