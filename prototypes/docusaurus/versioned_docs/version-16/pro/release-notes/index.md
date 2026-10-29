@@ -17,4 +17,4 @@ This archive provides one stable sidebar entry for Pro release notes without lis
 
 ## Full Version History
 
-- [CHANGELOG.md](https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md)
+- [CHANGELOG.md](https://github.com/shakacode/react_on_rails/blob/v16.6.0/CHANGELOG.md)

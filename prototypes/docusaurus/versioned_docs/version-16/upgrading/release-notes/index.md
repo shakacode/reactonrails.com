@@ -18,4 +18,4 @@ This archive keeps the major React on Rails OSS release notes easy to browse wit
 
 ## Full Version History
 
-- [CHANGELOG.md](https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md)
+- [CHANGELOG.md](https://github.com/shakacode/react_on_rails/blob/v16.6.0/CHANGELOG.md)

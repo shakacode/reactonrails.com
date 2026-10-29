@@ -5,7 +5,7 @@ Archived legacy content. Use current docs for active guidance.
 :::
 
 
-> **Looking for a comparison of React on Rails with alternatives like Inertia.js, Hotwire, and react-rails?** See [Comparison with Alternatives](/docs/getting-started/comparison-with-alternatives).
+> **Looking for a comparison of React on Rails with alternatives like Inertia.js, Hotwire, and react-rails?** See [Comparison with Alternatives](/docs/16/getting-started/comparison-with-alternatives).
 
 You only _need_ props hydration if you need SSR. However, there's no good reason to
 have your app make a second round trip to the Rails server to get initialization props.

@@ -372,7 +372,7 @@ To migrate to React on Rails Pro:
 - **[Pro]** **Pino logging**: Replaced Winston, aligning with Fastify. [PR 479](https://github.com/shakacode/react_on_rails_pro/pull/479) by [alexeyr-ci](https://github.com/alexeyr-ci).
 - **[Pro]** **HTTP/2 Cleartext communication** with Node Renderer. [PR 392](https://github.com/shakacode/react_on_rails_pro/pull/392) by [alexeyr-ci](https://github.com/alexeyr-ci).
 - **[Pro]** **HTTPX for Node renderer**: Converted from `Net::HTTP` to HTTPX. [PR 452](https://github.com/shakacode/react_on_rails_pro/pull/452) by [alexeyr-ci](https://github.com/alexeyr-ci). Upgraded to ~> 1.5. [PR 520](https://github.com/shakacode/react_on_rails_pro/pull/520) by [AbanoubGhadban](https://github.com/AbanoubGhadban).
-- **[Pro]** **Error reporting/tracing overhaul**: See [the docs](/docs/building-features/node-renderer/error-reporting-and-tracing). [PR 471](https://github.com/shakacode/react_on_rails_pro/pull/471) by [alexeyr-ci](https://github.com/alexeyr-ci).
+- **[Pro]** **Error reporting/tracing overhaul**: See [the docs](/docs/16/building-features/node-renderer/error-reporting-and-tracing). [PR 471](https://github.com/shakacode/react_on_rails_pro/pull/471) by [alexeyr-ci](https://github.com/alexeyr-ci).
 - **[Pro]** Added `fastifyServerOptions` config and set `bodyLimit` to 100 MB by default. [PR 511](https://github.com/shakacode/react_on_rails_pro/pull/511) by [Romex91](https://github.com/Romex91).
 - **[Pro]** Renamed `includeTimerPolyfills` to `stubTimers`. Fail immediately on obsolete config options. [PR 506](https://github.com/shakacode/react_on_rails_pro/pull/506) by [alexeyr-ci](https://github.com/alexeyr-ci).
 - **[Pro]** Shakapacker 8.0.0 support (drops 6.x). [PR 415](https://github.com/shakacode/react_on_rails_pro/pull/415) by [rameziophobia](https://github.com/rameziophobia).
@@ -528,7 +528,7 @@ To migrate to React on Rails Pro:
 
 **React on Rails v16 is a major release that modernizes the library with ESM support, removes legacy Webpacker compatibility, and introduces significant performance improvements. This release builds on the foundation of v14 with enhanced RSC (React Server Components) support and streamlined configuration.**
 
-See [Release Notes](/docs/upgrading/release-notes/16.0.0) for complete migration guide.
+See [Release Notes](/docs/16/upgrading/release-notes/16.0.0) for complete migration guide.
 
 #### Major Enhancements
 
@@ -1831,8 +1831,8 @@ All 5.1.0 changes can be found in [#362](https://github.com/shakacode/react_on_r
 
 ##### Added
 
-- [react_on_rails/spec/dummy](https://github.com/shakacode/react_on_rails/tree/main/spec/dummy) is a full sample app of React on Rails techniques **including** the hot reloading of assets from Rails!
-- Added helpers `env_stylesheet_link_tag` and `env_javascript_include_tag` to support hot reloading Rails. See the [README.md](https://github.com/shakacode/react_on_rails/blob/main/README.md) for more details and see the example application in `spec/dummy`. Also see how this is used in the [tutorial: application.html.erb](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/app%2Fviews%2Flayouts%2Fapplication.html.erb#L6)
+- [react_on_rails/spec/dummy](https://github.com/shakacode/react_on_rails/tree/v16.6.0/react_on_rails/spec/dummy) is a full sample app of React on Rails techniques **including** the hot reloading of assets from Rails!
+- Added helpers `env_stylesheet_link_tag` and `env_javascript_include_tag` to support hot reloading Rails. See the [README.md](https://github.com/shakacode/react_on_rails/blob/v16.6.0/README.md) for more details and see the example application in `spec/dummy`. Also see how this is used in the [tutorial: application.html.erb](https://github.com/shakacode/react-webpack-rails-tutorial/blob/master/app%2Fviews%2Flayouts%2Fapplication.html.erb#L6)
 - Added optional parameter for ReactOnRails.getStore(name, throwIfMissing = true) so that you can check if a store is defined easily.
 - Added controller `module ReactOnRails::Controller`. Adds method `redux_store` to set up Redux stores in the view.
 - Added option `defer: true` for view helper `redux_store`. This allows the view helper to specify the props for store hydration, yet still render the props at the bottom of the view.

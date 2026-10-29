@@ -50,7 +50,7 @@ See [Upgrading to Pro](./upgrading-to-pro.md#try-pro-risk-free) for the current 
 
 The fastest way to understand how the Pro feature set fits together is to inspect the example app in this repo:
 
-- [react_on_rails_pro/spec/dummy](https://github.com/shakacode/react_on_rails/blob/main/react_on_rails_pro/spec/dummy/README.md)
+- [react_on_rails_pro/spec/dummy](https://github.com/shakacode/react_on_rails/blob/v16.6.0/react_on_rails_pro/spec/dummy/README.md)
 
 It demonstrates the Node renderer, caching, and SSR-oriented workflows in a real Rails app.
 

@@ -13,7 +13,7 @@ To use Server Components in your React on Rails Pro project, you need to follow 
 ```bash
 # Pick one JS package manager command (Pro includes all base package functionality).
 # Replace VERSION with the latest from the CHANGELOG:
-# https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md
+# https://github.com/shakacode/react_on_rails/blob/v16.6.0/CHANGELOG.md
 yarn add --exact react-on-rails-pro@VERSION
 # npm install --save-exact react-on-rails-pro@VERSION
 # pnpm add --save-exact react-on-rails-pro@VERSION

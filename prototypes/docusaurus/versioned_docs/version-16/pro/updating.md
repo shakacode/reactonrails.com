@@ -91,7 +91,7 @@ const { reactOnRailsProNodeRenderer } = require('@shakacode-tools/react-on-rails
 
 ### Migration Steps
 
-> **Version note:** Replace `VERSION` below with the latest version from [the CHANGELOG](https://github.com/shakacode/react_on_rails/blob/main/CHANGELOG.md). After updating to 16.5.0+, run `bundle exec rake react_on_rails:sync_versions` to verify gem and npm versions are aligned.
+> **Version note:** Replace `VERSION` below with the latest version from [the CHANGELOG](https://github.com/shakacode/react_on_rails/blob/v16.6.0/CHANGELOG.md). After updating to 16.5.0+, run `bundle exec rake react_on_rails:sync_versions` to verify gem and npm versions are aligned.
 
 #### Step 1: Update Gemfile
 
@@ -211,7 +211,7 @@ export REACT_ON_RAILS_PRO_LICENSE="your-license-token-here"
 
 **Where to get your license token:** Contact [justin@shakacode.com](mailto:justin@shakacode.com) if you don't have your license token.
 
-For complete licensing details, see [LICENSE_SETUP.md](https://github.com/shakacode/react_on_rails/blob/main/react_on_rails_pro/LICENSE_SETUP.md).
+For complete licensing details, see [LICENSE_SETUP.md](https://github.com/shakacode/react_on_rails/blob/v16.6.0/react_on_rails_pro/LICENSE_SETUP.md).
 
 ### Understanding the Pro npm packages
 
