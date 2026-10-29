@@ -56,9 +56,9 @@ bin/rails generate react_on_rails:install
 
 ```bash
 # Make sure the npm package is installed
-pnpm add react-on-rails
-# or: npm install react-on-rails --save
-# or: yarn add react-on-rails
+pnpm add react-on-rails@16.6.0
+# or: npm install react-on-rails@16.6.0 --save
+# or: yarn add react-on-rails@16.6.0
 
 # If using local development with yalc
 cd react_on_rails/

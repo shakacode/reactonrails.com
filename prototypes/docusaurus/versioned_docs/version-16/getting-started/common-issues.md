@@ -151,9 +151,9 @@ cat config/shakapacker.yml
 1. **npm package not installed:**
 
    ```bash
-   yarn add react-on-rails
-   # or: npm install react-on-rails
-   # or: pnpm add react-on-rails
+   yarn add react-on-rails@16.6.0
+   # or: npm install react-on-rails@16.6.0
+   # or: pnpm add react-on-rails@16.6.0
    ```
 
 2. **Incorrect import path:**
@@ -174,9 +174,9 @@ The gem and npm package must both be installed:
 
 ```bash
 # Install npm package
-yarn add react-on-rails
-# or: npm install react-on-rails
-# or: pnpm add react-on-rails
+yarn add react-on-rails@16.6.0
+# or: npm install react-on-rails@16.6.0
+# or: pnpm add react-on-rails@16.6.0
 ```
 
 ---
