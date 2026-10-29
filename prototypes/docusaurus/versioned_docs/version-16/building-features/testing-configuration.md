@@ -611,5 +611,5 @@ When running tests in Docker, consider:
 ## Need Help?
 
 - **Forum:** [ShakaCode Forum](https://forum.shakacode.com/)
-- **Docs:** [React on Rails Guides](https://reactonrails.com/docs/)
+- **Docs:** [React on Rails Guides](/docs/16/)
 - **Support:** [justin@shakacode.com](mailto:justin@shakacode.com)
