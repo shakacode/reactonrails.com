@@ -380,3 +380,21 @@
     justify-content: center;
   }
 }
+
+.researchSection {
+  padding: 2.7rem 0;
+  background: var(--site-soft-surface);
+  border-top: 4px solid var(--ifm-color-primary);
+  border-bottom: 1px solid var(--site-border);
+}
+.researchGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+@media (max-width: 700px) {
+  .researchGrid {
+    grid-template-columns: 1fr;
+  }
+}

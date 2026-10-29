@@ -12,6 +12,17 @@ import DemoCard from '../components/DemoCard';
 import PromptCard from '../components/PromptCard';
 import styles from './index.module.css';
 
+const freeLineCopy = {
+  eyebrow: 'Free for most teams',
+  title: 'Free before production for everyone. Free in production for small teams.',
+  description:
+    'React on Rails is MIT. React on Rails Pro needs no license key in development, test, CI, staging or review apps, and runs free in production for organizations under 10 people, $1M revenue and $1M raised, and for charities, schools and hospitals at any size. Everyone else subscribes to ShakaStack Pro: $1,800 per year per organization for React on Rails Pro, ShakaPerf and Slack support from the maintainers.',
+  actions: [
+    {label: 'Free & Pro', destination: '/pricing', primary: true},
+    {label: 'Start building with Pro', destination: docsRoutes.proInstall, primary: false},
+  ],
+};
+
 const valueCards = [
   {
     title: 'Rails-first React',
@@ -26,7 +37,7 @@ const valueCards = [
   {
     title: 'OSS and Pro',
     description:
-      'Start with open source docs, then add Pro when SSR throughput, RSC support, or guided support matters.',
+      'Start with the MIT gem. Add Pro for RSC, streaming SSR, and the Node renderer: free for small organizations, ShakaStack Pro at $1,800 per year per organization otherwise.',
   },
   {
     title: 'Modern data fetching',
@@ -180,6 +191,83 @@ function HeroSection() {
   );
 }
 
+function GumroadArticlesSection() {
+  return (
+    <section
+      className={styles.researchSection}
+      aria-labelledby="gumroad-research-title"
+    >
+      <div className="container">
+        <p className={styles.sectionEyebrow}>
+          Featured research · Gumroad + React Server Components
+        </p>
+        <h2 id="gumroad-research-title">
+          What changes when Gumroad renders with RSC?
+        </h2>
+        <p>
+          Two essential reads on Rails + React performance: the experiment and
+          the evidence behind it.
+        </p>
+        <div className={styles.researchGrid}>
+          <article className={styles.valueCard}>
+            <h3>The Gumroad RSC experiment</h3>
+            <p>
+              See the live product pages, PageSpeed reports, and recorded
+              interactions comparing React Server Components with
+              client-rendered Inertia.
+            </p>
+            <Link
+              className={styles.cardLink}
+              href="https://shakacode.com/blog/gumroad-inertia-react-server-components/"
+            >
+              Read the main article →
+            </Link>
+          </article>
+          <article className={styles.valueCard}>
+            <h3>The technical reference</h3>
+            <p>
+              Inspect the repeated measurements, rendering choices, and
+              trade-offs behind the experiment.
+            </p>
+            <Link
+              className={styles.cardLink}
+              href="https://shakacode.com/blog/gumroad-rsc-performance-reference/"
+            >
+              Read the technical reference →
+            </Link>
+          </article>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FreeLineSection() {
+  return (
+    <section className={styles.sectionFeature}>
+      <div className="container">
+        <p className={styles.sectionEyebrow}>{freeLineCopy.eyebrow}</p>
+        <h2>{freeLineCopy.title}</h2>
+        <p>{freeLineCopy.description}</p>
+        <div className={styles.featureActions}>
+          {freeLineCopy.actions.map((action) => (
+            <Link
+              className={
+                action.primary
+                  ? 'button button--primary button--lg'
+                  : 'button button--secondary button--lg'
+              }
+              key={action.label}
+              to={action.destination}>
+              {action.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function QuickStartSection() {
   return (
     <section className={styles.section}>
@@ -249,6 +337,9 @@ function ProSection() {
           <div className={styles.featureActions}>
             <Link className="button button--primary button--lg" to={docsRoutes.ossVsPro}>
               Compare OSS and Pro
+            </Link>
+            <Link className="button button--secondary button--lg" to="/pricing">
+              Free & Pro
             </Link>
             <Link className="button button--secondary button--lg" to={docsRoutes.proUpgrade}>
               Open upgrade guide
@@ -379,6 +470,8 @@ export default function Home(): ReactNode {
     <Layout description="Official React on Rails documentation, examples, and React on Rails Pro details.">
       <HeroSection />
       <main>
+        <GumroadArticlesSection />
+        <FreeLineSection />
         <QuickStartSection />
         <LiveDemosSection />
         <ProSection />

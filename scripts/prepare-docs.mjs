@@ -520,36 +520,18 @@ export async function injectProTrustBasedLicensingNotice(docsRoot) {
     }
   }
 
-  const notice = `> **ShakaCode Trust-Based Commercial Licensing**\n> Free to learn, evaluate, demo, and use for qualifying open-source projects. Paid when React on Rails Pro creates private business value in production. No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation. Product-specific legal terms still apply: production use is governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/).\n\n`;
-  const licensingSection = `## ShakaCode Trust-Based Commercial Licensing
-
-Free to learn, evaluate, demo, and use for qualifying open-source projects. Paid when React on Rails Pro creates private business value in production. No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation.
-
-Product-specific legal terms still apply: production use is governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, email [justin@shakacode.com](mailto:justin@shakacode.com) about free or low-cost licenses in qualifying cases.
-`;
-  const licensingSectionPattern =
-    /(^|\n)## ShakaCode Trust-Based Commercial Licensing\n\n[\s\S]*?(?=\n## |\n*$)/;
+  const notice = `> **The React on Rails Pro License**\n> Free in development, test, CI, and staging for everyone, and in production for small organizations (under 10 people, under $1M revenue, under $1M raised) and for charities, schools, and hospitals at any size. Larger organizations subscribe at [pro.reactonrails.com](https://pro.reactonrails.com/): $1,800 per year covers the whole organization. No license key is needed to run Pro. See [pricing](/pricing).\n\n`;
   const legacyNoticePattern = /^> \*\*Friendly license model\*\*\n(?:>.*(?:\n|$))+\n?/gim;
-  let hasTrustBasedNotice = /ShakaCode Trust-Based Commercial Licensing/i.test(updated);
+  const hasLicensingSection = /^## ShakaCode Trust-Based Commercial Licensing\s*$/im.test(
+    updated
+  );
+  const hasTrustBasedNotice =
+    /^> \*\*ShakaCode Trust-Based Commercial Licensing\*\*/im.test(updated) ||
+    /^> \*\*The React on Rails Pro License\*\*/im.test(updated);
 
-  if (licensingSectionPattern.test(updated)) {
-    updated = updated.replace(
-      licensingSectionPattern,
-      (_matchedSection, leadingNewline) => `${leadingNewline}${licensingSection}\n`
-    );
-    hasTrustBasedNotice = true;
-  }
+  updated = updated.replace(legacyNoticePattern, "");
 
-  updated = updated.replace(legacyNoticePattern, () => {
-    if (hasTrustBasedNotice) {
-      return "";
-    }
-
-    hasTrustBasedNotice = true;
-    return notice;
-  });
-
-  if (!hasTrustBasedNotice) {
+  if (!hasLicensingSection && !hasTrustBasedNotice) {
     updated = updated.replace(/^# React on Rails Pro\s*\n+/m, `# React on Rails Pro\n\n${notice}`);
   }
 
@@ -799,13 +781,13 @@ export function docsHomeMarkdown(sourceMarkdown, { hasArchive }) {
   const archiveBlock = hasArchive ? "- [Historical Reference](./archive/README.md)\n" : "";
   const licensingSection = `## ShakaCode Trust-Based Commercial Licensing
 
-- Free to learn, evaluate, demo, and use for qualifying open-source projects.
-- Paid when React on Rails Pro creates private business value in production.
-- No token is required for development, test, CI/CD, and staging; Pro logs license status instead of blocking evaluation.
-- Production use remains governed by the React on Rails Pro EULA. See [Pro pricing and sign up](https://pro.reactonrails.com/) for current options. If your organization is budget-constrained, [contact us](mailto:justin@shakacode.com) about free or low-cost licenses.
+- Free in development, test, CI, and staging for everyone, no license key needed.
+- Free in production for small organizations (under 10 people, under $1M revenue, under $1M raised) and for charities, schools, and hospitals at any size.
+- Larger organizations subscribe at [pro.reactonrails.com](https://pro.reactonrails.com/): $1,800 per year per organization, unlimited apps and developers. See [pricing](/pricing).
+- No license key is required to run Pro; a missing key only changes one HTML comment. Full terms: [The React on Rails Pro License](https://github.com/shakacode/react_on_rails/blob/main/REACT-ON-RAILS-PRO-LICENSE.md).
 `;
   const legacyLicensingSectionPattern =
-    /## (?:Friendly evaluation policy|Friendly License Model|ShakaCode Trust-Based Commercial Licensing)[^\n]*\n+[\s\S]*?(?=\n## |$)/;
+    /## (?:Friendly evaluation policy|Friendly License Model)[^\n]*\n+[\s\S]*?(?=\n## |$)/;
 
   let updated = sourceMarkdown
     .trim()

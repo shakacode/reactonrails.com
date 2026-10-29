@@ -203,7 +203,7 @@ const config: Config = {
         },
         {to: '/examples', label: 'Examples', position: 'left'},
         {to: '/prompts', label: 'Prompts', position: 'left'},
-        {to: '/pro', label: 'React on Rails Pro', position: 'left'},
+        {to: '/pricing', label: 'Free & Pro', position: 'left'},
         {
           href: 'https://www.shakacode.com/contact/',
           label: 'Get expert help',
@@ -276,7 +276,11 @@ const config: Config = {
               to: '/pro',
             },
             {
-              label: 'Pro pricing & sign up',
+              label: 'Free & Pro',
+              to: '/pricing',
+            },
+            {
+              label: 'Subscribe (pro.reactonrails.com)',
               href: 'https://pro.reactonrails.com/',
             },
             {

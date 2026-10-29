@@ -13,7 +13,7 @@ ID: create-app
 Category: get-started
 Doc: https://reactonrails.com/docs/getting-started/create-react-on-rails-app
 
-Set up a new Rails app using the default React on Rails Pro path (no token required for development, test, CI/CD, or staging; production requires a paid license) with TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app exactly; don't improvise commands or versions. Use --standard only when you intentionally want an open-source-only scaffold.
+Set up a new Rails app using the default React on Rails Pro path (no license key required; production is free for small organizations, charities, schools, and hospitals, and a subscription for larger organizations) with TypeScript and server-side rendering. Follow the official guide at https://reactonrails.com/docs/getting-started/create-react-on-rails-app exactly; don't improvise commands or versions. Use --standard only when you intentionally want an open-source-only scaffold.
 
 ### Add to an existing Rails app
 
@@ -95,10 +95,10 @@ Doc: https://reactonrails.com/docs/pro/fragment-caching
 
 Add fragment caching to my server-rendered React on Rails components. Follow https://reactonrails.com/docs/pro/fragment-caching exactly.
 
-### Get a production license / upgrade to Pro
+### Upgrade to Pro and check the license
 
 ID: upgrade-to-pro
 Category: production
 Doc: https://reactonrails.com/docs/pro/upgrading-to-pro
 
-Walk me through upgrading my React on Rails app to Pro and getting a production license. Follow https://reactonrails.com/docs/pro/upgrading-to-pro.
+Walk me through upgrading my React on Rails app to Pro and checking whether my organization needs a subscription under The React on Rails Pro License. Follow https://reactonrails.com/docs/pro/upgrading-to-pro.
