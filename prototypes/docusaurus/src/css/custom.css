@@ -128,6 +128,10 @@ body {
   .navbar .DocSearch-Button-Keys {
     display: none;
   }
+
+  .navbar__items--right > a.navbar__link:not(.navbar-cta) {
+    display: none;
+  }
 }
 
 @media (min-width: 997px) and (max-width: 1023px) {
