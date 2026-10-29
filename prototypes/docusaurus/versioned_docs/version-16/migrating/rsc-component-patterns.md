@@ -29,9 +29,7 @@ ServerPage.jsx (Server Component)
 
 Start from the top of each component tree and work downward:
 
-<p align="center">
-  <img src="/docs/migrating/images/top-down-migration.svg" alt="Animated diagram showing the three phases of top-down RSC migration: Phase 1 marks the root as client, Phase 2 pushes the client boundary down to leaf components, and Phase 3 splits mixed components into server and client parts." width="840" />
-</p>
+![Animated diagram showing the three phases of top-down RSC migration: Phase 1 marks the root as client, Phase 2 pushes the client boundary down to leaf components, and Phase 3 splits mixed components into server and client parts.](./images/top-down-migration.svg)
 
 > **React on Rails multi-root note:** Unlike single-page apps with one root component, React on Rails renders multiple independent component trees on a page -- each `stream_react_component` call in your view is a separate root. This is actually an advantage for migration: you can migrate **one registered component at a time**, leaving the rest untouched.
 

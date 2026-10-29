@@ -2,6 +2,10 @@
 
 The fastest way to start a new React on Rails project. One command creates a fully configured Rails + React application with TypeScript, server-side rendering, hot module replacement, and, optionally, React Server Components (RSC).
 
+:::warning Installing v16
+The unversioned `create-react-on-rails-app` command installs the current release. For v16, use the [manual quick start](./quick-start.md), which pins React on Rails to `16.6.0`. The CLI examples below are historical; they do not constrain the installed release to v16.
+:::
+
 ## Quick Start
 
 ```bash
@@ -111,7 +115,7 @@ If any of the first five are missing, you'll get a clear error message with inst
 If you already have a Rails app, use the generator directly instead:
 
 ```bash
-bundle add react_on_rails --strict
+bundle add react_on_rails --version 16.6.0 --strict
 rails generate react_on_rails:install --typescript  # TypeScript (recommended)
 rails generate react_on_rails:install               # JavaScript
 ```

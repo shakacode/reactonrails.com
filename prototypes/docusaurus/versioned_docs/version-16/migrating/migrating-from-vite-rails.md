@@ -42,7 +42,7 @@ For anything beyond a tiny app, prefer a route-by-route cutover instead of a big
 
 ```bash
 bundle add shakapacker --strict
-bundle add react_on_rails --strict
+bundle add react_on_rails --version 16.6.0 --strict
 bundle exec rails generate react_on_rails:install
 ```
 

@@ -137,7 +137,7 @@ This is a minor release - update your gem and npm package versions, then run `bu
 
 1. **Update Dependencies**
 
-   > **Note**: The versions below are examples. Check the [changelog](https://github.com/shakacode/react_on_rails/blob/master/CHANGELOG.md) for the latest stable release and substitute accordingly.
+   > **Note**: The versions below are examples. Check the [changelog](https://github.com/shakacode/react_on_rails/blob/v16.6.0/CHANGELOG.md) for the latest stable release and substitute accordingly.
 
    ```ruby
    # Gemfile

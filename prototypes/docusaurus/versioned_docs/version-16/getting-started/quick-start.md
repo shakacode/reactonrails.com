@@ -28,7 +28,7 @@ Add the React on Rails gem and run its installer:
 
 ```bash
 # Add the gem
-bundle add react_on_rails --strict
+bundle add react_on_rails --version 16.6.0 --strict
 
 # Optional but recommended: commit or stash first so generated files show as a clean diff
 # git add . && git commit -m "Prepare for React on Rails install"

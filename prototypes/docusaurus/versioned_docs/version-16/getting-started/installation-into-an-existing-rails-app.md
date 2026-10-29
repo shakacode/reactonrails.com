@@ -21,24 +21,24 @@ Use this path when you already have a Rails application and want React on Rails 
 
 ```bash
 bundle add shakapacker --strict
-bundle add react_on_rails --strict
+bundle add react_on_rails --version 16.6.0 --strict
 ```
 
 React on Rails attempts to install the matching `react-on-rails` JavaScript package during the generator run. In some existing apps, dependency installation can fail (or required package-manager tooling may be unavailable), and the generator prints manual install commands. Run those commands before starting the app.
 
 ### Optional: pin exact gem and npm versions yourself
 
-If you manage versions manually, keep the Ruby gem and npm package on the same release. Pre-release gems use dots while npm uses hyphens. Replace `VERSION` below with the latest version from [the CHANGELOG](https://github.com/shakacode/react_on_rails/blob/v16.6.0/CHANGELOG.md).
+If you manage versions manually, keep the Ruby gem and npm package on the same release. Pre-release gems use dots while npm uses hyphens. This archive uses `16.6.0`; see [the archived CHANGELOG](https://github.com/shakacode/react_on_rails/blob/v16.6.0/CHANGELOG.md).
 
 ```ruby
-gem "react_on_rails", "VERSION"
+gem "react_on_rails", "16.6.0"
 ```
 
 ```bash
-npm install react-on-rails@VERSION --save-exact
-# or: yarn add react-on-rails@VERSION --exact
-# or: pnpm add react-on-rails@VERSION --save-exact
-# or: bun add react-on-rails@VERSION --exact
+npm install react-on-rails@16.6.0 --save-exact
+# or: yarn add react-on-rails@16.6.0 --exact
+# or: pnpm add react-on-rails@16.6.0 --save-exact
+# or: bun add react-on-rails@16.6.0 --exact
 ```
 
 ## 2. Run the generator

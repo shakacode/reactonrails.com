@@ -79,7 +79,7 @@ exact versions of both the gem and npm packages. In other words, don't use
 the `^` or `~` in the version specifications.
 
 ```bash
-bundle add react_on_rails --strict
+bundle add react_on_rails --version 16.6.0 --strict
 bundle add shakapacker --strict
 ```
 
