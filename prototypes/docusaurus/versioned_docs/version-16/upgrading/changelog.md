@@ -6,7 +6,7 @@ sidebar_label: Changelog
 slug: /upgrading/changelog
 mdx:
   format: md
-custom_edit_url: https://github.com/shakacode/react_on_rails/edit/main/CHANGELOG.md
+custom_edit_url: https://github.com/shakacode/react_on_rails/tree/v16.6.0/CHANGELOG.md
 ---
 
 All notable changes to this project's source code will be documented in this file. Items under `Unreleased` is upcoming features that will be out in the next version.
