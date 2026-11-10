@@ -12,9 +12,9 @@ const pageCopy = {
   layoutTitle: 'Free & Pro',
   title: 'Free for most teams. ShakaStack Pro for the rest.',
   description:
-    'React on Rails is MIT. React on Rails Pro is free for small organizations and free uses; larger organizations subscribe to ShakaStack Pro.',
+    'React on Rails is MIT. ShakaStack Pro covers React on Rails Pro, ShakaPerf, and Inertia Rails SSR Cache for the whole organization, with no limit on headcount or revenue.',
   hero:
-    'React on Rails is open source under the MIT License. React on Rails Pro is free in development, test, CI, staging and review apps for everyone, and free in production for small organizations, charities, schools and hospitals. Larger organizations subscribe to ShakaStack Pro: one flat price per organization that includes React on Rails Pro, ShakaPerf, and Slack support from the maintainers.',
+    'React on Rails is open source under the MIT License. ShakaStack Pro includes React on Rails Pro, ShakaPerf, and Inertia Rails SSR Cache for your whole organization, with Slack support, at $1,800 per year per organization. There is no limit on headcount or revenue.',
 };
 
 const pricingCards = [
@@ -45,20 +45,20 @@ const pricingCards = [
     bullets: [
       {
         id: 'environments',
-        content: 'Development, test, CI, staging, and review apps, for everyone, no license key',
+        content: 'React on Rails Pro in development, test, CI, staging, and review apps, for everyone, no license key',
       },
       {
         id: 'free-work',
-        content: 'Education, personal projects, and open-source work',
+        content: 'Qualifying public open source work',
       },
       {id: 'evaluation', content: 'A 45-day production evaluation per organization'},
       {
         id: 'small-organizations',
         content: (
           <>
-            Full production use for small organizations as defined in{' '}
-            <a href={LICENSE_URL}>the license</a>: under 10 people, under $1M revenue, under $1M
-            raised
+            Full production use when the whole organization, counting affiliates, has fewer than
+            10 people, under $1M revenue in the last twelve months, and under $1M raised, ever.
+            See <a href={LICENSE_URL}>the license</a>.
           </>
         ),
       },
@@ -88,13 +88,18 @@ const pricingCards = [
       },
       {
         id: 'shakaperf',
-        content: 'ShakaPerf for your organization (under 250 people and under $10M revenue)',
+        content: 'ShakaPerf for your whole organization',
       },
+      {id: 'inertia', content: 'Inertia Rails SSR Cache for your whole organization'},
       {
         id: 'support',
         content: 'Slack support from the maintainers, plus Zoom and GitHub code review',
       },
-      {id: 'coverage', content: 'Every application, environment, and developer'},
+      {
+        id: 'coverage',
+        content: 'Your whole organization: every affiliate, application, environment, repository, and developer',
+      },
+      {id: 'no-limit', content: 'No limit on headcount or revenue'},
       {id: 'key', content: 'A license key that marks your pages Licensed'},
     ],
     actions: [
@@ -108,6 +113,21 @@ const pricingCards = [
 ];
 
 const noteParagraphs = [
+  {
+    id: 'development-and-ci',
+    content:
+      'React on Rails Pro and Inertia Rails SSR Cache are free in development, test, CI, and staging for everyone. Above the free line, what needs a subscription is production: anything that serves real users or supports a live application.',
+  },
+  {
+    id: 'shakaperf-rule',
+    content:
+      'ShakaPerf follows its own rule in every environment, because it runs in your development process. Above the free line, ongoing ShakaPerf work, including CI, needs ShakaStack Pro after a 45-day evaluation. Qualifying public open-source work stays free, and publishing a result does not make private work free.',
+  },
+  {
+    id: 'existing-subscribers',
+    content:
+      'Already subscribed to React on Rails Pro? Your subscription counts as ShakaStack Pro. ShakaPerf and Inertia Rails SSR Cache are included for your whole organization, so there is nothing to buy.',
+  },
   {
     id: 'license-line',
     content: (
@@ -137,7 +157,7 @@ const noteParagraphs = [
 const comparison = {
   title: 'Comparing with Inertia Rails?',
   description:
-    'React on Rails and Inertia Rails are both MIT. The only paid part of this stack is React on Rails Pro, and only in production at organizations above the small-organization line. That subscription buys what Inertia Rails does not have today: React Server Components, streaming SSR with selective hydration, fragment caching, and per-component adoption inside existing Rails views. Already on Inertia? Both gems coexist in one app, so you can migrate route by route.',
+    'React on Rails and Inertia Rails are both MIT. ShakaStack Pro covers React on Rails Pro, ShakaPerf, and Inertia Rails SSR Cache for the whole organization. React on Rails Pro adds React Server Components, streaming SSR with selective hydration, fragment caching, and adoption inside existing Rails views. Already on Inertia? Both gems coexist in one app, so you can migrate route by route.',
   links: [
     {label: 'Migrating from Inertia Rails', destination: docsRoutes.migrateFromInertiaRails},
     {
@@ -156,7 +176,7 @@ const comparison = {
       values: [
         'Free',
         'Free',
-        'Free for small organizations, charities, schools, and hospitals; ShakaStack Pro at $1,800 per year per organization otherwise (React on Rails Pro, ShakaPerf, Slack support)',
+        'Free below the free line and for charities, educational institutions, and hospitals; ShakaStack Pro at $1,800 per year per organization otherwise (React on Rails Pro, ShakaPerf, Inertia Rails SSR Cache, Slack support)',
       ],
     },
     {label: 'React Server Components', values: ['No', 'No', 'Yes']},
@@ -184,7 +204,11 @@ const finePrint = (
     No license key is required to run React on Rails Pro; a missing key only changes one HTML
     comment. Sponsorships are appreciated but are not subscriptions and grant no production-use
     rights. Once a version ships under given terms, those terms govern that version permanently.
-    Questions: <a href="mailto:contact@shakacode.com">contact@shakacode.com</a>.
+    See the{' '}
+    <a href="https://github.com/shakacode/commercial-licensing/blob/main/license/notices/2026-11-shakastack-pro-coverage.md">
+      ShakaStack Pro coverage notice
+    </a>
+    . Questions: <a href="mailto:contact@shakacode.com">contact@shakacode.com</a>.
   </>
 );
 
