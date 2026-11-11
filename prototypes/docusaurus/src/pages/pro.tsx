@@ -79,7 +79,7 @@ const upgradeSteps = [
     step: '3',
     title: 'Check the free line before production',
     description:
-      'Small organizations, charities, schools, and hospitals run Pro in production for free. Larger organizations subscribe at pro.reactonrails.com; one subscription covers every app and developer.',
+      'Check the three questions on Free & Pro. Charities, educational institutions, and hospitals use React on Rails Pro in production for free at any size. Above the free line, ShakaStack Pro covers the whole organization.',
   },
 ];
 
@@ -103,15 +103,14 @@ export default function ProPage(): ReactNode {
             <code className={styles.install}>bundle add react_on_rails_pro</code>
             <div className={styles.licenseHighlight}>
               <strong>
-                Free for small organizations and free uses. ShakaStack Pro, $1,800 per year per
-                organization, otherwise.
+                ShakaStack Pro covers React on Rails Pro, ShakaPerf, and Inertia Rails SSR Cache for
+                your whole organization at $1,800 per year per organization.
               </strong>
               <span>
-                No license key is needed in development, test, CI, staging, or review apps. Production
-                is free for organizations under 10 people, $1M revenue, and $1M raised, and for
-                charities, schools, and hospitals at any size; larger organizations subscribe. Nothing
-                phones home and a missing key never blocks your app. ShakaStack Pro includes React on
-                Rails Pro, ShakaPerf and Slack support from the maintainers.
+                React on Rails Pro is free in production when the whole organization, counting
+                affiliates, has fewer than 10 people, under $1M revenue in the last twelve months,
+                and under $1M raised, ever. Charities, educational institutions, and hospitals are
+                free at any size. Nothing phones home and a missing key never blocks your app.
               </span>
             </div>
             <div className={styles.actions}>
@@ -128,9 +127,9 @@ export default function ProPage(): ReactNode {
         <section className="container">
           <h2>What Pro adds</h2>
           <p className={styles.note}>
-            Every feature below ships in the public Pro gem. The license covers production use by
-            larger organizations; evaluating, developing, and running Pro at a small organization is
-            free.
+            Every feature below ships in the public Pro gem. Above the free line, React on Rails Pro
+            production use needs a ShakaStack Pro subscription. Evaluation and qualifying free uses
+            remain free.
           </p>
           <div className={styles.cardGrid}>
             {proFeatures.map((feature) => (
@@ -192,11 +191,19 @@ export default function ProPage(): ReactNode {
               <p className={styles.cardEyebrow}>Trust-Based Commercial Licensing</p>
               <h2>Free for most teams. One flat subscription for the rest.</h2>
               <p>
-                React on Rails Pro uses The React on Rails Pro License, an application of ShakaCode
-                Trust-Based Commercial Licensing: free in development, test, CI, and staging for
-                everyone, free in production for small organizations and for charities, schools, and
-                hospitals, and $1,800 per year per organization for everyone else. No license key is
-                required to run it.
+                React on Rails Pro and Inertia Rails SSR Cache are free in development, test, CI, and
+                staging for everyone. Above the free line, what needs a subscription is production:
+                anything that serves real users or supports a live application.
+              </p>
+              <p>
+                ShakaPerf follows its own rule in every environment, because it runs in your
+                development process. Above the free line, ongoing ShakaPerf work, including CI,
+                needs ShakaStack Pro after a 45-day evaluation. Qualifying public open-source work
+                stays free, and publishing a result does not make private work free.
+              </p>
+              <p>
+                No license key is required to run React on Rails Pro. ShakaStack Pro includes Slack
+                support and has no limit on headcount or revenue.
               </p>
               <p>
                 See <Link to="/pricing">Free & Pro</Link> for the three questions that define a small

@@ -14,9 +14,13 @@ import styles from './index.module.css';
 
 const freeLineCopy = {
   eyebrow: 'Free for most teams',
-  title: 'Free before production for everyone. Free in production for small teams.',
+  title: 'React on Rails Pro and Inertia Rails SSR Cache are free before production.',
   description:
-    'React on Rails is MIT. React on Rails Pro needs no license key in development, test, CI, staging or review apps, and runs free in production for organizations under 10 people, $1M revenue and $1M raised, and for charities, schools and hospitals at any size. Everyone else subscribes to ShakaStack Pro: $1,800 per year per organization for React on Rails Pro, ShakaPerf and Slack support from the maintainers.',
+    'React on Rails Pro and Inertia Rails SSR Cache are free in development, test, CI, and staging for everyone. Above the free line, what needs a subscription is production: anything that serves real users or supports a live application.',
+  shakaperf:
+    'ShakaPerf follows its own rule in every environment, because it runs in your development process. Above the free line, ongoing ShakaPerf work, including CI, needs ShakaStack Pro after a 45-day evaluation. Qualifying public open-source work stays free, and publishing a result does not make private work free.',
+  offer:
+    'ShakaStack Pro covers React on Rails Pro, ShakaPerf, and Inertia Rails SSR Cache for your whole organization, with Slack support, at $1,800 per year per organization. There is no limit on headcount or revenue.',
   actions: [
     {label: 'Free & Pro', destination: '/pricing', primary: true},
     {label: 'Start building with Pro', destination: docsRoutes.proInstall, primary: false},
@@ -37,7 +41,7 @@ const valueCards = [
   {
     title: 'OSS and Pro',
     description:
-      'Start with the MIT gem. Add Pro for RSC, streaming SSR, and the Node renderer: free for small organizations, ShakaStack Pro at $1,800 per year per organization otherwise.',
+      'Start with the MIT gem. Add React on Rails Pro for RSC, streaming SSR, and the Node renderer. ShakaStack Pro covers React on Rails Pro, ShakaPerf, and Inertia Rails SSR Cache for the whole organization.',
   },
   {
     title: 'Modern data fetching',
@@ -249,6 +253,8 @@ function FreeLineSection() {
         <p className={styles.sectionEyebrow}>{freeLineCopy.eyebrow}</p>
         <h2>{freeLineCopy.title}</h2>
         <p>{freeLineCopy.description}</p>
+        <p>{freeLineCopy.shakaperf}</p>
+        <p>{freeLineCopy.offer}</p>
         <div className={styles.featureActions}>
           {freeLineCopy.actions.map((action) => (
             <Link

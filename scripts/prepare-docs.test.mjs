@@ -67,9 +67,12 @@ test("prepare docs injects trust-based commercial licensing notice", async () =>
     assert.match(updated, /slug: \/pro/);
     assert.match(updated, /The React on Rails Pro License/);
     assert.match(updated, /development, test, CI, and staging/);
-    assert.match(updated, /\$1,800 per year covers the whole organization/);
+    assert.match(updated, /ShakaPerf work, including CI, needs ShakaStack Pro/);
+    assert.match(updated, /Inertia Rails SSR Cache/);
+    assert.match(updated, /No limit on headcount or revenue/);
+    assert.match(updated, /\$1,800 per year per organization/);
     assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
-    assert.match(updated, /\[pricing\]\(\/pricing\)/);
+    assert.match(updated, /\[Free & Pro\]\(\/pricing\)/);
     assert.doesNotMatch(updated, /Friendly license model/);
     assert.doesNotMatch(updated, /Friendly evaluation policy/);
     assert.doesNotMatch(updated, /Honest License/);
@@ -97,7 +100,7 @@ Existing Pro overview.
 
     const updated = await fs.readFile(proIntroPath, "utf8");
     assert.match(updated, /The React on Rails Pro License/);
-    assert.match(updated, /\$1,800 per year covers the whole organization/);
+    assert.match(updated, /\$1,800 per year per organization/);
     assert.doesNotMatch(updated, /Friendly license model/);
     assert.doesNotMatch(updated, /Teams should contact us before production/);
   });
@@ -146,9 +149,12 @@ test("docs homepage uses trust-based commercial licensing copy", () => {
 
   assert.match(updated, /## ShakaCode Trust-Based Commercial Licensing/);
   assert.match(updated, /development, test, CI, and staging/);
+  assert.match(updated, /ShakaPerf work, including CI, needs ShakaStack Pro/);
+  assert.match(updated, /Inertia Rails SSR Cache/);
+  assert.match(updated, /No limit on headcount or revenue/);
   assert.match(updated, /\$1,800 per year per organization/);
   assert.match(updated, /https:\/\/pro\.reactonrails\.com\//);
-  assert.match(updated, /\[pricing\]\(\/pricing\)/);
+  assert.match(updated, /\[Free & Pro\]\(\/pricing\)/);
   assert.doesNotMatch(updated, /Friendly License Model/);
   assert.doesNotMatch(updated, /Friendly evaluation policy/);
   assert.doesNotMatch(updated, /Honest License/);
